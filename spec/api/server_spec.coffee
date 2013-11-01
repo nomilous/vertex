@@ -17,3 +17,9 @@ describe 'server', ->
                 facto()
 
         server api: port: process.env.API_PORT
+
+
+    it 'temporary test to check failure to call "active stub"', ipso (facto, should) -> 
+
+        should.does exist: -> facto()
+
