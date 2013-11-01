@@ -11,7 +11,7 @@ describe 'server', ->
 
     it 'starts http listening at config.api.port', ipso (facto, http) -> 
 
-        http.createServer = ->
+        http.does createServer: ->
             listen: (port) -> 
                 port.should.equal 2999
                 facto()
