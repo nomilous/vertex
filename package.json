@@ -12,7 +12,8 @@
   "main": "lib/vertex.js",
   "dependencies": {},
   "devDependencies": {
-    "ipso": "0.0.4"
+    "ipso": "0.0.7",
+    "should": "~2.0.2"
   },
   "repository": "git@github.com:nomilous/vertex.git"
 }
