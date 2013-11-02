@@ -15,7 +15,7 @@
       "packageManager": "npm",
       "remote.origin.url": "git@github.com:nomilous/ipso.git",
       "HEAD": "refs/heads/develop",
-      "version": "77cc705af6891a7617319d80bf2f39be749a0e5a"
+      "version": "fefadae06aa052a518635a337532072ca31decd7"
     },
     {
       "root": false,
