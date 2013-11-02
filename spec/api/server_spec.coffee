@@ -11,10 +11,12 @@ describe 'server', ->
 
     it 'starts http listening at config.api.port', ipso (facto, http) -> 
 
-        http.does createServer: ->
-            listen: (port) -> 
-                port.should.equal 2999
-                facto()
+        http.does 
+            createServer: ->
+                listen: (port) -> 
+                    port.should.equal 2999
+                    facto()
+
 
         server api: port: process.env.API_PORT
 
