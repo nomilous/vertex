@@ -15,7 +15,7 @@
       "packageManager": "npm",
       "remote.origin.url": "git@github.com:nomilous/ipso.git",
       "HEAD": "refs/heads/develop",
-      "version": "5444a797c61575ef4e5e63ca4c758e7ee1605ae7"
+      "version": "5d77f34bafdd408e0661d55dbe44263332e1ac04"
     },
     {
       "root": false,
@@ -23,7 +23,7 @@
       "packageManager": "npm",
       "remote.origin.url": "git@github.com:nomilous/does.git",
       "HEAD": "refs/heads/develop",
-      "version": "aab8b22d93400c0f93627280f503d052b238e203"
+      "version": "5143ffa387b06196738f36a51331a5609c806eed"
     }
   ]
 }
