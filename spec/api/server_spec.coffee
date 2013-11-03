@@ -12,6 +12,7 @@ describe 'server', ->
         Server( config ).listen()
 
 
+
     it 'can starts http listening at config.api.listen.port and hostname', ipso (facto, http) -> 
 
         http.does 
@@ -30,11 +31,25 @@ describe 'server', ->
         .listen()
 
 
-    it 'can stop http', ipso (facto, http) ->
+    it 'calls back with the listening address', ipso (facto, http) ->
 
         http.does 
             createServer: ->
                 listen: (args...) -> args.pop()() # callback is last arg
+                address: -> 'mock address'
+
+        instance = Server api: listen: {}
+        instance.listen (err, addr) -> 
+            addr.should.equal 'mock address'
+            facto()
+
+
+    it 'can stop http', ipso (facto, http) ->
+
+        http.does 
+            createServer: ->
+                listen: (args...) -> args.pop()()
+                address: -> 
                 close: -> facto()
 
 

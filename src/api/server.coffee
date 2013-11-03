@@ -15,7 +15,8 @@ module.exports = (config = {}) ->
 
             local.server = http.createServer()
             local.server.listen port, hostname, ->
-                callback null, local.server
+                
+                callback null, local.server.address()
 
 
         close: ->
