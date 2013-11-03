@@ -10,7 +10,9 @@
     }
   ],
   "main": "lib/vertex.js",
-  "dependencies": {},
+  "dependencies": {
+    "also": "0.0.12"
+  },
   "devDependencies": {
     "ipso": "0.0.9",
     "should": "~2.0.2"

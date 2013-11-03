@@ -16,13 +16,13 @@ vertex
 
 ```
 
-./node_modules/.bin/ipso
+./node_modules/.bin/ipso --mocha
 
 #
 # or 
 #
 
 npm install -g ipso
-ipso
+ipso --mocha
 
 ```
