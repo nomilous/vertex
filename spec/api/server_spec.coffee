@@ -13,7 +13,7 @@ describe 'server', ->
 
 
 
-    it 'can starts http listening at config.http.listen.port and hostname', ipso (facto, http) -> 
+    it 'starts http listening at config.http.listen.port and hostname', ipso (facto, http) -> 
 
         http.does 
             createServer: ->
