@@ -1,6 +1,6 @@
 http = require 'http'
 
-module.exports = (config = {}) ->
+module.exports = (config, handler) ->
 
     local = 
 
@@ -8,14 +8,14 @@ module.exports = (config = {}) ->
 
         listen: (callback) ->
 
-            return unless try opts = config.api.listen
+            return unless try listenArgs = config.http.listen
 
-            port      = parseInt opts.port
-            hostname  = opts.hostname
+            port      = parseInt listenArgs.port
+            hostname  = listenArgs.hostname
 
-            local.server = http.createServer()
+            local.server = http.createServer handler
             local.server.listen port, hostname, ->
-                
+
                 callback null, local.server.address()
 
 

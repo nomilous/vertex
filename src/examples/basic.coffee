@@ -1,9 +1,14 @@
 server = require('../api/server')
     
-    api:
-        listen: 
-            port: 3000
+    http: listen: port: 3000
 
-server.listen (address) -> 
+    (req, res) -> 
+
+        res.writeHead 200
+        res.end '...........'
+
+
+server.listen (error, address) -> 
 
     console.log address
+

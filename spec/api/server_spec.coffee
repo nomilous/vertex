@@ -5,15 +5,15 @@ Server   = require '../../lib/api/server'
 describe 'server', -> 
 
 
-    it 'uses config.api', (done) -> 
+    it 'uses config.http', (done) -> 
 
         config = {}
-        Object.defineProperty config, 'api', get: -> done()
+        Object.defineProperty config, 'http', get: -> done()
         Server( config ).listen()
 
 
 
-    it 'can starts http listening at config.api.listen.port and hostname', ipso (facto, http) -> 
+    it 'can starts http listening at config.http.listen.port and hostname', ipso (facto, http) -> 
 
         http.does 
             createServer: ->
@@ -23,7 +23,7 @@ describe 'server', ->
                     facto()
 
         Server 
-            api: 
+            http: 
                 listen: 
                     hostname: process.env.API_HOSTNAME
                     port: process.env.API_PORT
@@ -38,7 +38,7 @@ describe 'server', ->
                 listen: (args...) -> args.pop()() # callback is last arg
                 address: -> 'mock address'
 
-        instance = Server api: listen: {}
+        instance = Server http: listen: {}
         instance.listen (err, addr) -> 
             addr.should.equal 'mock address'
             facto()
@@ -53,6 +53,6 @@ describe 'server', ->
                 close: -> facto()
 
 
-        instance = Server api: listen: {}
+        instance = Server http: listen: {}
         instance.listen -> instance.close()
-        
+
