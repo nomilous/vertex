@@ -1,6 +1,6 @@
 http = require 'http'
 
-module.exports = (config, handler) ->
+module.exports.create = (config, handler) ->
 
     local = 
 

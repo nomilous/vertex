@@ -1,15 +1,15 @@
 should   = require 'should'
 ipso     = require 'ipso'
-Server   = require '../../lib/api/server'
+{create} = require '../../lib/api/server'
 
-describe 'server', -> 
+describe 'Server.create()', -> 
 
 
     it 'uses config.http', (done) -> 
 
         config = {}
         Object.defineProperty config, 'http', get: -> done()
-        Server( config ).listen()
+        create( config ).listen()
 
 
 
@@ -22,7 +22,7 @@ describe 'server', ->
                     hostname.should.equal 'test.local'
                     facto()
 
-        Server 
+        create 
             http: 
                 listen: 
                     hostname: process.env.API_HOSTNAME
@@ -38,7 +38,7 @@ describe 'server', ->
                 listen: (args...) -> args.pop()() # callback is last arg
                 address: -> 'mock address'
 
-        instance = Server http: listen: {}
+        instance = create http: listen: {}
         instance.listen (err, addr) -> 
             addr.should.equal 'mock address'
             facto()
@@ -53,6 +53,6 @@ describe 'server', ->
                 close: -> facto()
 
 
-        instance = Server http: listen: {}
+        instance = create http: listen: {}
         instance.listen -> instance.close()
 
