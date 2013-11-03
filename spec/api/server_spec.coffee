@@ -17,17 +17,17 @@ describe 'server', ->
                 listen: (port) -> 
                     port.should.equal 2999
                     facto()
+            singLullaby: -> 
 
-
-        # server api: port: process.env.API_PORT
-
+        http.singLullaby()
+        #server api: port: process.env.API_PORT
         facto() # should fail on account of no call to createServer
         
 
     it 'temporary test to verify cleanup', (done) -> #ipso (facto, http, should) -> 
 
 
-        [stub] = require('http').createServer.toString().match /STUB/
+        try [stub] = require('http').createServer.toString().match /STUB/
         should.not.exist stub
         done()
 
