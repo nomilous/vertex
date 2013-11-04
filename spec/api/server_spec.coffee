@@ -5,54 +5,64 @@ ipso     = require 'ipso'
 describe 'Server.create()', -> 
 
 
-    it 'uses config.http', (done) -> 
+    it 'start http server and listens on port', ipso (facto, http) -> 
 
-        config = {}
-        Object.defineProperty config, 'http', get: -> done()
-        create( config ).listen()
+        console.log http.does
+            createServer: -> 
+                console.log MOOO:1
+
+
+        create http: listen: port: 3001
+
+
+    # it 'uses config.http', (done) -> 
+
+    #     config = {}
+    #     Object.defineProperty config, 'http', get: -> done()
+    #     create( config ).listen()
 
 
 
-    it 'starts http listening at config.http.listen.port and hostname', ipso (facto, http) -> 
+    # it 'starts http listening at config.http.listen.port and hostname', ipso (facto, http) -> 
 
-        http.does 
-            createServer: ->
-                listen: (port, hostname) -> 
-                    port.should.equal 2999
-                    hostname.should.equal 'test.local'
-                    facto()
+    #     http.does 
+    #         createServer: ->
+    #             listen: (port, hostname) -> 
+    #                 port.should.equal 2999
+    #                 hostname.should.equal 'test.local'
+    #                 facto()
 
-        create 
-            http: 
-                listen: 
-                    hostname: process.env.API_HOSTNAME
-                    port: process.env.API_PORT
+    #     create 
+    #         http: 
+    #             listen: 
+    #                 hostname: process.env.API_HOSTNAME
+    #                 port: process.env.API_PORT
                     
-        .listen()
+    #     .listen()
 
 
-    it 'calls back with the listening address', ipso (facto, http) ->
+    # it 'calls back with the listening address', ipso (facto, http) ->
 
-        http.does 
-            createServer: ->
-                listen: (args...) -> args.pop()() # callback is last arg
-                address: -> 'mock address'
+    #     http.does 
+    #         createServer: ->
+    #             listen: (args...) -> args.pop()() # callback is last arg
+    #             address: -> 'mock address'
 
-        instance = create http: listen: {}
-        instance.listen (err, addr) -> 
-            addr.should.equal 'mock address'
-            facto()
-
-
-    it 'can stop http', ipso (facto, http) ->
-
-        http.does 
-            createServer: ->
-                listen: (args...) -> args.pop()()
-                address: -> 
-                close: -> facto()
+    #     instance = create http: listen: {}
+    #     instance.listen (err, addr) -> 
+    #         addr.should.equal 'mock address'
+    #         facto()
 
 
-        instance = create http: listen: {}
-        instance.listen -> instance.close()
+    # it 'can stop http', ipso (facto, http) ->
+
+    #     http.does 
+    #         createServer: ->
+    #             listen: (args...) -> args.pop()()
+    #             address: -> 
+    #             close: -> facto()
+
+
+    #     instance = create http: listen: {}
+    #     instance.listen -> instance.close()
 
