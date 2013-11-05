@@ -1,4 +1,8 @@
-ipso = require 'ipso'
+ipso = require('ipso').modules 
+    
+    Server: require: './lib/api/server'
+    Vertex: require: './lib/vertex'
+
 
 #
 # pending
@@ -9,9 +13,9 @@ ipso = require 'ipso'
 # * Subject.does.reset() to remove all stubs
 #
 
-describe 'Vertex', ipso (Vertex) -> 
+describe 'Vertex', -> 
     
-    it 'creates a server and starts listening', ipso (facto, Server) -> 
+    it 'creates a server and starts listening', ipso (facto, Server, Vertex) -> 
 
         Server.does create: -> listen: -> facto()
         Vertex http: listen: port: 3000
