@@ -1,17 +1,4 @@
-ipso = require('ipso').modules 
-    
-    Server: require: './lib/api/server'
-    Vertex: require: './lib/vertex'
-
-
-#
-# pending
-# -------
-# 
-# * local module injection
-# * synchronous injection also through does.spectate()
-# * Subject.does.reset() to remove all stubs
-#
+ipso = require 'ipso'
 
 describe 'Vertex', -> 
     
