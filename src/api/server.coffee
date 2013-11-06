@@ -14,6 +14,7 @@ module.exports.create = (config, handler) ->
             hostname  = listenArgs.hostname
 
             local.server = http.createServer handler
+
             local.server.listen port, hostname, ->
 
                 callback null, local.server.address()

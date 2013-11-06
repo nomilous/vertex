@@ -1,13 +1,13 @@
-Server = require './api/server'
+Server  = require './api/server'
+Handler = require './api/handler'
 
 module.exports = (config) -> 
     
-    Server.create config, (req, res) -> 
+    Server.create( config, 
 
-        res.writeHead 200
-        res.end '...........'
+        Handler.create( config ).handle
 
-    .listen (err, addr) -> 
+    ).listen (err, addr) -> 
 
         throw err if err?
         console.log TODO: addr

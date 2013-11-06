@@ -1,13 +1,18 @@
+lastInstance          = undefined
+module.exports._test  = -> lastInstance
 module.exports.create = (config) ->
 
-    local = 
+    lastInstance = local = 
 
         root: config.root
 
-        handler: (req, res) -> 
+        handle: (req, res) -> 
 
-            
+            res.writeHead 200
+            res.end '...........'
+
+
 
     return api = 
 
-        handler: local.handler
+        handle: local.handle
