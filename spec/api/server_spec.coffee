@@ -4,7 +4,7 @@ ipso     = require 'ipso'
 
 describe 'Server.create()', -> 
 
-    it 'uses config.http', (done) -> 
+    it 'uses config.http for listen configuration', (done) -> 
 
         config = {}
         Object.defineProperty config, 'http', get: -> done()

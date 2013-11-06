@@ -6,4 +6,3 @@ describe 'Vertex', ->
 
         Server.does create: -> listen: -> facto()
         Vertex http: listen: port: 3000
-
