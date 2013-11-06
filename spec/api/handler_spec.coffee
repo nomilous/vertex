@@ -20,29 +20,47 @@ describe 'Handler.create()', ->
     context 'handle()', -> 
 
 
-     it 'responds with the root tree if config.allowRoot is true', ipso (done, Handler) -> 
+        it 'responds 404 to / if config.alloRoot is unspecified', ipso (done, Handler) -> 
 
-        {handle} = Handler.create
-            allowRoot: true
-            root: tree: of: 'things'
+            {handle} = Handler.create
+                root: tree: of: 'things'
 
-        handle req = {}, res = 
-            writeHead: ->
-            end: ->  
-            write: (body) -> 
+            handle req = url: '/', res = 
+                writeHead: (statusCode) -> 
+                    statusCode.should.equal 404
+                    done()
+                end: ->  
 
-                body.should.equal '{"tree":{"of":"things"}}'
+
+        it 'responds to / with the root tree if config.allowRoot is true', ipso (done, Handler) -> 
+
+            {handle} = Handler.create
+                allowRoot: true
+                root: tree: of: 'things'
+
+            handle req = url: '/', res = 
+                writeHead: ->
+                end: ->  
+                write: (body) -> 
+
+                    body.should.equal '{"tree":{"of":"things"}}'
+                    done()
+
+        it 'calls the responder() with opts.path,query,headers and response object', ipso (done, Handler) -> 
+
+            {handle} = Handler.create
+                allowRoot: true
+                root: tree: of: 'things'
+
+            Handler._test().responder = (opts, res) -> 
+                res.should.equal 'response object'
+                opts.should.eql 
+                    headers: 'headers'
+                    path: '/path'
+                    query: 
+                        key1: 'value1'
+                        key2: '2'
                 done()
 
 
-    it 'reponds 404 if config.alloRoot is unspecified', ipso (done, Handler) -> 
-
-        {handle} = Handler.create
-
-            root: tree: of: 'things'
-
-        handle req = {}, res = 
-            writeHead: (statusCode) -> 
-                statusCode.should.equal 404
-                done()
-            end: ->  
+            handle req = url: '/path?key1=value1&key2=2', headers: 'headers', 'response object'
