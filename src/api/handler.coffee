@@ -8,10 +8,14 @@ module.exports.create = (config) ->
 
         handle: (req, res) -> 
 
-            res.writeHead 200
-            res.end '...........'
+            if config.allowRoot
 
+                res.writeHead 200
+                res.write JSON.stringify local.root
+                return res.end()
 
+            res.writeHead 404
+            res.end() 
 
     return api = 
 

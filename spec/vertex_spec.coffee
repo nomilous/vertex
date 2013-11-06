@@ -1,6 +1,6 @@
 ipso = require 'ipso'
 
-describe 'Vertex', -> 
+describe 'Vertex', ->
     
     it 'creates a server and starts listening', ipso (facto, Server, Vertex) -> 
 
