@@ -1,7 +1,9 @@
 Server  = require './api/server'
 Handler = require './api/handler'
 
-module.exports = (config) -> 
+module.exports = (config) ->
+
+    mmoo: 1
     
     Server.create( config, 
 

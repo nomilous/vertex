@@ -64,3 +64,55 @@ describe 'Handler.create()', ->
 
 
             handle req = url: '/path?key1=value1&key2=2', headers: 'headers', 'response object'
+
+
+    context 'responder()', -> 
+
+        before ipso (done, Handler) -> 
+
+            Handler.create @opts = allowRoot: true, root: modules: {}
+            
+            #
+            # ipso.tag handler1 for injection into all tests
+            # 
+
+            ipso.tag 
+                
+                handler1: handler1 = Handler._test()
+
+            .then -> 
+
+                handler1.does 
+
+                    expectedFunction: ->
+                    moo: -> 'moooo'
+
+                #
+                # TODO: fix this failing in the before hook because moo()
+                #       was not called in 'here' and ipso does not distinguish
+                #       between hooks and tests yet
+                #
+
+                
+
+                
+                done()
+
+            # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
+
+
+        it 'calls prep() with opts', ipso (done, handler1) -> 
+
+            # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
+
+            console.log GOT: handler1
+            # handler1.moo()
+            done()
+
+
+        it 'still got it', ipso (done, handler1) -> 
+
+            console.log GOT: handler1
+            done()
+
+
