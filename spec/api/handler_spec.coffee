@@ -101,27 +101,29 @@ describe 'Handler.create()', ->
             # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
 
 
-        it 'calls prep() with opts', ipso (done, handler1) -> 
+        it 'calls prep() with opts', ipso (facto, handler1) -> 
 
             # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
 
-            handler1.does
+            #
+            # spy on prep()
+            #
 
-                #
-                # spy on prep()
-                #
+            handler1.does _prep: (opts) -> opts.should.equal 'OPTS'
+            handler1.responder 'OPTS'
+            facto meta: """
 
-                _prep: (opts) -> 
+            Handled in both directions:
+            Call was not made, or call was made with wrong args.
 
-                    # opts right? 
-                    done()
+            """
 
 
         it 'still got it', ipso (done, handler1) -> 
 
             # TODO: remove spies ahead of each injection for tagged, _prep from previous test still present 
 
-            console.log handler1.prep.toString()
+            #console.log handler1.prep.toString()
             done()
 
 
