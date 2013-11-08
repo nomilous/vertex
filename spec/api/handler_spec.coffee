@@ -17,7 +17,7 @@ describe 'Handler.create()', ->
         done()
 
 
-    context 'handle()', -> 
+    xcontext 'handle()', -> 
 
 
         it 'responds 404 to / if config.alloRoot is unspecified', ipso (done, Handler) -> 
@@ -76,29 +76,14 @@ describe 'Handler.create()', ->
             # ipso.tag handler1 for injection into all tests
             # 
 
-            ipso.tag 
-                
-                handler1: handler1 = Handler._test()
+            ipso.tag( handler1: handler1 = Handler._test() ).then done
 
-            .then -> 
 
-                handler1.does 
+        it 'reports function not run instead of test timeout', ipso (facto, handler1) -> 
 
-                    # expectedFunction: ->
-                    # moo: -> 'moooo'
+            handler1.does function: -> facto()
+            #handler1.function()
 
-                #
-                # TODO: fix this failing in the before hook because moo()
-                #       was not called in 'here' and ipso does not distinguish
-                #       between hooks and tests yet
-                #
-
-                
-
-                
-                done()
-
-            # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
 
 
         it 'calls prep() with opts', ipso (facto, handler1) -> 
@@ -109,14 +94,11 @@ describe 'Handler.create()', ->
             # spy on prep()
             #
 
+            #console.log handler1.moo.toString()
+
             handler1.does _prep: (opts) -> opts.should.equal 'OPTS'
             handler1.responder 'OPTS'
-            facto meta: """
-
-            Handled in both directions:
-            Call was not made, or call was made with wrong args.
-
-            """
+            facto()
 
 
         it 'still got it', ipso (done, handler1) -> 
