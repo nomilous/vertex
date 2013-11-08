@@ -84,8 +84,8 @@ describe 'Handler.create()', ->
 
                 handler1.does 
 
-                    expectedFunction: ->
-                    moo: -> 'moooo'
+                    # expectedFunction: ->
+                    # moo: -> 'moooo'
 
                 #
                 # TODO: fix this failing in the before hook because moo()
@@ -105,14 +105,23 @@ describe 'Handler.create()', ->
 
             # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
 
-            console.log GOT: handler1
-            # handler1.moo()
-            done()
+            handler1.does
+
+                #
+                # spy on prep()
+                #
+
+                _prep: (opts) -> 
+
+                    # opts right? 
+                    done()
 
 
         it 'still got it', ipso (done, handler1) -> 
 
-            console.log GOT: handler1
+            # TODO: remove spies ahead of each injection for tagged, _prep from previous test still present 
+
+            console.log handler1.prep.toString()
             done()
 
 
