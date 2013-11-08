@@ -79,13 +79,6 @@ describe 'Handler.create()', ->
             ipso.tag( handler1: handler1 = Handler._test() ).then done
 
 
-        it 'reports function not run instead of test timeout', ipso (facto, handler1) -> 
-
-            handler1.does function: -> facto()
-            #handler1.function()
-
-
-
         it 'calls prep() with opts', ipso (facto, handler1) -> 
 
             # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
