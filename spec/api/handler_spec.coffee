@@ -2,6 +2,7 @@
 
 describe 'Handler.create()', ipso (Handler) -> 
 
+    @timeout 10
 
     it 'uses config.root for route configuration', ipso (done) -> 
 

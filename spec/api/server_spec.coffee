@@ -2,7 +2,10 @@ should   = require 'should'
 ipso     = require 'ipso'
 {create} = require '../../lib/api/server'
 
+
 describe 'Server.create()', -> 
+
+    @timeout 10
 
     it 'uses config.http for listen configuration', (done) -> 
 
@@ -46,6 +49,8 @@ describe 'Server.create()', ->
 
     it 'can stop http', ipso (facto, http) ->
 
+
+
         http.does 
             createServer: ->
                 listen: (args...) -> args.pop()()
@@ -54,5 +59,5 @@ describe 'Server.create()', ->
 
 
         instance = create http: listen: {}
-        instance.listen -> instance.close()
+        #instance.listen -> instance.close()
 
