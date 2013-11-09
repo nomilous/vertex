@@ -1,4 +1,4 @@
-ipso = require 'ipso'
+{ipso, mock} = require 'ipso'
 
 describe 'Handler.create()', ipso (Handler) -> 
 
@@ -76,17 +76,18 @@ describe 'Handler.create()', ipso (Handler) ->
             ipso.tag( handler1: Handler._test() ).then done
 
 
-        it 'calls prep() and process() in sequence with opts', ipso (facto, handler1) -> 
+        it 'calls prepare() and process() in sequence with opts', ipso (facto, handler1) -> 
 
             handler1.does 
 
-                _prep:    (opts) -> opts.prepped = true
+                _prepare: (opts) -> opts.prepped = true
                 _process: (opts) -> 
 
                     opts.prepped.should.equal true
-                    opts.is.should.equal 'opts'
+                    opts.is insertedOpts
+                    facto()
 
-            handler1.responder is: 'opts'
-            facto()
+            handler1.responder insertedOpts = mock 'opts'
+            
 
 

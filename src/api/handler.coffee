@@ -11,7 +11,7 @@ module.exports.create = (config) ->
 
 
 
-        prep: deferred (action, opts) -> 
+        prepare: deferred (action, opts) -> 
 
             #
             # auth / cookie / session
@@ -39,7 +39,7 @@ module.exports.create = (config) ->
 
         responder: (opts, res) ->
 
-            local.prep( opts )
+            local.prepare( opts )
             .then local.process( opts )
             .then(
 
