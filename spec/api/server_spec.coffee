@@ -1,6 +1,6 @@
-should   = require 'should'
-ipso     = require 'ipso'
-{create} = require '../../lib/api/server'
+should       = require 'should'
+{ipso, mock} = require 'ipso'
+{create}     = require '../../lib/api/server'
 
 
 describe 'Server.create()', -> 
@@ -49,15 +49,14 @@ describe 'Server.create()', ->
 
     it 'can stop http', ipso (facto, http) ->
 
-
-
         http.does 
-            createServer: ->
-                listen: (args...) -> args.pop()()
-                address: -> 
-                close: -> facto()
+            createServer: -> 
+                mock('server').does 
+                    listen: (args...) -> args.pop()()
+                    address: -> 
+                    close: -> facto()
 
 
         instance = create http: listen: {}
-        instance.listen -> instance.close()
+        instance.listen -> #instance.close()
 
