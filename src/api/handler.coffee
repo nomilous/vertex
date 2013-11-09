@@ -40,7 +40,7 @@ module.exports.create = (config) ->
         responder: (opts, res) ->
 
             local.prep( opts )
-            # .then local.process( opts )
+            .then local.process( opts )
             .then(
 
                 (result) -> 

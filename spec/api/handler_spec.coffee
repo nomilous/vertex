@@ -1,26 +1,25 @@
 ipso = require 'ipso'
 
-describe 'Handler.create()', -> 
+describe 'Handler.create()', ipso (Handler) -> 
 
 
-    xit 'uses config.root for route configuration', ipso (done, Handler) -> 
+    it 'uses config.root for route configuration', ipso (done) -> 
 
         config = {}
         Object.defineProperty config, 'root', get: -> done()
         Handler.create config
 
 
-    xit 'defines a handle function', ipso (done, Handler) -> 
+    it 'defines a handle function', ipso (done) -> 
 
         handler = Handler.create {}
         handler.handle.should.be.an.instanceof Function
         done()
 
 
-    xcontext 'handle()', -> 
+    context 'handle()', -> 
 
-
-        it 'responds 404 to / if config.alloRoot is unspecified', ipso (done, Handler) -> 
+        it 'responds 404 to / if config.alloRoot is unspecified', ipso (done) -> 
 
             {handle} = Handler.create
                 root: tree: of: 'things'
@@ -32,7 +31,7 @@ describe 'Handler.create()', ->
                 end: ->  
 
 
-        it 'responds to / with the root tree if config.allowRoot is true', ipso (done, Handler) -> 
+        it 'responds to / with the root tree if config.allowRoot is true', ipso (done) -> 
 
             {handle} = Handler.create
                 allowRoot: true
@@ -46,7 +45,7 @@ describe 'Handler.create()', ->
                     body.should.equal '{"tree":{"of":"things"}}'
                     done()
 
-        it 'calls the responder() with opts.path,query,headers and response object', ipso (done, Handler) -> 
+        it 'calls the responder() with opts.path,query,headers and response object', ipso (done) -> 
 
             {handle} = Handler.create
                 allowRoot: true
@@ -68,7 +67,7 @@ describe 'Handler.create()', ->
 
     context 'responder()', -> 
 
-        before ipso (done, Handler) -> 
+        before ipso (done) -> 
 
             Handler.create 
                 allowRoot: true
@@ -86,7 +85,6 @@ describe 'Handler.create()', ->
 
                     opts.prepped.should.equal true
                     opts.is.should.equal 'opts'
-
 
             handler1.responder is: 'opts'
             facto()
