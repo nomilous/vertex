@@ -74,7 +74,7 @@ describe 'Handler.create()', ->
                 allowRoot: true
                 root: modules: {}
 
-            ipso.tag( handler1: handler1 = Handler._test() ).then done
+            ipso.tag( handler1: Handler._test() ).then done
 
 
         it 'calls prep() and process() in sequence with opts', ipso (facto, handler1) -> 
@@ -91,4 +91,4 @@ describe 'Handler.create()', ->
             handler1.responder is: 'opts'
             facto()
 
-        
+
