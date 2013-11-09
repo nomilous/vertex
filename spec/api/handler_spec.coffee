@@ -70,35 +70,25 @@ describe 'Handler.create()', ->
 
         before ipso (done, Handler) -> 
 
-            Handler.create @opts = allowRoot: true, root: modules: {}
-            
-            #
-            # ipso.tag handler1 for injection into all tests
-            # 
+            Handler.create 
+                allowRoot: true
+                root: modules: {}
 
             ipso.tag( handler1: handler1 = Handler._test() ).then done
 
 
-        it 'calls prep() with opts', ipso (facto, handler1) -> 
+        it 'calls prep() and process() in sequence with opts', ipso (facto, handler1) -> 
 
-            # console.log TYPE: @test.type # use this in ipso to distinguish test from hook
+            handler1.does 
 
-            #
-            # spy on prep()
-            #
+                _prep:    (opts) -> opts.prepped = true
+                _process: (opts) -> 
 
-            #console.log handler1.moo.toString()
+                    opts.prepped.should.equal true
+                    opts.is.should.equal 'opts'
 
-            handler1.does _prep: (opts) -> opts.should.equal 'OPTS'
-            handler1.responder 'OPTS'
+
+            handler1.responder is: 'opts'
             facto()
 
-
-        it 'still got it', ipso (done, handler1) -> 
-
-            # TODO: remove spies ahead of each injection for tagged, _prep from previous test still present 
-
-            #console.log handler1.prep.toString()
-            done()
-
-
+        
