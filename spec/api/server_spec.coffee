@@ -58,5 +58,5 @@ describe 'Server.create()', ->
 
 
         instance = create http: listen: {}
-        instance.listen -> #instance.close()
+        instance.listen -> instance.close()
 
