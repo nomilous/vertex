@@ -51,12 +51,45 @@ describe 'Server.create()', ->
 
         http.does 
             createServer: -> 
-                mock('server').does 
+
+                return mock('server').does
+
+                    #
+                    # a "tier2" mock, with function expectations...
+                    # ---------------------------------------------
+                    # 
+                    # * worth it's weight in gold! 
+                    # 
+
                     listen: (args...) -> args.pop()()
                     address: -> 
-                    close: -> facto()
+                    close: -> facto()   
 
 
         instance = create http: listen: {}
-        instance.listen -> instance.close()
+        instance.listen ->  # instance.close()
+
+
+        # 
+        #  actual expected
+        #  
+        #   1 | {
+        #   2 |   "http": {
+        #   3 |     "functions": {
+        #   4 |       "Object.createServer()": "was called"
+        #   5 |     }
+        #   6 |   },
+        #   7 |   "server": {
+        #   8 |     "functions": {
+        #   9 |       "Object.listen()": "was called",
+        #  10 |       "Object.address()": "was called",
+        #  11 |       "Object.close()": "was NOT called"  <---------------- 
+        #  12 |     }
+        #  13 |   }
+        #  14 | }
+        # 
+        #  as opposed to: 
+        # 
+        #     Error: timeout of 2000ms exceeded
+        # 
 
