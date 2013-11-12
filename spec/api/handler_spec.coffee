@@ -17,6 +17,12 @@ describe 'Handler.create()', ipso (Handler) ->
         handler.handle.should.be.an.instanceof Function
         done()
 
+    it 'creates a Recursor with the config tree', ipso (Recursor) -> 
+
+        Recursor.does create: (config) -> config.is mockConfig
+        Handler.create mockConfig = mock 'config'
+
+
 
     context 'handle()', -> 
 
