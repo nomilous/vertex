@@ -21,24 +21,12 @@ module.exports.create = (config) ->
             action.resolve()
 
 
-
-        process: deferred (action, opts) -> 
-
-            #
-            # processor / recursor
-            #
-
-            body = JSON.stringify config.root
-            action.resolve
-                statusCode: 200
-                headers: 
-                    'Content-Type': 'application/json'
-                    'Content-Length': body.length
-                body: body
-
+        process: (opts) -> local.recursor.process opts
 
 
         responder: (opts, res) ->
+
+            
 
             local.prepare( opts )
             .then local.process( opts )
@@ -46,8 +34,12 @@ module.exports.create = (config) ->
 
                 (result) -> 
 
-                    res.writeHead result.statusCode, result.headers
-                    res.write result.body
+                    body = JSON.stringify result.body # option
+                    result.headers ||= {}
+                    result.headers['Content-Type'] = 'application/json'
+                    result.headers['Content-Length'] =  body.length
+                    res.writeHead result.statusCode || 200, result.headers
+                    res.write body
                     res.end()
 
                     #

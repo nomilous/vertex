@@ -1,13 +1,20 @@
+{ipso, mock, tag, once} = require 'ipso'
+
+describe 'Recursor', -> 
+
+    beforeEach ipso (done, Recursor) -> 
+
+        tag
+
+            subject: Recursor.create mock 'config'
+
+        .then done
 
 
-before require('ipso') (Recursor) -> 
+    it 'recurses config.root', ipso (subject, config) -> 
 
-    Recursor.does 
+        subject.does 
 
-        process: ->
-        recurse: ->
+            process: ->
+            recurse: once ->
 
-    #.$save 'factory'
-
-
-it ''

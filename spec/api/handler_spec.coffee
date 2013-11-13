@@ -1,4 +1,4 @@
-{ipso, mock} = require 'ipso'
+{ipso, mock, tag} = require 'ipso'
 
 describe 'Handler.create()', ipso (Handler) -> 
 
@@ -38,41 +38,7 @@ describe 'Handler.create()', ipso (Handler) ->
                 end: ->  
 
 
-        it 'responds to / with the root tree if config.allowRoot is true', ipso (done) -> 
-
-            {handle} = Handler.create
-                allowRoot: true
-                root: tree: of: 'things'
-
-            handle req = url: '/', res = 
-                writeHead: ->
-                end: ->  
-                write: (body) -> 
-
-                    body.should.equal '{"tree":{"of":"things"}}'
-                    done()
-
-        it 'calls the responder() with opts.path,query,headers and response object', ipso (done) -> 
-
-            {handle} = Handler.create
-                allowRoot: true
-                root: tree: of: 'things'
-
-            Handler._test().responder = (opts, res) -> 
-                res.should.equal 'response object'
-                opts.should.eql 
-                    headers: 'headers'
-                    path: '/path'
-                    query: 
-                        key1: 'value1'
-                        key2: '2'
-                done()
-
-
-            handle req = url: '/path?key1=value1&key2=2', headers: 'headers', 'response object'
-
-
-    context 'responder()', -> 
+    context 'responder()', ipso (also) -> 
 
         before ipso (done) -> 
 
@@ -80,7 +46,9 @@ describe 'Handler.create()', ipso (Handler) ->
                 allowRoot: true
                 root: modules: {}
 
-            ipso.tag( handler1: Handler._test() ).then done
+            tag( handler1: Handler._test() )
+
+            .then done
 
 
         it 'calls prepare() and process() in sequence with opts', ipso (facto, handler1) -> 
@@ -88,13 +56,41 @@ describe 'Handler.create()', ipso (Handler) ->
             handler1.does 
 
                 _prepare: (opts) -> opts.prepped = true
-                _process: (opts) -> 
+                process: (opts) -> 
 
                     opts.prepped.should.equal true
                     opts.is insertedOpts
                     facto()
 
             handler1.responder insertedOpts = mock 'opts'
-            
+
+
+        it 'responds with the processed results as json', ipso (facto, handler1, also) -> 
+
+            handler1.does 
+                process: also.deferred ({resolve}, opts) -> 
+                    resolve 
+                        body: 
+                            test: 'value'
+
+
+            handler1.responder {}, mock('response').does
+
+                writeHead: (statusCode, headers) -> 
+
+                    statusCode.should.equal 200
+                    headers.should.eql
+                        'Content-Type': 'application/json'
+                        'Content-Length': 16
+
+                    facto bug: """
+
+                        after promise, failing should inside expectation times out
+                        or reports following expected functions as not called
+
+                    """
+
+                write: (body) -> body.should.equal '{"test":"value"}'
+                end: -> facto()
 
 
