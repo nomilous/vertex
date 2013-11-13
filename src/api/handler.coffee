@@ -34,10 +34,13 @@ module.exports.create = (config) ->
 
                     try body = JSON.stringify result.body # option
                     result.headers ||= {}
-                    result.headers['Content-Type'] = 'application/json'
-                    result.headers['Content-Length'] =  body.length
+
+                    if body? 
+                        result.headers['Content-Type'] = 'application/json'
+                        result.headers['Content-Length'] =  body.length
+
                     res.writeHead result.statusCode || 200, result.headers
-                    res.write body || ''
+                    res.write body if body?
                     res.end()
 
                     #

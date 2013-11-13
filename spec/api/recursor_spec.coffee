@@ -41,10 +41,20 @@ describe 'Recursor', ->
 
         it 'rejects on error in recursor', ipso (facto, subject, config, options) -> 
 
-            #subject.does recurse: (args...) -> args.pop()( new Error 'e' )
+            subject.does recurse: (args...) -> args.pop()( new Error 'e' )
 
             subject.process( options ).then (->), (error) -> 
 
                 error.message.should.equal 'e'
                 facto()
 
+
+
+        it 'resolves with satusCode: 404 if path not present', ipso (subject, config, options) -> 
+
+            options.with path: '/thing/not/present'
+            config.with  root: thing: in: tree: ''
+
+            subject.process( options ).then ({statusCode}) -> 
+
+                statusCode.should.equal 404

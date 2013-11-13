@@ -18,7 +18,13 @@ module.exports.create = (config) ->
 
             try
 
-                throw new Error 'e'
+
+                return callback( null, 
+
+                    statusCode: 404
+                    
+                ) unless object = object[ path.pop() ]
+
 
                 #callback null, body: config.root
 
