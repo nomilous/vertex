@@ -26,8 +26,6 @@ module.exports.create = (config) ->
 
         responder: (opts, res) ->
 
-            
-
             local.prepare( opts )
             .then local.process( opts )
             .then(

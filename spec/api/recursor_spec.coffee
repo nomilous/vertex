@@ -1,8 +1,12 @@
-{ipso, mock, tag, once} = require 'ipso'
+{ipso, mock, tag} = require 'ipso'
 
 describe 'Recursor', -> 
 
-    beforeEach ipso (done, Recursor) -> 
+    before ipso (done, Recursor) -> 
+
+        mock('options').with
+
+            path: '/path/to/thing'
 
         tag
 
@@ -11,10 +15,24 @@ describe 'Recursor', ->
         .then done
 
 
-    it 'recurses config.root', ipso (subject, config) -> 
+    context 'process()', -> 
 
-        subject.does 
+        it 'returns a promise', ipso (subject, options, should) -> 
 
-            process: ->
-            recurse: once ->
+            should.exist subject.process( options ).then
+
+
+        it 'calls recurse with opts and path array', ipso (subject, options) ->
+
+            subject.does recurse: (opts, path) -> 
+
+                opts.is options
+                path.should.eql ['path', 'to', 'thing']
+
+            subject.process options.with path: '/path/to/thing'
+            subject.process options.with path: 'path/to/thing/'
+            subject.process options.with path: '/path/to/thing/'
+
+
+        it 'populates error'
 
