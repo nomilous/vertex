@@ -49,8 +49,7 @@ describe 'Recursor', ->
                 facto()
 
 
-
-        it 'resolves with satusCode: 404 if path not present', ipso (subject, config, options) -> 
+        it 'resolves with statusCode: 404 if path not present', ipso (subject, config, options) -> 
 
             options.with path: '/thing/not/present'
             config.with  root: thing: in: tree: ''
@@ -58,3 +57,17 @@ describe 'Recursor', ->
             subject.process( options ).then ({statusCode}) -> 
 
                 statusCode.should.equal 404
+
+
+        it 'resolves with statusCode: 200 and body if path is present in tree', 
+
+            ipso (subject, config, options) -> 
+
+                options.with path: '/thing'
+                config.with  root: thing: is: 'present'
+
+                subject.process( options ).then ({statusCode, body}) -> 
+
+                    statusCode.should.equal 200
+                    body.should.eql is: 'present'
+

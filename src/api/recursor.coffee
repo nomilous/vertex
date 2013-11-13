@@ -18,21 +18,27 @@ module.exports.create = (config) ->
 
             try
 
+                if nextKey = path.pop()
 
-                return callback( null, 
+                    return callback( null, 
 
-                    statusCode: 404
-                    
-                ) unless object = object[ path.pop() ]
+                        statusCode: 404
+
+                    ) unless object = object[ nextKey ]
 
 
-                #callback null, body: config.root
+                else return callback null, 
+                        
+                    statusCode: 200
+                    body: object
 
 
             catch error
 
+                #
+                # TODO: stop this from calling back multiple times on
+                #       recurse with continuous error
+                # 
+                #
+
                 callback error
-
-
-            
-
