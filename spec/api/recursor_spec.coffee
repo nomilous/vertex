@@ -10,7 +10,12 @@ describe 'Recursor', ->
 
         tag
 
-            subject: Recursor.create mock 'config'
+            subject: Recursor.create mock('config').with 
+
+                root: 
+                    path:
+                        to:
+                            thing: {}
 
         .then done
 
@@ -34,5 +39,12 @@ describe 'Recursor', ->
             subject.process options.with path: '/path/to/thing/'
 
 
-        it 'populates error'
+        it 'rejects on error in recursor', ipso (facto, subject, config, options) -> 
+
+            #subject.does recurse: (args...) -> args.pop()( new Error 'e' )
+
+            subject.process( options ).then (->), (error) -> 
+
+                error.message.should.equal 'e'
+                facto()
 

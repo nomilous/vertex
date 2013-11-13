@@ -8,12 +8,25 @@ module.exports.create = (config) ->
 
             path = opts.path.split( '/' ).filter (p) -> p.length > 0
 
-            local.recurse opts, path, null, (error, result) -> 
+            local.recurse opts, path, config.root, (error, result) -> 
+
+                return action.reject error if error?
 
                 action.resolve result
 
-        recurse: (opts, path, result, callback) -> 
+        recurse: (opts, path, object, callback) -> 
 
-            callback null, body: config.root
+            try
 
+                throw new Error 'e'
+
+                #callback null, body: config.root
+
+
+            catch error
+
+                callback error
+
+
+            
 

@@ -32,12 +32,12 @@ module.exports.create = (config) ->
 
                 (result) -> 
 
-                    body = JSON.stringify result.body # option
+                    try body = JSON.stringify result.body # option
                     result.headers ||= {}
                     result.headers['Content-Type'] = 'application/json'
                     result.headers['Content-Length'] =  body.length
                     res.writeHead result.statusCode || 200, result.headers
-                    res.write body
+                    res.write body || ''
                     res.end()
 
                     #
