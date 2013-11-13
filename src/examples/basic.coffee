@@ -4,5 +4,8 @@ require('../vertex')
 
     allowRoot: true
     root: 
-        module: {}
+        thing: in: sky: is: 'π'
 
+    #
+    # curl :3000/thing/in/sky/is
+    #

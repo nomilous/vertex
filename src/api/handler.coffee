@@ -37,7 +37,7 @@ module.exports.create = (config) ->
 
                     if body? 
                         result.headers['Content-Type'] = 'application/json'
-                        result.headers['Content-Length'] =  body.length
+                        result.headers['Content-Length'] = body.length + 1
 
                     res.writeHead result.statusCode || 200, result.headers
                     res.write body if body?

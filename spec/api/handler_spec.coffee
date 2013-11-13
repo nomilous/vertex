@@ -81,7 +81,10 @@ describe 'Handler.create()', ipso (Handler) ->
                     statusCode.should.equal 200
                     headers.should.eql
                         'Content-Type': 'application/json'
-                        'Content-Length': 16
+                        'Content-Length': 17 
+                                            #
+                                            # what? LF? 
+                                            #
 
                 write: (body) -> body.should.equal '{"test":"value"}'
                 end: -> facto()
