@@ -83,13 +83,6 @@ describe 'Handler.create()', ipso (Handler) ->
                         'Content-Type': 'application/json'
                         'Content-Length': 16
 
-                    facto bug: """
-
-                        after promise, failing should inside expectation times out
-                        or reports following expected functions as not called
-
-                    """
-
                 write: (body) -> body.should.equal '{"test":"value"}'
                 end: -> facto()
 
