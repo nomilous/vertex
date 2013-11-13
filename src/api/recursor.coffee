@@ -18,13 +18,16 @@ module.exports.create = (config) ->
 
             try
 
-                if nextKey = path.pop()
+                if nextKey = path.shift()
 
                     return callback( null, 
 
                         statusCode: 404
 
                     ) unless object = object[ nextKey ]
+
+
+                    local.recurse opts, path, object, callback
 
 
                 else return callback null, 

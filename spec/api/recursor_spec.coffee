@@ -71,3 +71,17 @@ describe 'Recursor', ->
                     statusCode.should.equal 200
                     body.should.eql is: 'present'
 
+
+        it 'recurses along the path', 
+
+            ipso (subject, config, options) -> 
+
+                options.with path: '/thing/in/tree/is'
+                config.with  root: thing: in: tree: is: ''
+
+                subject.process( options ).then ({statusCode, body}) -> 
+
+                    body.should.equal ''
+                    statusCode.should.equal 200
+                    
+
