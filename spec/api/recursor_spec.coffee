@@ -92,7 +92,22 @@ describe 'Recursor', ->
                     facto()
 
 
-        it '"recurses" into async function in the tree',
+        it '"recurses" into async $api functions in the tree',
+
+            ipso (facto, subject, config, options) -> 
+
+                options.with path: '/thing/in/tree/is'
+                config.with root: thing: in: (opts, callback) -> callback null, tree: is: ''
+                config.root.thing.in.$api = {}
+
+                subject.process( options ).then ({statusCode, body}) -> 
+
+                    body.should.equal ''
+                    statusCode.should.equal 200
+                    facto()
+
+
+        it 'does not "recurse" into non $api fuctions',
 
             ipso (facto, subject, config, options) -> 
 
@@ -101,7 +116,10 @@ describe 'Recursor', ->
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
-                    body.should.equal ''
-                    statusCode.should.equal 200
+                    statusCode.should.equal 404
                     facto()
+
+
+
+
 

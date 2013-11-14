@@ -37,6 +37,10 @@ module.exports.create = (config) ->
 
                 if typeof object is 'function'
 
+                    unless object.$api
+
+                        return callback null, statusCode: 404 
+
                     object opts, (error, result) -> 
 
                         object = result
