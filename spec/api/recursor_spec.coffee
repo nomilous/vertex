@@ -39,29 +39,34 @@ describe 'Recursor', ->
             subject.process options.with path: '/path/to/thing/'
 
 
-        it 'rejects on error in recursor', ipso (facto, subject, config, options) -> 
+        it 'rejects on error in recursor', 
 
-            subject.does recurse: (args...) -> args.pop()( new Error 'e' )
+            ipso (facto, subject, config, options) -> 
 
-            subject.process( options ).then (->), (error) -> 
+                subject.does recurse: (args...) -> args.pop()( new Error 'e' )
 
-                error.message.should.equal 'e'
-                facto()
+                subject.process( options ).then (->), (error) -> 
+
+                    error.message.should.equal 'e'
+                    facto()
 
 
-        it 'resolves with statusCode: 404 if path not present', ipso (subject, config, options) -> 
+        it 'resolves with statusCode: 404 if path not present', 
 
-            options.with path: '/thing/not/present'
-            config.with  root: thing: in: tree: ''
+            ipso (facto, subject, config, options) -> 
 
-            subject.process( options ).then ({statusCode}) -> 
+                options.with path: '/thing/not/present'
+                config.with  root: thing: in: tree: ''
 
-                statusCode.should.equal 404
+                subject.process( options ).then ({statusCode}) -> 
+
+                    statusCode.should.equal 404
+                    facto()
 
 
         it 'resolves with statusCode: 200 and body if path is present in tree', 
 
-            ipso (subject, config, options) -> 
+            ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing'
                 config.with  root: thing: is: 'present'
@@ -70,11 +75,12 @@ describe 'Recursor', ->
 
                     statusCode.should.equal 200
                     body.should.eql is: 'present'
+                    facto()
 
 
         it 'recurses along the path', 
 
-            ipso (subject, config, options) -> 
+            ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
                 config.with  root: thing: in: tree: is: ''
@@ -83,5 +89,19 @@ describe 'Recursor', ->
 
                     body.should.equal ''
                     statusCode.should.equal 200
-                    
+                    facto()
+
+
+        it '"recurses" into async function in the tree',
+
+            ipso (facto, subject, config, options) -> 
+
+                options.with path: '/thing/in/tree/is'
+                config.with root: thing: in: (opts, callback) -> callback null, tree: is: ''
+
+                subject.process( options ).then ({statusCode, body}) -> 
+
+                    body.should.equal ''
+                    statusCode.should.equal 200
+                    facto()
 

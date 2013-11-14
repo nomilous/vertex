@@ -18,19 +18,31 @@ module.exports.create = (config) ->
 
             try
 
-                if nextKey = path.shift()
+                run = ->
 
-                    unless object = object[ nextKey ]
+                    if nextKey = path.shift()
 
-                        return callback null, statusCode: 404
+                        unless object = object[ nextKey ]
+
+                            return callback null, statusCode: 404
 
 
-                    local.recurse opts, path, object, callback
+                        local.recurse opts, path, object, callback
 
-                else return callback null, 
-                        
-                    statusCode: 200
-                    body: object
+                    else return callback null, 
+                            
+                        statusCode: 200
+                        body: object
+
+
+                if typeof object is 'function'
+
+                    object opts, (error, result) -> 
+
+                        object = result
+                        run()
+
+                else run()
 
 
             catch error
