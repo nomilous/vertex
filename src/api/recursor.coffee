@@ -39,7 +39,9 @@ module.exports.create = (config) ->
 
                     unless object.$api
 
-                        return callback null, statusCode: 404 
+                        return callback null, statusCode: 404
+
+                    opts.rest = path
 
                     object opts, (error, result) -> 
 

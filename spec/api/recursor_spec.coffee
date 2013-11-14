@@ -120,6 +120,36 @@ describe 'Recursor', ->
                     facto()
 
 
+        it 'passes opts to $api function', 
+
+            ipso (facto, subject, config, options) -> 
+
+                options.with 
+                    headers: 'headers'
+                    method:  'method'
+                    path:    '/things/1/nested/23'
+                    query:   'query'
+
+                config.with root: 
+
+                    things: (opts, callback) -> 
+
+                        opts.headers.should.equal 'headers'
+                        opts.method.should.equal  'method'
+                        opts.path.should.equal    '/things/1/nested/23'
+                        opts.query.should.equal   'query'
+                        opts.rest.should.eql      ['1', 'nested', '23']
+                        facto()
+
+
+                config.root.things.$api = {}
+
+                subject.process( options ).then -> 
+
+
+
+
+
 
 
 

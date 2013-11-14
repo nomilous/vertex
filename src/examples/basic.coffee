@@ -2,6 +2,8 @@
 thing = 
     in: 
         tree: (opts, callback) -> 
+
+            console.log opts
             callback null, is: 'bird'
 
         sky: (opts, callback) -> 
@@ -22,5 +24,5 @@ require('../vertex')
         thing: thing
 
     #
-    # curl :3000/thing/in/sky/is
+    # curl :3000/thing/in/tree?key=value
     #
