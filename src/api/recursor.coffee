@@ -20,15 +20,12 @@ module.exports.create = (config) ->
 
                 if nextKey = path.shift()
 
-                    return callback( null, 
+                    unless object = object[ nextKey ]
 
-                        statusCode: 404
-
-                    ) unless object = object[ nextKey ]
+                        return callback null, statusCode: 404
 
 
                     local.recurse opts, path, object, callback
-
 
                 else return callback null, 
                         
