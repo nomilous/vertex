@@ -83,26 +83,26 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with  root: thing: in: tree: is: ''
+                config.with  root: thing: in: tree: is: 'fruit'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
-                    body.should.equal ''
+                    body.should.equal 'fruit'
                     statusCode.should.equal 200
                     facto()
 
 
-        it '"recurses" into async $api functions in the tree',
+        it '"recurses" into $api functions in the tree',
 
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with root: thing: in: (opts, callback) -> callback null, tree: is: ''
+                config.with root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
                 config.root.thing.in.$api = {}
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
-                    body.should.equal ''
+                    body.should.equal 'fruit'
                     statusCode.should.equal 200
                     facto()
 
@@ -112,7 +112,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with root: thing: in: (opts, callback) -> callback null, tree: is: ''
+                config.with root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
