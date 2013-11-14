@@ -4,6 +4,12 @@ describe 'Handler.create()', ipso (Handler) ->
 
     @timeout 10
 
+    before ipso (done) -> 
+
+        Handler.create mock 'config'
+        tag( handler: Handler._test() ).then done
+
+
     it 'uses config.root for route configuration', ipso (done) -> 
 
         config = {}
@@ -17,10 +23,10 @@ describe 'Handler.create()', ipso (Handler) ->
         handler.handle.should.be.an.instanceof Function
         done()
 
-    it 'creates a Recursor with the config tree', ipso (Recursor) -> 
+    it 'creates a Recursor with the config tree', ipso (Recursor, config) -> 
 
-        Recursor.does create: (config) -> config.is mockConfig
-        Handler.create mockConfig = mock 'config'
+        Recursor.does create: (conf) -> conf.is config
+        Handler.create config
 
 
 
@@ -35,7 +41,48 @@ describe 'Handler.create()', ipso (Handler) ->
                 writeHead: (statusCode) -> 
                     statusCode.should.equal 404
                     done()
-                end: ->  
+                end: -> 
+
+
+        
+
+        it 'calls responder() with request details and response object', 
+
+            ipso (facto, handler, config) -> 
+
+                handler.does responder: (opts, res) ->
+
+                    res.is response
+                    opts.should.eql 
+
+                        headers: 
+                            head: 'ers'
+                        method: 'GET'
+                        path: '/path/objects'
+                        query: 
+                            key1: 'value1'
+                            key2: 'value2'
+
+                    facto()
+
+
+                handler.handle( 
+
+                    mock('req').with 
+
+                        url: '/path/objects?key1=value1&key2=value2'
+                        method: 'GET'
+                        headers: head: 'ers'
+
+                    response = mock 'res'
+
+                )
+
+
+
+
+
+
 
 
     context 'responder()', ipso (also) -> 
@@ -51,9 +98,9 @@ describe 'Handler.create()', ipso (Handler) ->
             .then done
 
 
-        it 'calls prepare() and process() in sequence with opts', ipso (facto, handler1) -> 
+        it 'calls prepare() and process() in sequence with opts', ipso (facto, handler) -> 
 
-            handler1.does 
+            handler.does 
 
                 _prepare: (opts) -> opts.prepped = true
                 process: (opts) -> 
@@ -62,19 +109,19 @@ describe 'Handler.create()', ipso (Handler) ->
                     opts.is insertedOpts
                     facto()
 
-            handler1.responder insertedOpts = mock 'opts'
+            handler.responder insertedOpts = mock 'opts'
 
 
-        it 'responds with the processed results as json', ipso (facto, handler1, also) -> 
+        it 'responds with the processed results as json', ipso (facto, handler, also) -> 
 
-            handler1.does 
+            handler.does 
                 process: also.deferred ({resolve}, opts) -> 
                     resolve 
                         body: 
                             test: 'value'
 
 
-            handler1.responder {}, mock('response').does
+            handler.responder {}, mock('response').does
 
                 writeHead: (statusCode, headers) -> 
 

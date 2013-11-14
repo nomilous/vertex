@@ -76,6 +76,7 @@ module.exports.create = (config) ->
 
             local.responder 
                 headers: req.headers
+                method: req.method
                 path: path
                 query: if query? then parse query else {}
                 res
