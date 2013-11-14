@@ -20,7 +20,11 @@ module.exports.create = (config, handler) ->
                 callback null, local.server.address()
 
 
-        close: ->
+        close: (callback) ->
 
-            try local.server.close()
+            #
+            # TODO: percolate closeability to the top
+            #
+
+            try local.server.close callback
 

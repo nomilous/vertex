@@ -6,6 +6,8 @@ describe 'Handler.create()', ipso (Handler) ->
 
     before ipso (done) -> 
 
+        mock 'request'
+        mock 'response'
         Handler.create mock 'config'
         tag( handler: Handler._test() ).then done
 
@@ -48,7 +50,7 @@ describe 'Handler.create()', ipso (Handler) ->
 
         it 'calls responder() with request details and response object', 
 
-            ipso (facto, handler, config) -> 
+            ipso (facto, handler, config, request, response) -> 
 
                 handler.does responder: (opts, res) ->
 
@@ -68,13 +70,13 @@ describe 'Handler.create()', ipso (Handler) ->
 
                 handler.handle( 
 
-                    mock('req').with 
+                    request.with 
 
                         url: '/path/objects?key1=value1&key2=value2'
                         method: 'GET'
                         headers: head: 'ers'
 
-                    response = mock 'res'
+                    response
 
                 )
 
@@ -107,7 +109,7 @@ describe 'Handler.create()', ipso (Handler) ->
             handler.responder insertedOpts = mock 'opts'
 
 
-        it 'responds with the processed results as json', ipso (facto, handler, also) -> 
+        it 'responds with the processed results as json', ipso (facto, handler, response, also) -> 
 
             handler.does 
                 process: also.deferred ({resolve}, opts) -> 
@@ -116,7 +118,7 @@ describe 'Handler.create()', ipso (Handler) ->
                             test: 'value'
 
 
-            handler.responder {}, mock('response').does
+            handler.responder {}, response.does
 
                 writeHead: (statusCode, headers) -> 
 
