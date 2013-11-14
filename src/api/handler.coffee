@@ -72,14 +72,25 @@ module.exports.create = (config) ->
 
             if path is '/' and not config.allowRoot
                 res.writeHead 404
-                return res.end() 
+                return res.end()
 
-            local.responder 
-                headers: req.headers
-                method: req.method
-                path: path
-                query: if query? then parse query else {}
-                res
+            #
+            # todo: inbound encoding?, optional carry stream emitter into api functions
+            #
+
+            body = ''
+            req.on 'data', (chunk) -> body += chunk.toString()
+
+
+            req.on 'end', -> 
+
+                local.responder
+                    headers: req.headers
+                    method: req.method
+                    path: path
+                    query: if query? then parse query else {}
+                    body: body
+                    res
 
 
     return api = 

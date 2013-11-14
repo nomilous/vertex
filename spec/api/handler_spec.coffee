@@ -2,20 +2,47 @@
 
 describe 'Handler.create()', ipso (Handler) -> 
 
-    @timeout 10
+    @timeout 100
 
     before ipso (done) -> 
 
         mock 'request'
         mock 'response'
+
         Handler.create mock 'config'
         tag( handler: Handler._test() ).then done
+
+
+    beforeEach ipso (request, response) ->
+
+        request.with
+
+            #
+            # default mock request calls end event (almost) immediately
+            #
+
+            on: (event, handler) -> 
+
+                if event is 'end' then process.nextTick handler
+
+        response.with
+
+            writeHead: ->
+            write: ->
+            end: ->
 
 
     it 'uses config.root for route configuration', ipso (done) -> 
 
         config = {}
-        Object.defineProperty config, 'root', get: -> done()
+        Object.defineProperty config, 'root', get: -> done()    # ipso: consider 
+                                                                #    
+                                                                #   mock.has(list)  for thing.property      (assignment expectation)
+                                                                #   mock.gets(list) for thing.property = '' (access expectation)
+                                                                #          
+                                                                #         that fail if not setted or getted
+                                                                # (a lot more complex from a usecase perspective than function expections)
+                                                                # 
         Handler.create config
 
 
@@ -64,6 +91,7 @@ describe 'Handler.create()', ipso (Handler) ->
                         query: 
                             key1: 'value1'
                             key2: 'value2'
+                        body: ''
 
                     facto()
 
@@ -79,6 +107,46 @@ describe 'Handler.create()', ipso (Handler) ->
                     response
 
                 )
+
+        it 'reads the request body stream and passes it to responder()', 
+
+            ipso (facto, handler, config, request, response) -> 
+
+                config.with allowRoot: true
+                
+                stream = mock('stream').does
+
+                    #error: ->
+
+                    data: (subscriber) -> 
+
+                        #
+                        # body arrives in 2 parts
+                        #
+
+                        setTimeout (  -> subscriber '{"0":' ),  5
+                        setTimeout (  -> subscriber '"o"}'  ),  10
+
+                    end: (subscriber) -> setTimeout subscriber, 15
+
+
+                request.with url: '/'
+                request.does 
+
+                    on: (event, subscriber) -> stream[event] subscriber
+
+                handler.does 
+
+                    responder: ({body}) -> 
+
+                        body.should.equal '{"0":"o"}'
+                        facto()
+
+                handler.handle request, response
+                
+
+
+        xit 'configurable option to get the stream into a $api function instead'
 
 
 
