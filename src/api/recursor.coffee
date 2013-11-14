@@ -42,6 +42,7 @@ module.exports.create = (config) ->
                         return callback null, statusCode: 404
 
                     opts.rest = path
+                    opts.api  = object.$api
 
                     object opts, (error, result) -> 
 

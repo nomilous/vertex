@@ -80,11 +80,6 @@ describe 'Handler.create()', ipso (Handler) ->
 
 
 
-
-
-
-
-
     context 'responder()', ipso (also) -> 
 
         before ipso (done) -> 

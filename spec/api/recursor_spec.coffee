@@ -124,13 +124,7 @@ describe 'Recursor', ->
 
             ipso (facto, subject, config, options) -> 
 
-                options.with 
-                    headers: 'headers'
-                    method:  'method'
-                    path:    '/things/1/nested/23'
-                    query:   'query'
-
-                config.with root: 
+                config.with root: routes = 
 
                     things: (opts, callback) -> 
 
@@ -139,12 +133,24 @@ describe 'Recursor', ->
                         opts.path.should.equal    '/things/1/nested/23'
                         opts.query.should.equal   'query'
                         opts.rest.should.eql      ['1', 'nested', '23']
+                        opts.api.should.eql       configure: eg: roles: ['admin']
                         facto()
 
+                    deeper: 
 
-                config.root.things.$api = {}
+                        stuff: (opts, allback) -> 
 
-                subject.process( options ).then -> 
+
+                routes.things.$api       = configure: eg: roles: ['admin']
+                routes.deeper.stuff.$api = {}
+
+                subject.process options.with
+
+                    headers: 'headers'
+                    method:  'method'
+                    path:    '/things/1/nested/23'
+                    query:   'query'
+
 
 
 
