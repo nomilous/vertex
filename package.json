@@ -16,7 +16,8 @@
   "devDependencies": {
     "ipso": "0.0.12",
     "should": "~2.0.2",
-    "dinkum": "0.0.3"
+    "dinkum": "0.0.3",
+    "mongoose": "~3.8.0"
   },
   "repository": "git@github.com:nomilous/vertex.git"
 }
