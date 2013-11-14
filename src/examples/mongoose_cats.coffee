@@ -19,7 +19,7 @@ require('../vertex')
 
     root: routes =
 
-        kittens: ({method, body}, callback) -> 
+        kittens: ({method, body, rest}, callback) -> 
 
             switch method
 
@@ -27,7 +27,7 @@ require('../vertex')
                 # curl -H 'Content-Type: application/json' :3000/kittens --data '{"name":"Brigitte Bardot"}'
                 # 
 
-                when 'POST' then (kitten = new Kitten body).save (err) -> 
+                when 'POST' then Kitten.create body, (err, kitten) -> 
 
                     if err? then return callback null, 
 
@@ -36,6 +36,32 @@ require('../vertex')
 
                     
                     callback null, kitten
+
+
+                #
+                # curl :3000/kittens/52854c6b9c1cb7e28d000001
+                # 
+
+                when 'GET' 
+
+                    if id = rest.pop()
+
+                        Kitten.findById id, (err, kitten) -> 
+
+                            if err? then return callback null, 
+
+                                statusCode: 400
+                                error: err
+
+                            #
+                            # TODO: statuscode not getting through
+                            #
+
+                            if not kitten? then callback null, statusCode: 404
+
+                            callback null, kitten
+
+
 
 
 
