@@ -25,7 +25,7 @@ require('../vertex')
 
     #
     # curl :3000/thing/in/tree?key=value
-    # curl -XPOST :3000/thing/in/tree  --data '{"0":"o"}'
-    # curl -XPUT :3000/thing/in/tree/1 --data '{"1":"o"}'
+    # curl -H 'Content-Type: application/json' -XPOST :3000/thing/in/tree  --data '{"0":"o"}'
+    # curl -H 'Content-Type: application/json' -XPUT :3000/thing/in/tree/1 --data '{"1":"o"}'
     # 
 

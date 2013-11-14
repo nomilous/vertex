@@ -130,7 +130,12 @@ describe 'Handler.create()', ipso (Handler) ->
                     end: (subscriber) -> setTimeout subscriber, 15
 
 
-                request.with url: '/'
+                request.with
+
+                    url: '/'
+                    headers: 
+                        'content-type': 'application/json'
+
                 request.does 
 
                     on: (event, subscriber) -> stream[event] subscriber
@@ -139,7 +144,7 @@ describe 'Handler.create()', ipso (Handler) ->
 
                     responder: ({body}) -> 
 
-                        body.should.equal '{"0":"o"}'
+                        body.should.eql "0":"o"
                         facto()
 
                 handler.handle request, response

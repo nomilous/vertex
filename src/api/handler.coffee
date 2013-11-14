@@ -84,6 +84,21 @@ module.exports.create = (config) ->
 
             req.on 'end', -> 
 
+                #
+                # todo: content-type handler config sub FNs .encode, .decode
+                # todo: response error format
+                #
+
+                if req.headers['content-type'] is 'application/json'
+
+                    try body = JSON.parse body
+                    catch error
+
+                        res.writeHead 500
+                        res.write "JSON #{error.toString()}"
+                        return res.end()
+
+
                 local.responder
                     headers: req.headers
                     method: req.method
