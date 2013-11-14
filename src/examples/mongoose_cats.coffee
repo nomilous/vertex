@@ -19,7 +19,7 @@ require('../vertex')
 
     root: routes =
 
-        kittens: ({method, body, rest}, callback) -> 
+        kittens: ({method, body, rest, query}, callback) -> 
 
             switch method
 
@@ -39,7 +39,8 @@ require('../vertex')
 
 
                 #
-                # curl :3000/kittens/52854c6b9c1cb7e28d000001
+                # curl :3000/kittens/52854e0b46d897738f000001
+                # curl :3000/kittens?name=Brigitte%20Bardot
                 # 
 
                 when 'GET' 
@@ -60,6 +61,17 @@ require('../vertex')
                             if not kitten? then callback null, statusCode: 404
 
                             callback null, kitten
+
+                    else 
+
+                        Kitten.find query, (err, kittens) -> 
+
+                            if err? then return callback null, 
+
+                                statusCode: 400
+                                error: err
+
+                            callback null, kittens
 
 
 
