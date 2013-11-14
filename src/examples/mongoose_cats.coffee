@@ -19,7 +19,7 @@ require('../vertex')
 
     root: routes =
 
-        kittens: ({method, body, rest, query}, callback) -> 
+        kittens: ({method, body, rest, query, api}, callback) -> 
 
             switch method
 
@@ -66,6 +66,10 @@ require('../vertex')
 
                         Kitten.find query, (err, kittens) -> 
 
+                            #
+                            # api.paginate... 
+                            #
+
                             if err? then return callback null, 
 
                                 statusCode: 400
@@ -78,4 +82,6 @@ require('../vertex')
 
 
 
-routes.kittens.$api = {}
+routes.kittens.$api = 
+
+    paginate: 20 # or something
