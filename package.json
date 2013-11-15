@@ -11,7 +11,8 @@
   ],
   "main": "lib/vertex.js",
   "dependencies": {
-    "also": "0.0.12"
+    "also": "0.0.12",
+    "engine.io": "~0.7.12"
   },
   "devDependencies": {
     "ipso": "0.0.12",

@@ -45,9 +45,9 @@ require('../vertex')
 
                 when 'GET' 
 
-                    if id = rest.pop()
+                    if id = rest.shift()
 
-                        Kitten.findById id, (err, kitten) -> 
+                        return Kitten.findById id, (err, kitten) -> 
 
                             if err? then return callback null, 
 
@@ -58,24 +58,25 @@ require('../vertex')
                             # TODO: statuscode not getting through
                             #
 
+                            console.log K: kitten, P: rest
+
                             if not kitten? then callback null, statusCode: 404
 
-                            callback null, kitten
+                            return callback null, kitten
 
-                    else 
 
-                        Kitten.find query, (err, kittens) -> 
+                    Kitten.find query, (err, kittens) -> 
 
-                            #
-                            # api.paginate... 
-                            #
+                        #
+                        # api.paginate... 
+                        #
 
-                            if err? then return callback null, 
+                        if err? then return callback null, 
 
-                                statusCode: 400
-                                error: err
+                            statusCode: 400
+                            error: err
 
-                            callback null, kittens
+                        callback null, kittens
 
 
 
