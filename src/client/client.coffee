@@ -2,11 +2,28 @@ Client = require 'engine.io-client'
 
 module.exports = (config) ->
 
+    ###
+    
+    config.connect.uri - websocket uri
+    config.connect.interval - retry interval for connect and reconnect
+
+    TODO: node-bunyan logger
+
+        config.log.streams
+        config.log.serializers
+
+    ###
+
     local = 
 
         socket: undefined
 
         log: 
+
+            #
+            # pending node-bunyan
+            #
+
             info: (message, objects) -> 
 
                 console.log TODO: 'log.info': 
@@ -36,7 +53,7 @@ module.exports = (config) ->
                         #
 
                         interval = (try config.connect.interval) || 1000
-                        local.reconnecting = setInterval local.reconnect, interval 
+                        local.reconnecting = setInterval local.reconnect, interval
 
 
         reconnecting: undefined

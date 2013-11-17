@@ -88,15 +88,17 @@ describe 'Client', ipso (should) ->
 
             ipso (facto, subject, config, socket) ->
 
-                socket.does on: (event, handler) -> 
+                socket.does on: (event, subscriber) -> 
 
-                    #
-                    # mock connection error
-                    #
+                    if event is 'error' 
 
-                    if event is 'error' then process.nextTick -> 
+                        #
+                        # mock connection error by calling the error subscriber
+                        #
 
-                        handler description: code: 'ECONNREFUSED'
+                        errorCallback = subscriber
+                        process.nextTick -> errorCallback description: code: 'ECONNREFUSED'
+
 
                 subject.does reconnect: -> facto()
                 subject.connect()
