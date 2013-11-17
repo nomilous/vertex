@@ -76,10 +76,10 @@ module.exports = (config) ->
             socket.on 'close', -> 
 
                 #
-                # TODO: verify that this close event always happends 
-                #       after the reject message for cases where the
-                #       remote side sent the reject and the closed in
-                #       the send callback of that rejection
+                # TODO: verify that this close event always happens 
+                #       after the deny message for cases where the
+                #       remote side sent the deny and then closed() in
+                #       the send callback of that denial
                 # 
                 #
  
