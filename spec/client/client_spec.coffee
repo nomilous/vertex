@@ -27,6 +27,9 @@ describe 'Client', ipso (should) ->
         subject.socket = undefined
         clearInterval subject.reconnecting
         subject.reconnecting = undefined
+        subject.status = 
+            value: 'pending'
+            at: new Date
 
         EngineClient = require 'engine.io-client'
         EngineClient.Socket = class
@@ -164,5 +167,18 @@ describe 'Client', ipso (should) ->
                 socket.does open: -> facto()
                 subject.socket = socket
                 subject.reconnect()
+
+
+        it 'sets status to connecting on open', 
+
+            ipso (subject, socket) ->
+
+                socket.does on: (event, subscriber) ->
+
+                    if event is 'open' then subscriber()
+
+                subject.connect()
+                subject.status.value.should.equal 'connecting'
+
 
 

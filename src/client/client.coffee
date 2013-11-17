@@ -35,6 +35,7 @@ module.exports = (config) ->
             value: 'pending'
             at: new Date
 
+
         connect: ->
 
             return local.reconnect() if local.socket?
@@ -75,6 +76,8 @@ module.exports = (config) ->
                     clearInterval local.reconnecting
                     local.reconnecting = undefined
 
+                local.status.value = 'connecting'
+                local.status.at = new Date
 
                 local.log.info 'connected'
 
