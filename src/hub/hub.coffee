@@ -64,7 +64,14 @@ module.exports = (config) ->
                 #
 
 
-            
+            if previousID = local.index.uuid2socketid[uuid]
+
+                previousClient = local.clients[previousID]
+                client.cache = previousClient.cache
+
+                #
+                # TODO: delete previous client reference
+                #
 
 
             client.title   = title

@@ -210,5 +210,25 @@ describe 'Hub', ipso (should) ->
                 index['UUID'] = 'SOCKET_ID'
 
 
+        it 'preserves per client cache across reconnect', 
+
+            ipso (subject, socket) -> 
+
+                subject.clients['PREVIOUS_SOCKET_ID'] = cache: key: 'value'
+                subject.index.uuid2socketid['UUID'] = 'PREVIOUS_SOCKET_ID'
+
+                @data = 
+                    title:   'Title'
+                    uuid:    'UUID'
+                    context: starting: context: 1
+                    secret:  'right'
+
+                socket.with id: 'NEW_SOCKET_ID'
+                subject.listen()
+
+                client = subject.clients['NEW_SOCKET_ID']
+                client.cache.should.eql key: 'value'
+
+
 
 
