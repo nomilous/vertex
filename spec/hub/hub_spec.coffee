@@ -71,7 +71,7 @@ describe 'Hub', ipso (should) ->
                     subject.listen()
                     subject.clients['SOCKET_ID'].socket.is socket
 
-            it 'assigns connecting status', 
+            it 'assigns connected status', 
 
                 ipso (subject, server, socket) -> 
 
@@ -80,7 +80,7 @@ describe 'Hub', ipso (should) ->
                     subject.listen()
                     subject.clients['SOCKET_ID'].status.should.eql 
 
-                        value: 'connecting'
+                        value: 'connected'
                         at: 'TIMESTAMP'
 
 
@@ -104,14 +104,17 @@ describe 'Hub', ipso (should) ->
                     #
 
                     subscriber "1#{
-
                         JSON.stringify
-
                             event: 'handshake'
                             data: @data
                     }"
 
-        beforeEach -> @data = 'HANDSHAKE_DATA'
+        beforeEach ipso (subject) -> 
+
+            subject.clients = {}
+
+            @data = 'HANDSHAKE_DATA'
+
 
 
         it 'is called with the socket and data on handshake event',
@@ -152,6 +155,42 @@ describe 'Hub', ipso (should) ->
 
                 @data = secret: 'right'
                 subject.listen()
+
+
+        it 'stores title, uuid and context in clients collection',
+
+            ipso (subject, socket) -> 
+
+                @data = 
+                    title:   'Title'
+                    uuid:    'UUID'
+                    context: starting: context: 1
+                    secret:  'right'
+
+                subject.listen()
+
+                client = subject.clients['SOCKET_ID']
+                client.title.should.equal 'Title'
+                client.uuid.should.equal  'UUID'
+                client.context.should.eql  starting: context: 1
+
+        it 'updates status to authorized',
+
+            ipso (subject, socket) -> 
+
+                subject.does timestamp: -> 'TIMESTAMP'
+
+                @data = 
+                    title:   'Title'
+                    uuid:    'UUID'
+                    context: starting: context: 1
+                    secret:  'right'
+
+                subject.listen()
+
+                status = subject.clients['SOCKET_ID'].status
+                status.value.should.equal 'authorized'
+                status.at.should.equal 'TIMESTAMP'
 
 
 

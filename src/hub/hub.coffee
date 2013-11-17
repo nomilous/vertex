@@ -11,6 +11,12 @@ module.exports = (config) ->
 
         timestamp: -> new Date
 
+        log: 
+
+            error: (message, objects) -> 
+
+                console.log todo: 'log.error': message: message, objects: objects
+
         listen: -> 
 
             local.server = server = engine.listen config.listen.port
@@ -20,7 +26,7 @@ module.exports = (config) ->
                 local.clients[socket.id] = 
 
                     status: 
-                        value: 'connecting'
+                        value: 'connected'
                         at: local.timestamp()
                     socket: socket
 
@@ -33,13 +39,33 @@ module.exports = (config) ->
 
         handshake: (socket, data) -> 
 
-            
-
-            {secret} = data
+            {secret, title, uuid, context} = data
 
             unless secret is config.secret
-
                 return socket.send VERSION + '{"event":"reject"}'
+
+                #
+                # TODO: disconnect, remove local.client[socket_id]
+                #
+
+
+            try client = local.clients[socket.id]
+            unless client?
+                local.log.error 'unknown socket id', socket: socket
+                return socket.send VERSION + '{"event":"reject"}'
+
+                #
+                # TODO: disconnect, remove local.client[socket_id]
+                #
+
+
+
+            client.title   = title
+            client.uuid    = uuid
+            client.context = context
+
+            client.status.value = 'authorized'
+            client.status.at    = local.timestamp()
 
 
             socket.send VERSION + '{"event":"accept"}'
