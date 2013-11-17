@@ -1,6 +1,6 @@
 {ipso, tag, mock} = require 'ipso'
 
-describe 'Hub', (should) ->
+describe 'Hub', ipso (should) ->
 
     before ipso (done, Hub) -> 
 
@@ -21,7 +21,7 @@ describe 'Hub', (should) ->
 
 
 
-    context 'listen()', -> 
+    context 'listen()', ipso -> 
 
         it 'starts engine.io listening', 
 
