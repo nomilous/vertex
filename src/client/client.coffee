@@ -1,5 +1,6 @@
-Client = require 'engine.io-client'
-{v4}   = require 'node-uuid'
+VERSION = 1
+Client  = require 'engine.io-client'
+{v4}    = require 'node-uuid'
 
 
 module.exports = (config) ->
@@ -19,8 +20,11 @@ module.exports = (config) ->
 
     local = 
 
-        title: if config.title? then config.title else 'Untitled' 
-        uuid:  if config.uuid?  then config.uuid  else  v4()
+        title:   if config.title?   then config.title   else 'Untitled' 
+        uuid:    if config.uuid?    then config.uuid    else  v4()
+        context: if config.context? then config.context else  {}
+        secret:  if config.connect? and  config.connect.secret? then config.connect.secret else ''
+
 
         socket: undefined
 
@@ -49,7 +53,7 @@ module.exports = (config) ->
 
             socket.on 'error', (err) ->
 
-                if local.status.value is 'pending' then local.reconnect()
+                if local.status.value is 'pending' then local.reconnect 'connecting'
                 
 
                 # if err.description? and err.description.code is 'ECONNREFUSED'
@@ -71,34 +75,62 @@ module.exports = (config) ->
 
             socket.on 'close', -> 
 
-                local.reconnect()
+                local.reconnect 'reconnecting'
 
 
             socket.on 'open', ->
 
                 if local.reconnecting?
-                
+                    
+                    local.status.value = 'reconnected'
+                    local.status.at = new Date
+
                     clearInterval local.reconnecting
                     local.reconnecting = undefined
 
-                local.status.value = 'connecting'
-                local.status.at = new Date
-
-                local.log.info 'connected'
+                    local.log.info 'reconnected'
 
 
+                else 
+
+                    clearInterval local.connecting
+                    local.connecting = undefined
+
+                    local.status.value = 'connected'
+                    local.status.at = new Date
+
+                    local.log.info 'connected'
+
+
+                socket.send "#{VERSION}#{JSON.stringify
+
+                    #
+                    # handshake
+                    #
+
+                    event:   'handshake'
+                    title:   local.title
+                    uuid:    local.uuid
+                    context: local.context
+                    secret:  local.secret
+
+                }"
 
 
 
+
+
+        connecting:   undefined
         reconnecting: undefined
-        reconnect: ->
+        reconnect: (type) ->
 
             return if local.reconnecting?
+            return if local.connecting?
 
             interval = (try config.connect.interval) || 1000
-            local.reconnecting = setInterval (->
+            local[type] = setInterval (->
 
-                local.log.info 'reconnecting'
+                local.log.info type
                 local.socket.open()
 
             ), interval

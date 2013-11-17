@@ -23,6 +23,14 @@ module.exports = (config) ->
                         at: local.timestamp()
                     socket: socket
 
+                socket.on 'message', (data) -> 
+
+                    version = data[0]
+                    console.log 
+                        protocol_version: version
+                        payload: JSON.parse data[1..]
+
+
 
 
         close: ->

@@ -5,16 +5,25 @@ describe 'Client', ipso (should) ->
 
     before ipso (done, Client) -> 
 
-        socket = mock 'socket'
+        socket = mock('socket').with 
+
+            on: ->
+            open: ->
+            send: ->
+
+        config = mock('config').with
+
+            title: 'Title'
+            uuid: 'UUID'
+            context: some: 'things'
+            connect: 
+                secret: 'secret'
+                uri: 'ws://localhost:3001'
+                interval: 10
         
         tag
 
-            subject: Client mock('config').with
-                title: 'Title'
-                uuid: 'UUID'
-                connect: 
-                    uri: 'ws://localhost:3001'
-                    interval: 10
+            subject: Client config
             EngineClient: require 'engine.io-client'
 
         .then done
@@ -68,12 +77,13 @@ describe 'Client', ipso (should) ->
 
     
 
-    it 'can specify title and uuid', 
+    it 'can specify title, uuid and context', 
 
         ipso (subject) -> 
 
-            subject.title.should.eql 'Title'
-            subject.uuid.should.eql  'UUID'
+            subject.title.should.equal 'Title'
+            subject.uuid.should.equal  'UUID'
+            subject.context.should.eql some: 'things'
 
 
 
@@ -160,29 +170,32 @@ describe 'Client', ipso (should) ->
 
 
 
-        it 'clears the reconnect interval on open', 
+        it 'clears the reconnecting and connecting intervals on open', 
 
             ipso (facto, subject, socket) -> 
 
-                socket.does on: (event, subscriber) -> 
+                socket.does 
 
-                    if event is 'error' 
+                    on: (event, subscriber) -> 
 
-                        errorCallback = subscriber
-                        setTimeout (-> 
-                            errorCallback description: code: 'ECONNREFUSED'
-                        ), 10
+                        if event is 'error' 
 
-                    if event is 'open'
+                            errorCallback = subscriber
+                            setTimeout (-> 
+                                errorCallback description: code: 'ECONNREFUSED'
+                            ), 10
 
-                        connectionCallback = subscriber
-                        setTimeout (-> 
+                        if event is 'open'
 
-                            connectionCallback()
-                            should.not.exist subject.reconnecting
-                            facto()
+                            connectionCallback = subscriber
+                            setTimeout (-> 
 
-                        ), 20
+                                connectionCallback()
+                                should.not.exist subject.reconnecting
+                                should.not.exist subject.connecting
+                                facto()
+
+                            ), 20
 
 
                 subject.connect()
@@ -206,7 +219,27 @@ describe 'Client', ipso (should) ->
                     if event is 'open' then subscriber()
 
                 subject.connect()
-                subject.status.value.should.equal 'connecting'
+                subject.status.value.should.equal 'connected'
+
+
+        it 'sends the handshake on open',
+
+            ipso (subject, socket) -> 
+
+                socket.does 
+
+                    on: (event, subscriber) ->  if event is 'open' then subscriber()
+                    send: (payload) -> payload.should.equal "1#{JSON.stringify 
+
+                        event:  'handshake'
+                        title:  'Title'
+                        uuid:   'UUID'
+                        context: some: 'things'
+                        secret: 'secret'
+
+                    }"
+
+                subject.connect()
 
 
 
