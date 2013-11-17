@@ -44,23 +44,38 @@ describe 'Hub', ipso (should) ->
 
         context 'on connection', -> 
 
-            beforeEach ipso (Engine, server) -> Engine.does listen: -> server
+            beforeEach ipso (Engine, server, socket) -> 
+
+                server.does on: (event, subscriber) -> 
+
+                    if event is 'connection' 
+
+                        #
+                        # mock connecting socket
+                        #
+
+                        subscriber socket
+
+                Engine.does listen: -> server
 
 
             it 'stores the socket in the clients collection keyed on socket.id', 
 
                 ipso (subject, server, socket) -> 
 
-                    server.does on: (event, subscriber) -> 
-
-                        if event is 'connection' 
-
-                            #
-                            # mock connecting socket
-                            #
-
-                            subscriber socket
-
                     subject.listen()
                     subject.clients['SOCKET_ID'].socket.is socket
+
+            it 'assigns connecting status', 
+
+                ipso (subject, server, socket) -> 
+
+                    subject.does timestamp: -> 'TIMESTAMP'
+
+                    subject.listen()
+                    subject.clients['SOCKET_ID'].status.should.eql 
+
+                        value: 'connecting'
+                        at: 'TIMESTAMP'
+
 

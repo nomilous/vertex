@@ -6,6 +6,8 @@ module.exports = (config) ->
 
         server: undefined
 
+        timestamp: -> new Date
+
         clients: {}
 
         listen: -> 
@@ -15,7 +17,12 @@ module.exports = (config) ->
 
             server.on 'connection', (socket) -> 
 
-                local.clients[socket.id] = socket: socket
+                local.clients[socket.id] = 
+
+                    status: 
+                        value: 'connecting'
+                        at: local.timestamp()
+                    socket: socket
 
 
 
