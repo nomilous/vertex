@@ -1,4 +1,5 @@
-engine = require 'engine.io'
+VERSION = 1 
+engine  = require 'engine.io'
 
 module.exports = (config) ->
 
@@ -23,12 +24,25 @@ module.exports = (config) ->
                         at: local.timestamp()
                     socket: socket
 
-                socket.on 'message', (data) -> 
+                socket.on 'message', (payload) -> 
 
-                    version = data[0]
-                    console.log 
-                        protocol_version: version
-                        payload: JSON.parse data[1..]
+                    version =       payload[0]
+                    {event, data} = JSON.parse payload[1..]
+                    local[event] socket, data
+                    
+
+        handshake: (socket, data) -> 
+
+            
+
+            {secret} = data
+
+            unless secret is config.secret
+
+                socket.send VERSION + '{"event":"reject"}'
+
+            
+
 
 
 

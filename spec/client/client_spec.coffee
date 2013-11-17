@@ -15,9 +15,9 @@ describe 'Client', ipso (should) ->
 
             title: 'Title'
             uuid: 'UUID'
+            secret: 'secret'
             context: some: 'things'
             connect: 
-                secret: 'secret'
                 uri: 'ws://localhost:3001'
                 interval: 10
         
@@ -231,11 +231,12 @@ describe 'Client', ipso (should) ->
                     on: (event, subscriber) ->  if event is 'open' then subscriber()
                     send: (payload) -> payload.should.equal "1#{JSON.stringify 
 
-                        event:  'handshake'
-                        title:  'Title'
-                        uuid:   'UUID'
-                        context: some: 'things'
-                        secret: 'secret'
+                        event: 'handshake'
+                        data:
+                            title:  'Title'
+                            uuid:   'UUID'
+                            context: some: 'things'
+                            secret: 'secret'
 
                     }"
 

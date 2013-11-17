@@ -4,7 +4,11 @@ describe 'Hub', ipso (should) ->
 
     before ipso (done, Hub) -> 
 
-        mock('socket').with id: 'SOCKET_ID'
+        mock('socket').with 
+
+            id: 'SOCKET_ID'
+            send: ->
+            on: ->
 
         mock('server').with on: ->
 
@@ -78,4 +82,60 @@ describe 'Hub', ipso (should) ->
                         value: 'connecting'
                         at: 'TIMESTAMP'
 
+
+
+    context 'handshake()', -> 
+
+        before ipso (Engine, server, socket) -> 
+
+            Engine.does listen: -> return server
+
+            server.does on: (event, subscriber) -> 
+
+                if event is 'connection' then subscriber socket
+
+            socket.does on: (event, subscriber) =>
+
+                if event is 'message' 
+
+                    #
+                    # mock inbound handshake
+                    #
+
+                    subscriber "1#{
+
+                        JSON.stringify
+
+                            event: 'handshake'
+                            data: @data
+                    }"
+
+        beforeEach -> @data = 'HANDSHAKE_DATA'
+
+
+        it 'is called with the socket and data on handshake event',
+
+            ipso (facto, subject, socket) -> 
+
+                subject.does handshake: (newSocket, data) -> 
+
+                    newSocket.is socket
+                    data.should.equal 'HANDSHAKE_DATA'
+                    facto()
+
+                subject.listen()
+
+
+        it 'sends reject if the secret does not match', 
+
+            ipso (facto, subject, socket) -> 
+
+                socket.does send: (message) -> 
+
+                    message.should.equal '1{"event":"reject"}'
+                    facto()
+
+
+                @data = secret: 'wrong'
+                subject.listen()
 

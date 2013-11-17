@@ -23,7 +23,7 @@ module.exports = (config) ->
         title:   if config.title?   then config.title   else 'Untitled' 
         uuid:    if config.uuid?    then config.uuid    else  v4()
         context: if config.context? then config.context else  {}
-        secret:  if config.connect? and  config.connect.secret? then config.connect.secret else ''
+        secret:  if config.secret?  then config.secret  else ''
 
 
         socket: undefined
@@ -109,16 +109,13 @@ module.exports = (config) ->
                     #
 
                     event:   'handshake'
-                    title:   local.title
-                    uuid:    local.uuid
-                    context: local.context
-                    secret:  local.secret
+                    data:
+                        title:   local.title
+                        uuid:    local.uuid
+                        context: local.context
+                        secret:  local.secret
 
                 }"
-
-
-
-
 
         connecting:   undefined
         reconnecting: undefined
