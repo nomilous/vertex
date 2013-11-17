@@ -14,7 +14,6 @@ module.exports = (config) ->
 
             local.server = server = engine.listen config.listen.port
 
-
             server.on 'connection', (socket) -> 
 
                 local.clients[socket.id] = 

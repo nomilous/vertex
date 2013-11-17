@@ -1,4 +1,6 @@
 Client = require 'engine.io-client'
+{v4}   = require 'node-uuid'
+
 
 module.exports = (config) ->
 
@@ -16,6 +18,9 @@ module.exports = (config) ->
     ###
 
     local = 
+
+        title: if config.title? then config.title else 'Untitled' 
+        uuid:  if config.uuid?  then config.uuid  else  v4()
 
         socket: undefined
 
@@ -80,6 +85,8 @@ module.exports = (config) ->
                 local.status.at = new Date
 
                 local.log.info 'connected'
+
+
 
 
 

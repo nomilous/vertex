@@ -13,7 +13,8 @@
   "dependencies": {
     "also": "0.0.12",
     "engine.io": "~0.7.12",
-    "engine.io-client": "~0.7.12"
+    "engine.io-client": "~0.7.12",
+    "node-uuid": "~1.4.1"
   },
   "devDependencies": {
     "ipso": "0.0.14",

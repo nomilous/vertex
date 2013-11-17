@@ -9,7 +9,9 @@ describe 'Client', ipso (should) ->
         
         tag
 
-            subject: Client mock('config').with 
+            subject: Client mock('config').with
+                title: 'Title'
+                uuid: 'UUID'
                 connect: 
                     uri: 'ws://localhost:3001'
                     interval: 10
@@ -48,14 +50,40 @@ describe 'Client', ipso (should) ->
         
 
 
-    it 'defines connect and close', ipso (subject) -> 
+    it 'defines connect and close', 
 
-        subject.connect.should.be.an.instanceof Function
-        subject.close.should.be.an.instanceof Function
+        ipso (subject) -> 
+
+            subject.connect.should.be.an.instanceof Function
+            subject.close.should.be.an.instanceof Function
 
 
 
-    it 'defines status', ipso (subject) -> should.exist subject.status
+    it 'defines status', 
+
+        ipso (subject) -> 
+
+            should.exist subject.status
+
+
+    
+
+    it 'can specify title and uuid', 
+
+        ipso (subject) -> 
+
+            subject.title.should.eql 'Title'
+            subject.uuid.should.eql  'UUID'
+
+
+
+    it 'defaults uuid and title', 
+
+        ipso (Client) -> 
+
+            instance = Client {}
+            instance.uuid.should.match /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+            instance.title.should.equal 'Untitled'
 
 
 
