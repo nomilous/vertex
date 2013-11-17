@@ -4,6 +4,8 @@ describe 'Hub', ipso (should) ->
 
     before ipso (done, Hub) -> 
 
+        mock('server').with on: ->
+
         tag
 
             subject: Hub mock 'config'
@@ -25,14 +27,14 @@ describe 'Hub', ipso (should) ->
 
         it 'starts engine.io listening', 
 
-            ipso (subject, config, Engine) -> 
+            ipso (subject, config, server, Engine) -> 
 
                 Engine.does listen: (port) -> 
 
                     port.should.equal 3001
-                    return 'SERVER'
+                    return server
 
                 config.with listen: port: 3001
                 subject.listen()
-                subject.server.should.equal 'SERVER'
+                subject.server.is server
 
