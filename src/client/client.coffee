@@ -75,7 +75,19 @@ module.exports = (config) ->
 
             socket.on 'close', -> 
 
+                #
+                # TODO: verify that this close event always happends 
+                #       after the reject message for cases where the
+                #       remote side sent the reject and the closed in
+                #       the send callback of that rejection
+                # 
+                #
+ 
+                return if local.status.value is 'denied'
+
+                local.log.info  'disconnected'
                 local.reconnect 'reconnecting'
+                
 
 
             socket.on 'open', ->
@@ -116,6 +128,28 @@ module.exports = (config) ->
                         secret:  local.secret
 
                 }"
+
+            socket.on 'message', (payload) -> 
+
+                version =       payload[0]
+                {event, data} = JSON.parse payload[1..]
+                local[event] socket, data
+
+
+        accept: (socket, data) ->
+
+            local.status.value = 'accepted'
+            local.status.at = new Date
+            local.log.info 'accepted'
+
+
+        deny: (socket, data) ->
+
+            local.status.value = 'denied'
+            local.status.at = new Date
+            local.log.info 'denied'
+
+
 
         connecting:   undefined
         reconnecting: undefined

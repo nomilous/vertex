@@ -47,17 +47,19 @@ module.exports = (config) ->
             {secret, title, uuid, context} = data
 
             unless secret is config.secret
-                return socket.send VERSION + '{"event":"reject"}'
+                socket.send VERSION + '{"event":"deny"}', -> socket.close()
+                return
 
                 #
-                # TODO: disconnect, remove local.client[socket_id]
+                # TODO: remove local.client[socket_id]
                 #
 
 
             try client = local.clients[socket.id]
             unless client?
                 local.log.error 'unknown socket id', socket: socket
-                return socket.send VERSION + '{"event":"reject"}'
+                socket.send VERSION + '{"event":"deny"}', -> socket.close()
+                return 
 
                 #
                 # TODO: disconnect, remove local.client[socket_id]

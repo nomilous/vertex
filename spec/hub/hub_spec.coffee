@@ -130,13 +130,13 @@ describe 'Hub', ipso (should) ->
                 subject.listen()
 
 
-        it 'sends reject if the secret does not match', 
+        it 'sends deny if the secret does not match', 
 
             ipso (facto, subject, socket) -> 
 
                 socket.does send: (message) -> 
 
-                    message.should.equal '1{"event":"reject"}'
+                    message.should.equal '1{"event":"deny"}'
                     facto()
 
 
@@ -229,6 +229,8 @@ describe 'Hub', ipso (should) ->
                 client = subject.clients['NEW_SOCKET_ID']
                 client.cache.should.eql key: 'value'
 
+
+    context 'on message', ->
 
 
 
