@@ -53,13 +53,25 @@ module.exports = (config) ->
                         #
 
                         interval = (try config.connect.interval) || 1000
-                        local.reconnecting = setInterval local.reconnect, interval
+
+                        unless local.reconnecting?
+
+                            local.reconnecting = setInterval local.reconnect, interval
+
+
+            socket.on 'close', -> 
+
+                interval = (try config.connect.interval) || 1000
+
+                unless local.reconnecting?
+
+                    local.reconnecting = setInterval local.reconnect, interval
 
 
         reconnecting: undefined
         reconnect: ->
 
-            
+            local.log.info 'reconnecting'
 
 
         close: ->

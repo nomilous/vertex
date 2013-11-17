@@ -5,20 +5,28 @@ describe 'Client', ipso (should) ->
 
     before ipso (done, Client) -> 
 
-        socket   = mock 'socket'
+        socket = mock 'socket'
         
         tag
 
             subject: Client mock('config').with 
                 connect: 
                     uri: 'ws://localhost:3001'
-                    interval: 10
+                    interval: 100
             EngineClient: require 'engine.io-client'
 
         .then done
 
 
     beforeEach ipso (subject, socket, EngineClient) ->
+
+        #
+        # reset subject properties asif before first connect
+        #
+
+        subject.socket = undefined
+        clearInterval subject.reconnecting
+        subject.reconnecting = undefined
 
         EngineClient = require 'engine.io-client'
         EngineClient.Socket = class
@@ -34,8 +42,7 @@ describe 'Client', ipso (should) ->
             constructor: -> @[prop] = socket[prop] for prop of socket
             on: ->
 
-        subject.socket = undefined
-
+        
 
 
     it 'defines connect and close', ipso (subject) -> 
@@ -88,6 +95,8 @@ describe 'Client', ipso (should) ->
 
             ipso (facto, subject, config, socket) ->
 
+                subject.does reconnect: -> facto()
+
                 socket.does on: (event, subscriber) -> 
 
                     if event is 'error' 
@@ -99,9 +108,25 @@ describe 'Client', ipso (should) ->
                         errorCallback = subscriber
                         process.nextTick -> errorCallback description: code: 'ECONNREFUSED'
 
+                subject.connect()
+
+
+        it 'enters a reconnect loop if the socket is closed', 
+
+            ipso (facto, subject, config, socket) ->
 
                 subject.does reconnect: -> facto()
+
+                socket.does on: (event, subscriber) -> 
+
+                    if event is 'close'
+
+                        closeCallback = subscriber
+                        process.nextTick -> closeCallback()
+
+                
                 subject.connect()
+
 
 
 
