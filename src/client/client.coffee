@@ -37,13 +37,9 @@ module.exports = (config) ->
 
         connect: ->
 
-            console.log connect: 1
-
             return local.reconnect() if local.socket?
 
             local.socket = socket = new Client.Socket config.connect.uri
-
-
 
             socket.on 'error', (err) ->
 
@@ -93,6 +89,7 @@ module.exports = (config) ->
             local.reconnecting = setInterval (->
 
                 local.log.info 'reconnecting'
+                local.socket.open()
 
             ), interval
 

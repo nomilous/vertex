@@ -157,5 +157,12 @@ describe 'Client', ipso (should) ->
                 subject.connect()
 
 
+        it 'calls the socket to open in reconnect()', 
+
+            ipso (facto, subject, socket) -> 
+
+                socket.does open: -> facto()
+                subject.socket = socket
+                subject.reconnect()
 
 

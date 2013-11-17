@@ -8,7 +8,12 @@ module.exports = (config) ->
 
         listen: -> 
 
-            local.server = engine.listen config.listen.port
+            local.server = server = engine.listen config.listen.port
+
+
+            server.on 'connection', (socket) -> 
+
+                console.log connected: socket.id
 
 
 
