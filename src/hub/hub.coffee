@@ -6,9 +6,9 @@ module.exports = (config) ->
 
         server: undefined
 
-        timestamp: -> new Date
-
         clients: {}
+
+        timestamp: -> new Date
 
         listen: -> 
 
