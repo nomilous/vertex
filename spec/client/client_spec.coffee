@@ -53,9 +53,9 @@ describe 'Client', ipso (should) ->
                 subject.connect()
 
 
-        it 'connects the socket only once', 
+        it 'calls reconnect if the socket was already connected', 
 
-            ipso (subject, config, EngineClient) ->
+            ipso (subject, config, EngineClient, assert) ->
 
                 count = 0
                 EngineClient.Socket = class
@@ -63,10 +63,12 @@ describe 'Client', ipso (should) ->
 
                 delete subject.socket
 
+                subject.connect()
+                subject.socket.seq.should.equal 1
+ 
+                subject.does reconnect: -> 
+                subject.connect()
+                subject.socket.seq.should.equal 1
+
+
                 
-                subject.connect()
-                subject.socket.seq.should.equal 1
-
-                subject.connect()
-                subject.socket.seq.should.equal 1
-

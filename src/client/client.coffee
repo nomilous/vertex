@@ -8,6 +8,8 @@ module.exports = (config) ->
 
         connect: ->
 
+            return local.reconnect() if local.socket?
+
             local.socket ||= new Client.Socket config.connect.uri
 
 
