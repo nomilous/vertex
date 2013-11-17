@@ -21,31 +21,12 @@ describe 'Client', ipso (should) ->
         
         tag
 
-            subject: Client mock 'config'
+            subject: Client mock('config').with 
+                connect: 
+                    uri: 'ws://localhost:3001'
             EngineClient: require 'engine.io-client'
 
         .then done
-
-
-
-    it '[temporary] check the mock setup', ipso (EngineClient, socket) -> 
-
-        socket.with 
-            property1: 'value1'
-            property2: 'value2'
-
-        socket.does
-            function1: ->
-            function2: ->
-
-
-        testMockSocket = new EngineClient.Socket
-        testMockSocket.property1.should.equal 'value1'
-        testMockSocket.property2.should.equal 'value2'
-
-        testMockSocket.function1()
-        #testMockSocket.function2()
-
 
 
 
@@ -56,11 +37,9 @@ describe 'Client', ipso (should) ->
 
 
 
-
-
     context 'connect()', -> 
 
-        it 'connects the engine.io-client', 
+        it 'connects the engine.io-client socket', 
 
             ipso (facto, subject, config, EngineClient) ->
 
@@ -71,8 +50,23 @@ describe 'Client', ipso (should) ->
                         uri.should.equal 'ws://localhost:3001'
                         facto()
 
-                config.with connect: uri: 'ws://localhost:3001'
                 subject.connect()
 
 
+        it 'connects the socket only once', 
+
+            ipso (subject, config, EngineClient) ->
+
+                count = 0
+                EngineClient.Socket = class
+                    constructor: -> @seq = ++count
+
+                delete subject.socket
+
+                
+                subject.connect()
+                subject.socket.seq.should.equal 1
+
+                subject.connect()
+                subject.socket.seq.should.equal 1
 

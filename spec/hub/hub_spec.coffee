@@ -21,7 +21,7 @@ describe 'Hub', ipso (should) ->
 
 
 
-    context 'listen()', ipso -> 
+    context 'listen()', -> 
 
         it 'starts engine.io listening', 
 

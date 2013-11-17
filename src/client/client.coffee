@@ -4,11 +4,11 @@ module.exports = (config) ->
 
     local = 
 
-        client: undefined
+        socket: undefined
 
         connect: ->
 
-            local.client = new Client.Socket config.connect.uri
+            local.socket ||= new Client.Socket config.connect.uri
 
 
         close: ->
