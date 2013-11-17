@@ -6,6 +6,8 @@ module.exports = (config) ->
 
         server: undefined
 
+        clients: {}
+
         listen: -> 
 
             local.server = server = engine.listen config.listen.port
@@ -13,7 +15,7 @@ module.exports = (config) ->
 
             server.on 'connection', (socket) -> 
 
-                console.log connected: socket.id
+                local.clients[socket.id] = socket: socket
 
 
 
