@@ -7,6 +7,7 @@ describe 'Hub', (should) ->
         tag
 
             subject: Hub mock 'config'
+            Engine: require 'engine.io'
 
         .then done
 
@@ -18,4 +19,20 @@ describe 'Hub', (should) ->
             subject.listen.should.be.an.instanceof Function
             subject.close.should.be.an.instanceof Function
 
-            
+
+
+    context 'listen()', -> 
+
+        it 'starts engine.io listening', 
+
+            ipso (subject, config, Engine) -> 
+
+                Engine.does listen: (port) -> 
+
+                    port.should.equal 3001
+                    return 'SERVER'
+
+                config.with listen: port: 3001
+                subject.listen()
+                subject.server.should.equal 'SERVER'
+

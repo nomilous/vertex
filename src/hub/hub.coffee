@@ -1,8 +1,15 @@
+engine = require 'engine.io'
 
 module.exports = (config) ->
 
     local = 
 
-        listen: ->
+        server: undefined
+
+        listen: -> 
+
+            local.server = engine.listen config.listen.port
+
+
 
         close: ->
