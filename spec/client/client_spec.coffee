@@ -12,7 +12,7 @@ describe 'Client', ipso (should) ->
             subject: Client mock('config').with 
                 connect: 
                     uri: 'ws://localhost:3001'
-                    interval: 100
+                    interval: 10
             EngineClient: require 'engine.io-client'
 
         .then done
@@ -125,6 +125,35 @@ describe 'Client', ipso (should) ->
                         process.nextTick -> closeCallback()
 
                 
+                subject.connect()
+
+
+
+        it 'clears the reconnect interval on open', 
+
+            ipso (facto, subject, config, socket) -> 
+
+                socket.does on: (event, subscriber) -> 
+
+                    if event is 'error' 
+
+                        errorCallback = subscriber
+                        setTimeout (-> 
+                            errorCallback description: code: 'ECONNREFUSED'
+                        ), 10
+
+                    if event is 'open'
+
+                        connectionCallback = subscriber
+                        setTimeout (-> 
+
+                            connectionCallback()
+                            should.not.exist subject.reconnecting
+                            facto()
+
+                        ), 20
+
+
                 subject.connect()
 
 

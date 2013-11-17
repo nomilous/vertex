@@ -62,6 +62,15 @@ module.exports = (config) ->
                 local.reconnect()
 
 
+            socket.on 'open', ->
+
+                if local.reconnecting?
+                
+                    clearInterval local.reconnecting
+                    local.reconnecting = undefined
+
+
+
 
 
         reconnecting: undefined
