@@ -194,4 +194,21 @@ describe 'Hub', ipso (should) ->
 
 
 
+        it 'keeps index uuid2socketid', 
+
+            ipso (subject, socket) -> 
+
+                @data = 
+                    title:   'Title'
+                    uuid:    'UUID'
+                    context: starting: context: 1
+                    secret:  'right'
+
+                subject.listen()
+
+                index = subject.index.uuid2socketid
+                index['UUID'] = 'SOCKET_ID'
+
+
+
 

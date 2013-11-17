@@ -9,6 +9,11 @@ module.exports = (config) ->
 
         clients: {}
 
+        index: 
+
+            uuid2socketid: {}
+
+
         timestamp: -> new Date
 
         log: 
@@ -59,6 +64,8 @@ module.exports = (config) ->
                 #
 
 
+            
+
 
             client.title   = title
             client.uuid    = uuid
@@ -66,6 +73,8 @@ module.exports = (config) ->
 
             client.status.value = 'authorized'
             client.status.at    = local.timestamp()
+
+            local.index.uuid2socketid[uuid] = socket.id
 
 
             socket.send VERSION + '{"event":"accept"}'
