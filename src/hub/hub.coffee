@@ -39,11 +39,10 @@ module.exports = (config) ->
 
             unless secret is config.secret
 
-                socket.send VERSION + '{"event":"reject"}'
-
-            
+                return socket.send VERSION + '{"event":"reject"}'
 
 
+            socket.send VERSION + '{"event":"accept"}'
 
 
 

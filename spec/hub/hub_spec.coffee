@@ -17,6 +17,7 @@ describe 'Hub', ipso (should) ->
             subject: Hub mock('config').with
 
                 listen: port: 3001
+                secret: 'right'
 
             Engine: require 'engine.io'
 
@@ -138,4 +139,20 @@ describe 'Hub', ipso (should) ->
 
                 @data = secret: 'wrong'
                 subject.listen()
+
+
+        it 'sends accept if the secret does match',
+
+            ipso (facto, subject, socket) -> 
+
+                socket.does send: (message) -> 
+
+                    message.should.equal '1{"event":"accept"}'
+                    facto()
+
+                @data = secret: 'right'
+                subject.listen()
+
+
+
 
