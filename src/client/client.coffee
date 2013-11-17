@@ -37,6 +37,8 @@ module.exports = (config) ->
 
         connect: ->
 
+            console.log connect: 1
+
             return local.reconnect() if local.socket?
 
             local.socket = socket = new Client.Socket config.connect.uri
@@ -45,15 +47,23 @@ module.exports = (config) ->
 
             socket.on 'error', (err) ->
 
-                if err.description? and err.description.code is 'ECONNREFUSED'
+                if local.status.value is 'pending' then local.reconnect()
+                
 
-                    #
-                    # engine.io socket error has nested error 
-                    # at err.description carrying the ECONNREFUSED
-                    # exception 
-                    #
+                # if err.description? and err.description.code is 'ECONNREFUSED'
 
-                    local.reconnect()
+                #     #
+                #     # engine.io socket error has nested error 
+                #     # at err.description carrying the ECONNREFUSED
+                #     # exception 
+                #     #
+
+                #     local.reconnect()
+
+                #
+                # TODO: any cases where 'error' happens instead of 'close'?
+                #       (it will result in no reconnect loop and no connection)
+                #
 
 
 
@@ -70,6 +80,7 @@ module.exports = (config) ->
                     local.reconnecting = undefined
 
 
+                local.log.info 'connected'
 
 
 

@@ -60,7 +60,7 @@ describe 'Client', ipso (should) ->
 
         it 'connects the engine.io-client socket', 
 
-            ipso (facto, subject, config, EngineClient) ->
+            ipso (facto, subject, EngineClient) ->
 
                 EngineClient.Socket = class
 
@@ -76,7 +76,7 @@ describe 'Client', ipso (should) ->
 
         it 'calls reconnect if the socket was already connected', 
 
-            ipso (subject, config, EngineClient) ->
+            ipso (subject, EngineClient) ->
 
                 count = 0
                 EngineClient.Socket = class
@@ -93,7 +93,7 @@ describe 'Client', ipso (should) ->
 
         it 'enters a reconnect loop if the first connect fails', 
 
-            ipso (facto, subject, config, socket) ->
+            ipso (facto, subject, socket) ->
 
                 subject.does reconnect: -> facto()
 
@@ -113,7 +113,7 @@ describe 'Client', ipso (should) ->
 
         it 'enters a reconnect loop if the socket is closed', 
 
-            ipso (facto, subject, config, socket) ->
+            ipso (facto, subject, socket) ->
 
                 subject.does reconnect: -> facto()
 
@@ -131,7 +131,7 @@ describe 'Client', ipso (should) ->
 
         it 'clears the reconnect interval on open', 
 
-            ipso (facto, subject, config, socket) -> 
+            ipso (facto, subject, socket) -> 
 
                 socket.does on: (event, subscriber) -> 
 
