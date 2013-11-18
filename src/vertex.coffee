@@ -1,10 +1,10 @@
-Server  = require './api/server'
+Api  = require './api/api'
 Handler = require './api/handler'
 
 module.exports = (config) ->
 
 
-    Server.create( config ).listen (err, api) -> 
+    Api.create( config ).listen (err, api) -> 
 
         throw err if err?
         
