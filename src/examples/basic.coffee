@@ -16,7 +16,8 @@ thing.in.tree.$api = {}
 
 require('../vertex')
     
-    http: listen: port: 3000
+    api: 
+        listen: port: 3000
 
     allowRoot: true
 

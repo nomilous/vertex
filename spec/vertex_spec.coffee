@@ -2,8 +2,8 @@ ipso = require 'ipso'
 
 describe 'Vertex', ->
     
-    it 'creates a server and starts listening', ipso (facto, Server, Vertex) -> 
+    it 'creates an Api server and starts listening', ipso (facto, Api, Vertex) -> 
 
-        Server.does create: -> listen: -> facto()
-        Vertex http: listen: {}
+        Api.does create: -> listen: -> facto()
+        Vertex api: listen: {}
 

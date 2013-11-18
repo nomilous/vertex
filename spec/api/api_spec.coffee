@@ -4,10 +4,10 @@ describe 'Api.create()', ipso (Api, should) ->
 
     @timeout 10
 
-    it 'uses config.http for listen configuration', (done) -> 
+    it 'uses config.api for listen configuration', (done) -> 
 
         config = {}
-        Object.defineProperty config, 'http', get: -> done()
+        Object.defineProperty config, 'api', get: -> done()
         Api.create( config ).listen()
 
 
@@ -24,7 +24,7 @@ describe 'Api.create()', ipso (Api, should) ->
                         facto()
 
             Api.create 
-                http: 
+                api: 
                     listen: 
                         hostname: process.env.API_HOSTNAME
                         port: process.env.API_PORT
@@ -42,7 +42,7 @@ describe 'Api.create()', ipso (Api, should) ->
                     listen: (args...) -> args.pop()() # callback is last arg
                     
 
-            instance = Api.create http: listen: {}
+            instance = Api.create api: listen: {}
             instance.listen (err, api) -> 
 
                 api.should.equal instance
@@ -59,5 +59,5 @@ describe 'Api.create()', ipso (Api, should) ->
                         listen: (args...) -> args.pop()()
                         close: -> facto()   
 
-            instance = Api.create http: listen: {}
+            instance = Api.create api: listen: {}
             instance.listen -> instance.close()

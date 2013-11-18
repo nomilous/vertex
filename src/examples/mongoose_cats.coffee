@@ -15,7 +15,7 @@ Kitten = mongoose.model 'Kitten', kittySchema
 
 require('../vertex')
 
-    http: listen: port: 3000
+    api: listen: port: 3000
 
     root: routes =
 

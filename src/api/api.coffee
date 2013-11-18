@@ -11,7 +11,7 @@ module.exports.create = (config) ->
 
         listen: (callback) ->
 
-            return unless try listenArgs = config.http.listen
+            return unless try listenArgs = config.api.listen
 
             port      = parseInt listenArgs.port
             hostname  = listenArgs.hostname
