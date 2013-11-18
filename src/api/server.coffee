@@ -1,10 +1,13 @@
-http = require 'http'
+http    = require 'http'
+Handler = require './handler'
 
-module.exports.create = (config, handler) ->
+module.exports.create = (config) ->
 
     local = 
 
         server: undefined
+
+        handler: Handler.create( config ).handle
 
         listen: (callback) ->
 
@@ -13,11 +16,13 @@ module.exports.create = (config, handler) ->
             port      = parseInt listenArgs.port
             hostname  = listenArgs.hostname
 
-            local.server = http.createServer handler
+            local.server = http.createServer (req, res) -> 
+
+                local.handler req, res
 
             local.server.listen port, hostname, ->
 
-                callback null, local.server.address()
+                callback null, local
 
 
         close: (callback) ->

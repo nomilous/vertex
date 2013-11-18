@@ -34,16 +34,17 @@ describe 'Server.create()', ->
         
 
 
-    it 'calls back with the listening address', ipso (facto, http) ->
+    it 'calls back with the listening server instance', ipso (facto, http) ->
 
         http.does 
             createServer: ->
                 listen: (args...) -> args.pop()() # callback is last arg
-                address: -> 'mock address'
+                
 
         instance = create http: listen: {}
-        instance.listen (err, addr) -> 
-            addr.should.equal 'mock address'
+        instance.listen (err, api) -> 
+
+            api.should.equal instance
             facto()
 
 
@@ -53,7 +54,6 @@ describe 'Server.create()', ->
             createServer: -> 
                 return mock('server').does
                     listen: (args...) -> args.pop()()
-                    address: -> 
                     close: -> facto()   
 
         instance = create http: listen: {}

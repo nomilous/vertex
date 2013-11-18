@@ -4,11 +4,10 @@ Handler = require './api/handler'
 module.exports = (config) ->
 
 
-    Server.create( config, 
-
-        Handler.create( config ).handle
-
-    ).listen (err, addr) -> 
+    Server.create( config ).listen (err, api) -> 
 
         throw err if err?
-        console.log TODO: addr
+        
+        console.log todo: log: api.server.address()
+
+
