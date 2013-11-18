@@ -62,7 +62,7 @@ describe 'Api', ipso (Api, should) ->
 
         it 'sets status to listening and callsback with local api instance',
 
-            ipso (facto, http, server) ->
+            ipso (facto, http, server, config) ->
 
                 http.does 
                     createServer: -> 
@@ -70,7 +70,7 @@ describe 'Api', ipso (Api, should) ->
                             listen: (args...) -> args.pop()() # callback is last arg
                         
 
-                instance = Api.create api: listen: {}
+                instance = Api.create config
                 instance.listen (err, api) -> 
 
                     api.should.equal instance
@@ -80,9 +80,21 @@ describe 'Api', ipso (Api, should) ->
 
 
 
-        it 'calls back error if error before listening callback'
+        it 'callsback error if error before listening',
 
-            
+            ipso (facto, http, server, config) -> 
+
+                http.does 
+                    createServer: -> 
+                        return server.does
+                            on: (pub, sub) -> 
+                                if pub is 'error' then sub new Error 'listen EADDRINUSE'
+
+                instance = Api.create config
+                instance.listen (err, api) -> 
+
+                    err.message.should.equal 'listen EADDRINUSE'
+                    facto()
 
 
 

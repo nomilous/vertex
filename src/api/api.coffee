@@ -30,7 +30,14 @@ module.exports.create = (config) ->
 
             server.on 'error', (error) -> 
 
-                console.log ERROR: error
+                if local.status.value is 'pending'
+
+                    callback error, local
+
+                #
+                # TODO: any possible errors here that happen after successful bind?
+                #       (or not fatal to the server)
+                #
            
             
             server.listen port, hostname, ->
