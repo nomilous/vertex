@@ -14,7 +14,8 @@
     "also": "0.0.12",
     "engine.io": "~0.7.12",
     "engine.io-client": "~0.7.12",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "bunyan": "~0.22.0"
   },
   "devDependencies": {
     "ipso": "0.0.14",
