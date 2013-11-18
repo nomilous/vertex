@@ -9,6 +9,11 @@ module.exports.create = (config) ->
 
         handler: Handler.create( config ).handle
 
+        status:
+            value: 'pending'
+            at: new Date
+
+
         listen: (callback) ->
 
             return unless try listenArgs = config.api.listen
@@ -16,12 +21,22 @@ module.exports.create = (config) ->
             port      = parseInt listenArgs.port
             hostname  = listenArgs.hostname
 
-            local.server = http.createServer (req, res) -> 
+
+
+            local.server = server = http.createServer (req, res) -> 
 
                 local.handler req, res
 
-            local.server.listen port, hostname, ->
 
+            server.on 'error', (error) -> 
+
+                console.log ERROR: error
+           
+            
+            server.listen port, hostname, ->
+
+                local.status.value = 'listening'
+                local.status.at = new Date
                 callback null, local
 
 
