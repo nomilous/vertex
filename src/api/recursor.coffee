@@ -1,6 +1,6 @@
 {deferred} = require 'also'
  
-module.exports.create = (config) ->
+module.exports.create = (config, log) ->
 
     return local = 
 

@@ -4,13 +4,13 @@ Recursor = require './recursor'
 
 lastInstance          = undefined
 module.exports._test  = -> lastInstance
-module.exports.create = (config) ->
+module.exports.create = (config, log) ->
 
     lastInstance = local = 
 
         root: config.root || {}
 
-        recursor: Recursor.create config
+        recursor: Recursor.create config, log
 
         prepare: deferred (action, opts) -> 
 

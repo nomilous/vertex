@@ -52,7 +52,12 @@ describe 'Api', ipso (Api, should) ->
 
             ipso (config, logger, Handler, handler) -> 
 
-                Handler.does create: (config, logger) -> handler
+                Handler.does create: (conf, log) -> 
+
+                    config.is conf
+                    logger.is log
+                    return handler
+
                 instance = Api.create config, logger
 
 
