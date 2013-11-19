@@ -133,7 +133,6 @@ describe 'Api', ipso (Api, should) ->
                 instance = Api.create config, logger
                 instance.listen().then (api) -> 
 
-                    # api.should.equal {}
                     api.should.equal Api._test()
                     facto()
 
