@@ -1,21 +1,21 @@
 {v4}   = require 'node-uuid'
-Bunyan = require 'bunyan'
 Api    = require './api/api'
+Logger = require './logger/logger'
 
 
 module.exports = (config) ->
 
     title = config.title or 'Untitled Vertex'
     uuid = config.uuid or v4()
-    log = Bunyan.createLogger name: title
+    log = Logger.create config
 
 
     Api.create( config ).listen (err, api) -> 
 
         if err?
 
-            log.fatal err  
-            throw err?  ##undecided process.exit?
+            log.fatal err
+            process.exit 1
         
     #     local = 
     #         title: title
