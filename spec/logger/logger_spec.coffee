@@ -4,7 +4,7 @@ describe 'Logger', ->
 
     context 'create()', -> 
 
-        it 'creates a bunyan logger name as the vertex title', 
+        it 'creates a bunyan logger with name as the vertex title', 
 
             ipso (Logger, bunyan) -> 
 

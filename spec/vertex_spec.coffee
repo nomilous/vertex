@@ -2,7 +2,11 @@
 
 describe 'Vertex', ->
 
-    before -> 
+    before ipso (Logger) -> 
+
+        logger = mock 'logger'
+        
+        Logger.does create: -> logger
 
         mock('config').with 
 
@@ -10,23 +14,16 @@ describe 'Vertex', ->
             api: listen: {}
 
 
-    
-    it 'creates an Api server and starts listening', 
+    it 'creates an Api server with config and logger and starts listening', 
 
-        ipso (facto, Api, Vertex, config) -> 
+        ipso (facto, Api, Vertex, config, logger) -> 
 
-            Api.does create: -> listen: -> facto()
+            Api.does 
+                create: (conf, log) -> 
+                    config.is conf
+                    logger.is log
+                    listen: -> facto()
+
             Vertex config
 
-
-    it 'starts bunyan logger with name as vertex title', 
-
-        ipso (Vertex, Api, config, bunyan) -> 
-
-            bunyan.does createLogger: ({name}) -> 
-
-                name.should.equal  'Vertex Title'
-
-            Api.does create: -> listen: ->
-            Vertex config
 

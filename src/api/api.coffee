@@ -1,13 +1,13 @@
 http    = require 'http'
 Handler = require './handler'
 
-module.exports.create = (config) ->
+module.exports.create = (config, log) ->
 
     local = 
 
         server: undefined
 
-        handler: Handler.create( config ).handle
+        handler: Handler.create( config, log ).handle
 
         status:
             value: 'pending'

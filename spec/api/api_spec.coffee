@@ -15,6 +15,12 @@ describe 'Api', ipso (Api, should) ->
             listen:->
             close: ->
             on: ->
+
+        mock('logger')
+
+        mock('handler').with
+
+            handle:->
     
 
     it 'uses config.api for listen configuration', (done) -> 
@@ -40,6 +46,14 @@ describe 'Api', ipso (Api, should) ->
                 instance.handler.should.equal Handler._test().handle
                 instance.status.value.should.equal 'pending'
                 instance.status.at.should.be.an.instanceof Date
+
+
+        it 'passes the config and logger to the handler factory', 
+
+            ipso (config, logger, Handler, handler) -> 
+
+                Handler.does create: (config, logger) -> handler
+                instance = Api.create config, logger
 
 
 

@@ -10,7 +10,7 @@ module.exports = (config) ->
     log = Logger.create config
 
 
-    Api.create( config ).listen (err, api) -> 
+    Api.create( config, log ).listen (err, api) -> 
 
         if err?
 
