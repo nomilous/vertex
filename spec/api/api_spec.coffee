@@ -149,18 +149,15 @@ describe 'Api', ipso (Api, should) ->
 
             ipso (facto, http, server, config, logger) -> 
 
-                http.does 
-                    createServer: -> 
-                        return server.does
-                            on: (pub, sub) -> 
-                                if pub is 'error' then sub new Error 'listen EADDRINUSE'
+                http.does createServer: -> server.does on: (pub, sub) -> 
+                    
+                    if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
                 instance = Api.create config, logger
                 instance.listen().then (->), (error) -> 
 
                     error.message.should.equal 'listen EADDRINUSE'
                     facto()
-
 
 
 
