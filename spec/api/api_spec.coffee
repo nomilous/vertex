@@ -116,6 +116,14 @@ describe 'Api', ipso (Api, should) ->
                     facto()
 
 
+                # 
+                # chop the promise chain, to prevent ipso from failing on 
+                # the carried rejection 
+                # 
+
+                .then
+
+
         it 'returns a promise', 
 
             ipso (http, server, config, logger) -> 
@@ -135,6 +143,24 @@ describe 'Api', ipso (Api, should) ->
 
                     api.should.equal Api._test()
                     facto()
+
+
+        it 'rejects the promise on server errors that preceed the first listen callback', 
+
+            ipso (facto, http, server, config, logger) -> 
+
+                http.does 
+                    createServer: -> 
+                        return server.does
+                            on: (pub, sub) -> 
+                                if pub is 'error' then sub new Error 'listen EADDRINUSE'
+
+                instance = Api.create config, logger
+                instance.listen().then (->), (error) -> 
+
+                    error.message.should.equal 'listen EADDRINUSE'
+                    facto()
+
 
 
 

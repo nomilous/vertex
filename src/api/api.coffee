@@ -35,7 +35,8 @@ module.exports.create = (config, log) ->
 
                 if local.status.value is 'pending'
 
-                    callback error, local
+                    callback error if typeof callback is 'function'
+                    action.reject error
 
                 #
                 # TODO: any possible errors here that happen after successful bind?
@@ -48,7 +49,6 @@ module.exports.create = (config, log) ->
                 local.status.value = 'listening'
                 local.status.at = new Date
                 callback null, local if typeof callback is 'function'
-
                 action.resolve local
 
 
