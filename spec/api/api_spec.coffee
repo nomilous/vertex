@@ -125,6 +125,19 @@ describe 'Api', ipso (Api, should) ->
                 instance.listen().then.should.be.an.instanceof Function
 
 
+        it 'resolves the promise on listen callback with the api instance',
+
+            ipso (facto, http, server, config, logger) -> 
+
+                http.does createServer: -> server.does listen: (args...) -> args.pop()()
+                instance = Api.create config, logger
+                instance.listen().then (api) -> 
+
+                    # api.should.equal {}
+                    api.should.equal Api._test()
+                    facto()
+
+
 
     context 'close()', ->
 
