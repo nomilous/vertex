@@ -2,7 +2,7 @@
 
 describe 'Api', ipso (Api, should) -> 
 
-    @timeout 10
+    @timeout 100
 
     before -> 
 
@@ -66,7 +66,7 @@ describe 'Api', ipso (Api, should) ->
 
         it 'starts http listening at config.api.listen.port and hostname', 
 
-            ipso (facto, http, server, config) -> 
+            ipso (facto, http, server, config, logger) -> 
 
                 http.does 
                     createServer: -> 
@@ -76,12 +76,12 @@ describe 'Api', ipso (Api, should) ->
                                 hostname.should.equal 'test.local'
                                 facto()
 
-                Api.create( config ).listen ->
+                Api.create( config, logger ).listen ->
         
 
         it 'sets status to listening and callsback with local api instance',
 
-            ipso (facto, http, server, config) ->
+            ipso (facto, http, server, config, logger) ->
 
                 http.does 
                     createServer: -> 
@@ -89,7 +89,7 @@ describe 'Api', ipso (Api, should) ->
                             listen: (args...) -> args.pop()() # callback is last arg
                         
 
-                instance = Api.create config
+                instance = Api.create config, logger
                 instance.listen (err, api) -> 
 
                     api.should.equal instance
@@ -101,7 +101,7 @@ describe 'Api', ipso (Api, should) ->
 
         it 'callsback error if error before listening',
 
-            ipso (facto, http, server, config) -> 
+            ipso (facto, http, server, config, logger) -> 
 
                 http.does 
                     createServer: -> 
@@ -109,11 +109,20 @@ describe 'Api', ipso (Api, should) ->
                             on: (pub, sub) -> 
                                 if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
-                instance = Api.create config
+                instance = Api.create config, logger
                 instance.listen (err, api) -> 
 
                     err.message.should.equal 'listen EADDRINUSE'
                     facto()
+
+
+        it 'returns a promise', 
+
+            ipso (http, server, config, logger) -> 
+
+                http.does createServer: -> server
+                instance = Api.create config, logger
+                instance.listen().then.should.be.an.instanceof Function
 
 
 
@@ -121,7 +130,7 @@ describe 'Api', ipso (Api, should) ->
 
         it 'can stop http', 
 
-            ipso (facto, http, server) -> 
+            ipso (facto, http, server, config, logger) -> 
 
                 http.does 
                     createServer: -> 
@@ -129,6 +138,6 @@ describe 'Api', ipso (Api, should) ->
                             listen: (args...) -> args.pop()()
                             close: -> facto()   
 
-                instance = Api.create api: listen: {}
+                instance = Api.create config, logger
                 instance.listen -> instance.close()
 

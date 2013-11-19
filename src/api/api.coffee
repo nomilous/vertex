@@ -1,9 +1,12 @@
 http    = require 'http'
 Handler = require './handler'
+{deferred} = require 'also'
 
+lastInstance = undefined
+module.exports._test  = -> lastInstance
 module.exports.create = (config, log) ->
 
-    local = 
+    lastInstance = local = 
 
         server: undefined
 
@@ -14,7 +17,7 @@ module.exports.create = (config, log) ->
             at: new Date
 
 
-        listen: (callback) ->
+        listen: deferred (action, callback) ->
 
             return unless try listenArgs = config.api.listen
 
@@ -44,7 +47,9 @@ module.exports.create = (config, log) ->
 
                 local.status.value = 'listening'
                 local.status.at = new Date
-                callback null, local
+                callback null, local if typeof callback is 'function'
+
+                action.resolve local
 
 
         close: (callback) ->

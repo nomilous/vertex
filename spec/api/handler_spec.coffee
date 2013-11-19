@@ -4,14 +4,14 @@ describe 'Handler.create()', ipso (Handler) ->
 
     @timeout 100
 
-    before ipso (done) -> 
+    before ipso -> 
 
         mock 'logger'
         mock 'request'
         mock 'response'
 
         Handler.create mock 'config'
-        tag( handler: Handler._test() ).then done
+        tag handler: Handler._test()
 
 
     beforeEach ipso (request, response) ->
