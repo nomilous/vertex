@@ -1,6 +1,7 @@
-{v4}   = require 'node-uuid'
-Api    = require './api/api'
-Logger = require './logger/logger'
+{v4}       = require 'node-uuid'
+{parallel} = require 'also'
+Api        = require './api/api'
+Logger     = require './logger/logger'
 
 
 module.exports = (config) ->
@@ -10,15 +11,34 @@ module.exports = (config) ->
     log = Logger.create config
 
 
-    Api.create( config, log ).listen (err, api) -> 
+    parallel([
 
-        if err?
 
-            log.fatal err
+        -> if config.api? then Api.create( config, log ).listen()
+
+
+
+    ]).then(
+
+        ([api]) -> 
+
+            if api? then log.info
+            
+                listen: api.server.address()
+                'api listening'
+
+
+
+            #     local = 
+            #         title: title
+            #         uuid:  uuid
+            #         log:   log
+            #         api:   api
+
+        (error) -> 
+
+            log.fatal error
             process.exit 1
-        
-    #     local = 
-    #         title: title
-    #         uuid:  uuid
-    #         log:   log
-    #         api:   api
+
+    )
+
