@@ -1,9 +1,12 @@
 VERSION = 1 
 engine  = require 'engine.io'
+http    = require 'http'
 
 module.exports.create = (config) ->
 
     local = 
+
+        transport: undefined
 
         server: undefined
 
@@ -13,7 +16,7 @@ module.exports.create = (config) ->
 
             uuid2socketid: {}
 
-        
+
         status:
             value: 'pending'
             at: new Date
@@ -27,24 +30,35 @@ module.exports.create = (config) ->
 
                 console.log todo: 'log.error': message: message, objects: objects
 
-        listen: -> 
+        listen: (callback) -> 
 
-            local.server = server = engine.listen config.listen.port
 
-            server.on 'connection', (socket) -> 
+            local.transport = transport = http.createServer()
 
-                local.clients[socket.id] = 
 
-                    status: 
-                        value: 'connected'
-                        at: local.timestamp()
-                    socket: socket
+            # local.server = server = engine.listen config.listen.port
 
-                socket.on 'message', (payload) -> 
+            # server.on 'connection', (socket) -> 
 
-                    version =       payload[0]
-                    {event, data} = JSON.parse payload[1..]
-                    local[event] socket, data
+            #     local.clients[socket.id] = 
+
+            #         status: 
+            #             value: 'connected'
+            #             at: local.timestamp()
+            #         socket: socket
+
+            #     socket.on 'message', (payload) -> 
+
+            #         version =       payload[0]
+            #         {event, data} = JSON.parse payload[1..]
+            #         local[event] socket, data
+
+
+            transport.listen config.listen.port, config.listen.hostname, -> 
+
+                local.status.value = 'listening'
+                local.status.at = new Date
+                callback null, local if typeof callback is 'function'
                     
 
         handshake: (socket, data) -> 

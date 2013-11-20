@@ -15,7 +15,7 @@ describe 'Hub', ipso (should) ->
 
         config = mock('config').with
 
-            listen: port: 3001
+            listen: port: 3001, hostname: 'test.local'
             secret: 'right'
 
         logger = mock 'logger'
@@ -50,6 +50,26 @@ describe 'Hub', ipso (should) ->
 
 
     context 'listen()', -> 
+
+        it.only 'starts http listening at config.listen.port and hostname can callsback with listening instance', 
+
+            ipso (facto, Hub, http, server, config, logger) -> 
+
+                http.does createServer: -> server.does listen: (port, hostname, callback) -> 
+
+                    port.should.equal 3001
+                    hostname.should.equal 'test.local'
+                    callback()
+                    
+
+                instance = Hub.create config, logger
+                instance.listen (err, hub) -> 
+
+                    hub.status.value.should.equal 'listening'
+                    hub.should.eql instance
+                    facto()
+
+
 
         it 'starts engine.io listening', 
 
