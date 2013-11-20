@@ -1,7 +1,7 @@
 
 Hub = require '../hub/hub'
 
-hub = Hub 
+hub = Hub.create
     listen: port: 3002
     secret: 'π'
 

@@ -3,7 +3,7 @@ engine     = require 'engine.io'
 http       = require 'http'
 {deferred} = require 'also'
 
-module.exports.create = (config) ->
+module.exports.create = (config, log) ->
 
     local = 
 
@@ -24,12 +24,6 @@ module.exports.create = (config) ->
 
 
         timestamp: -> new Date
-
-        log: 
-
-            error: (message, objects) -> 
-
-                console.log todo: 'log.error': message: message, objects: objects
 
         listen: deferred (action, callback) -> 
 
@@ -89,7 +83,9 @@ module.exports.create = (config) ->
 
             try client = local.clients[socket.id]
             unless client?
+
                 local.log.error 'unknown socket id', socket: socket
+
                 socket.send VERSION + '{"event":"deny"}', -> socket.close()
                 return 
 
