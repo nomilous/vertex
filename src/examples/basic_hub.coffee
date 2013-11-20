@@ -1,6 +1,11 @@
 require('../vertex')
+    
+    secret: 'π'
 
-    listen: port: 3001
+    listen: 
+
+        port: 3001
+
     
     api: 
 
@@ -11,3 +16,4 @@ require('../vertex')
     log: 
 
         level: 'debug'
+

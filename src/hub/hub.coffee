@@ -37,6 +37,13 @@ module.exports.create = (config, log) ->
 
             server.on 'connection', (socket) -> 
 
+
+                log.debug 
+
+                    socket: socket
+                    'connection'
+
+
                 local.clients[socket.id] = 
 
                     status: 
