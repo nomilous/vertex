@@ -10,7 +10,10 @@ describe 'Hub', ipso (should) ->
             send: ->
             on: ->
 
-        mock('server').with on: ->
+        mock('server').with 
+
+            listen: ->
+            on: ->
 
 
         config = mock('config').with
@@ -51,7 +54,7 @@ describe 'Hub', ipso (should) ->
 
     context 'listen()', -> 
 
-        it.only 'starts http listening at config.listen.port and hostname can callsback with listening instance', 
+        it 'starts http listening at config.listen.port and hostname can callsback with listening instance', 
 
             ipso (facto, Hub, http, server, config, logger) -> 
 
@@ -67,6 +70,36 @@ describe 'Hub', ipso (should) ->
 
                     hub.status.value.should.equal 'listening'
                     hub.should.eql instance
+                    facto()
+
+                .then
+
+
+        it 'resolves the promise on listening', 
+
+            ipso (facto, Hub, http, server, config, logger) -> 
+
+                http.does createServer: -> server.does listen: (args...) -> args.pop()()
+                instance = Hub.create config, logger
+                instance.listen().then (hub) -> 
+
+                    hub.status.value.should.equal 'listening'
+                    hub.should.eql instance
+                    facto()
+
+
+        it.only 'rejects the promise on server errors that preceed the first listen callback', 
+
+            ipso (facto, Hub, http, server, config, logger) -> 
+
+                http.does createServer: -> server.does on: (pub, sub) -> 
+                    
+                    if pub is 'error' then sub new Error 'listen EADDRINUSE'
+
+                instance = Hub.create config, logger
+                instance.listen().then (->), (error) -> 
+
+                    error.message.should.equal 'listen EADDRINUSE'
                     facto()
 
 

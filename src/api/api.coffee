@@ -19,6 +19,10 @@ module.exports.create = (config, log) ->
 
         listen: deferred (action, callback) ->
 
+            #
+            # TODO: similar to hub.listen - deduplicate
+            #
+
             return unless try listenArgs = config.api.listen
 
             port      = parseInt listenArgs.port

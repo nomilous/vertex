@@ -1,6 +1,7 @@
-VERSION = 1 
-engine  = require 'engine.io'
-http    = require 'http'
+VERSION    = 1 
+engine     = require 'engine.io'
+http       = require 'http'
+{deferred} = require 'also'
 
 module.exports.create = (config) ->
 
@@ -30,8 +31,11 @@ module.exports.create = (config) ->
 
                 console.log todo: 'log.error': message: message, objects: objects
 
-        listen: (callback) -> 
+        listen: deferred (action, callback) -> 
 
+            #
+            # TODO: similar to api.listen - deduplicate
+            #
 
             local.transport = transport = http.createServer()
 
@@ -54,11 +58,20 @@ module.exports.create = (config) ->
             #         local[event] socket, data
 
 
+            transport.on 'error', (error) -> 
+
+                if local.status.value is 'pending'
+
+                    callback error if typeof callback is 'function'
+                    action.reject error
+
+
             transport.listen config.listen.port, config.listen.hostname, -> 
 
                 local.status.value = 'listening'
                 local.status.at = new Date
                 callback null, local if typeof callback is 'function'
+                action.resolve local
                     
 
         handshake: (socket, data) -> 
