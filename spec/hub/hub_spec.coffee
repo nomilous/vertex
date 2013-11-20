@@ -2,7 +2,7 @@
 
 describe 'Hub', ipso (should) ->
 
-    before ipso (done, Hub) -> 
+    before ipso (Hub) -> 
 
         mock('socket').with 
 
@@ -12,16 +12,32 @@ describe 'Hub', ipso (should) ->
 
         mock('server').with on: ->
 
+
+        config = mock('config').with
+
+            listen: port: 3001
+            secret: 'right'
+
+        logger = mock 'logger'
+
+
         tag
 
-            subject: Hub mock('config').with
+            subject: Hub.create config, logger
+            Engine:  require 'engine.io'
 
-                listen: port: 3001
-                secret: 'right'
 
-            Engine: require 'engine.io'
+    context 'create()', -> 
 
-        .then done
+        it 'creates a hub instance with status and client list', 
+
+            ipso (Hub, config, logger) -> 
+
+                instance = Hub.create config, logger
+                instance.status.value.should.equal 'pending'
+                instance.status.at.should.be.an.instanceof Date
+                instance.clients.should.eql {}
+
 
 
     it 'defines listen() and close()', 

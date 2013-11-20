@@ -1,7 +1,7 @@
 VERSION = 1 
 engine  = require 'engine.io'
 
-module.exports = (config) ->
+module.exports.create = (config) ->
 
     local = 
 
@@ -12,6 +12,11 @@ module.exports = (config) ->
         index: 
 
             uuid2socketid: {}
+
+        
+        status:
+            value: 'pending'
+            at: new Date
 
 
         timestamp: -> new Date
