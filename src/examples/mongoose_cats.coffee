@@ -17,68 +17,70 @@ require('../vertex')
 
     listen: port: 3001
     
-    api: listen: port: 3000
+    api: 
 
-    root: routes =
+        listen: port: 3000
 
-        kittens: ({method, body, rest, query, api}, callback) -> 
+        root: routes =
 
-            switch method
+            kittens: ({method, body, rest, query, api}, callback) -> 
 
-                #
-                # curl -H 'Content-Type: application/json' :3000/kittens --data '{"name":"Brigitte Bardot"}'
-                # 
+                switch method
 
-                when 'POST' then Kitten.create body, (err, kitten) -> 
+                    #
+                    # curl -H 'Content-Type: application/json' :3000/kittens --data '{"name":"Brigitte Bardot"}'
+                    # 
 
-                    if err? then return callback null, 
+                    when 'POST' then Kitten.create body, (err, kitten) -> 
 
-                        statusCode: 409 # ?
-                        error: err
+                        if err? then return callback null, 
 
-                    
-                    callback null, kitten
+                            statusCode: 409 # ?
+                            error: err
+
+                        
+                        callback null, kitten
 
 
-                #
-                # curl :3000/kittens/52854e0b46d897738f000001
-                # curl :3000/kittens?name=Brigitte%20Bardot
-                # 
+                    #
+                    # curl :3000/kittens/52854e0b46d897738f000001
+                    # curl :3000/kittens?name=Brigitte%20Bardot
+                    # 
 
-                when 'GET' 
+                    when 'GET' 
 
-                    if id = rest.shift()
+                        if id = rest.shift()
 
-                        return Kitten.findById id, (err, kitten) -> 
+                            return Kitten.findById id, (err, kitten) -> 
+
+                                if err? then return callback null, 
+
+                                    statusCode: 400
+                                    error: err
+
+                                #
+                                # TODO: statuscode not getting through
+                                #
+
+                                console.log K: kitten, P: rest
+
+                                if not kitten? then callback null, statusCode: 404
+
+                                return callback null, kitten
+
+
+                        Kitten.find query, (err, kittens) -> 
+
+                            #
+                            # api.paginate... 
+                            #
 
                             if err? then return callback null, 
 
                                 statusCode: 400
                                 error: err
 
-                            #
-                            # TODO: statuscode not getting through
-                            #
-
-                            console.log K: kitten, P: rest
-
-                            if not kitten? then callback null, statusCode: 404
-
-                            return callback null, kitten
-
-
-                    Kitten.find query, (err, kittens) -> 
-
-                        #
-                        # api.paginate... 
-                        #
-
-                        if err? then return callback null, 
-
-                            statusCode: 400
-                            error: err
-
-                        callback null, kittens
+                            callback null, kittens
 
 
 

@@ -21,19 +21,6 @@ describe 'Api', ipso (Api, should) ->
         mock('handler').with
 
             handle:->
-    
-
-    it 'uses config.api for listen configuration', (done) -> 
-
-        #
-        # TODO: ipso: how exactly to formulate a property expectation that is not confusing?
-        #             is it worth it?
-        # 
-
-        config = {}
-        Object.defineProperty config, 'api', get: -> done()
-        Api.create( config ).listen()
-
 
 
     context 'create()', ->

@@ -64,7 +64,7 @@ describe 'Handler.create()', ipso (Handler) ->
 
     context 'handle()', -> 
 
-        it 'responds 404 to / if config.alloRoot is unspecified', ipso (done) -> 
+        it 'responds 404 to / if config.api.allowRoot is unspecified', ipso (done) -> 
 
             {handle} = Handler.create
                 root: tree: of: 'things'
@@ -115,7 +115,7 @@ describe 'Handler.create()', ipso (Handler) ->
 
             ipso (facto, handler, config, request, response) -> 
 
-                config.with allowRoot: true
+                config.with api: allowRoot: true
                 
                 stream = mock('stream').does
 

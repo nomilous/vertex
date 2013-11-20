@@ -12,10 +12,7 @@ describe 'Recursor', ->
 
             subject: Recursor.create mock('config').with 
 
-                root: 
-                    path:
-                        to:
-                            thing: {}
+                api: root: path: to: thing: {}
 
         .then done
 
@@ -27,16 +24,18 @@ describe 'Recursor', ->
             should.exist subject.process( options ).then
 
 
-        it 'calls recurse with opts and path array', ipso (subject, options) ->
+        it 'calls recurse with opts and path array', ipso (facto, subject, options) ->
 
             subject.does recurse: (opts, path) -> 
 
                 opts.is options
                 path.should.eql ['path', 'to', 'thing']
 
+
             subject.process options.with path: '/path/to/thing'
             subject.process options.with path: 'path/to/thing/'
             subject.process options.with path: '/path/to/thing/'
+            facto()
 
 
         it 'rejects on error in recursor', 
@@ -56,7 +55,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/not/present'
-                config.with  root: thing: in: tree: ''
+                config.with  api: root: thing: in: tree: ''
 
                 subject.process( options ).then ({statusCode}) -> 
 
@@ -69,7 +68,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing'
-                config.with  root: thing: is: 'present'
+                config.with  api: root: thing: is: 'present'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -83,7 +82,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with  root: thing: in: tree: is: 'fruit'
+                config.with  api: root: thing: in: tree: is: 'fruit'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -97,8 +96,8 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
-                config.root.thing.in.$api = {}
+                config.with api: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
+                config.api.root.thing.in.$api = {}
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -112,7 +111,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
+                config.with api: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -124,7 +123,7 @@ describe 'Recursor', ->
 
             ipso (facto, subject, config, options) -> 
 
-                config.with root: routes = 
+                config.with api: root: routes = 
 
                     things: (opts, callback) -> 
 

@@ -2,13 +2,17 @@
  
 module.exports.create = (config, log) ->
 
+    config ||= {}
+    config.api ||= {}
+    config.api.root ||= {}
+
     return local = 
 
         process: deferred (action, opts) -> 
 
             path = opts.path.split( '/' ).filter (p) -> p.length > 0
 
-            local.recurse opts, path, config.root, (error, result) -> 
+            local.recurse opts, path, config.api.root, (error, result) -> 
 
                 return action.reject error if error?
 

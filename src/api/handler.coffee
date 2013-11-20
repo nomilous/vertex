@@ -6,6 +6,9 @@ lastInstance          = undefined
 module.exports._test  = -> lastInstance
 module.exports.create = (config, log) ->
 
+    config ||= {}
+    config.api ||= {}
+
     lastInstance = local = 
 
         root: config.root || {}
@@ -70,7 +73,7 @@ module.exports.create = (config, log) ->
             path  = req.url
             try [m, path, query] = req.url.match /^(.*?)\?(.*)/
 
-            if path is '/' and not config.allowRoot
+            if path is '/' and not config.api.allowRoot
                 res.writeHead 404
                 return res.end()
 

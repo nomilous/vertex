@@ -8,10 +8,15 @@ describe 'Logger', ->
 
             ipso (Logger, bunyan) -> 
 
-                bunyan.does createLogger: ({name}) -> 
+                bunyan.does createLogger: ({name, level}) -> 
 
                     name.should.equal 'Vertex Title'
+                    level.should.equal 'fatal'
 
-                Logger.create title: 'Vertex Title'
+                Logger.create 
+
+                    title: 'Vertex Title'
+                    log: 
+                        level: 'fatal'
 
 
