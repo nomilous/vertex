@@ -8,22 +8,6 @@
       "remote.origin.url": "https://github.com/nomilous/vertex.git",
       "HEAD": "refs/heads/develop",
       "version": "ROOT_REPO_REF"
-    },
-    {
-      "root": false,
-      "workDir": "./node_modules/ipso",
-      "packageManager": "npm",
-      "remote.origin.url": "git@github.com:nomilous/ipso.git",
-      "HEAD": "refs/heads/develop",
-      "version": "ff96c371c1df29b4d5c80e93eb31045a4691ec7c"
-    },
-    {
-      "root": false,
-      "workDir": "./node_modules/ipso/node_modules/does",
-      "packageManager": "npm",
-      "remote.origin.url": "git@github.com:nomilous/does.git",
-      "HEAD": "refs/heads/develop",
-      "version": "4b2cc255fa7699b2372a388b1051a38bc8105aa0"
     }
   ]
 }
