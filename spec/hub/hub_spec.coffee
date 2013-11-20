@@ -10,9 +10,13 @@ describe 'Hub', ipso (should) ->
             send: ->
             on: ->
 
-        mock('server').with 
+        mock('httpServer').with 
 
             listen: ->
+            on: ->
+
+        mock('ioServer').with
+
             on: ->
 
 
@@ -56,9 +60,11 @@ describe 'Hub', ipso (should) ->
 
         it 'starts http listening at config.listen.port and hostname can callsback with listening instance', 
 
-            ipso (facto, Hub, http, server, config, logger) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
 
-                http.does createServer: -> server.does listen: (port, hostname, callback) -> 
+                Engine.does attach: -> ioServer
+
+                http.does createServer: -> httpServer.does listen: (port, hostname, callback) -> 
 
                     port.should.equal 3001
                     hostname.should.equal 'test.local'
@@ -77,9 +83,11 @@ describe 'Hub', ipso (should) ->
 
         it 'resolves the promise on listening', 
 
-            ipso (facto, Hub, http, server, config, logger) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
 
-                http.does createServer: -> server.does listen: (args...) -> args.pop()()
+                Engine.does attach: -> ioServer
+
+                http.does createServer: -> httpServer.does listen: (args...) -> args.pop()()
                 instance = Hub.create config, logger
                 instance.listen().then (hub) -> 
 
@@ -88,11 +96,13 @@ describe 'Hub', ipso (should) ->
                     facto()
 
 
-        it.only 'rejects the promise on server errors that preceed the first listen callback', 
+        it 'rejects the promise on server errors that preceed the first listen callback', 
 
-            ipso (facto, Hub, http, server, config, logger) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
 
-                http.does createServer: -> server.does on: (pub, sub) -> 
+                Engine.does attach: -> ioServer
+
+                http.does createServer: -> httpServer.does on: (pub, sub) -> 
                     
                     if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
@@ -104,23 +114,27 @@ describe 'Hub', ipso (should) ->
 
 
 
-        it 'starts engine.io listening', 
+        it 'attaches engine.io to the listening server', 
 
-            ipso (subject, config, server, Engine) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
 
-                Engine.does listen: (port) -> 
+                http.does createServer: -> httpServer
+                Engine.does attach: (transport) -> 
 
-                    port.should.equal 3001
-                    return server
+                    httpServer.is transport
+                    facto()
+                    return ioServer
 
-                subject.listen()
-                subject.server.is server
+                instance = Hub.create config, logger
+                instance.listen -> 
+
+                
 
         context 'on connection', -> 
 
-            beforeEach ipso (Engine, server, socket) -> 
+            beforeEach ipso (Engine, ioServer, socket) -> 
 
-                server.does on: (event, subscriber) -> 
+                ioServer.does on: (event, subscriber) -> 
 
                     if event is 'connection' 
 
@@ -130,19 +144,19 @@ describe 'Hub', ipso (should) ->
 
                         subscriber socket
 
-                Engine.does listen: -> server
+                Engine.does attach: -> ioServer
 
 
             it 'stores the socket in the clients collection keyed on socket.id', 
 
-                ipso (subject, server, socket) -> 
+                ipso (subject, socket) -> 
 
                     subject.listen()
                     subject.clients['SOCKET_ID'].socket.is socket
 
             it 'assigns connected status', 
 
-                ipso (subject, server, socket) -> 
+                ipso (subject, socket) -> 
 
                     subject.does timestamp: -> 'TIMESTAMP'
 
@@ -156,11 +170,11 @@ describe 'Hub', ipso (should) ->
 
     context 'handshake()', -> 
 
-        before ipso (Engine, server, socket) -> 
+        before ipso (Engine, ioServer, socket) -> 
 
-            Engine.does listen: -> return server
+            Engine.does attach: -> return ioServer
 
-            server.does on: (event, subscriber) -> 
+            ioServer.does on: (event, subscriber) -> 
 
                 if event is 'connection' then subscriber socket
 

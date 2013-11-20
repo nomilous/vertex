@@ -38,24 +38,24 @@ module.exports.create = (config) ->
             #
 
             local.transport = transport = http.createServer()
+            local.server    = server    = engine.attach transport
 
 
-            # local.server = server = engine.listen config.listen.port
+            server.on 'connection', (socket) -> 
 
-            # server.on 'connection', (socket) -> 
+                local.clients[socket.id] = 
 
-            #     local.clients[socket.id] = 
+                    status: 
+                        value: 'connected'
+                        at: local.timestamp()
+                    socket: socket
 
-            #         status: 
-            #             value: 'connected'
-            #             at: local.timestamp()
-            #         socket: socket
+                socket.on 'message', (payload) -> 
 
-            #     socket.on 'message', (payload) -> 
+                    version =       payload[0]
+                    {event, data} = JSON.parse payload[1..]
+                    local[event] socket, data
 
-            #         version =       payload[0]
-            #         {event, data} = JSON.parse payload[1..]
-            #         local[event] socket, data
 
 
             transport.on 'error', (error) -> 
