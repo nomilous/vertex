@@ -1,20 +1,17 @@
 VERSION = 1
 Client  = require 'engine.io-client'
+Logger  = require '../logger/logger'
 {v4}    = require 'node-uuid'
 
 
-module.exports = (config) ->
+module.exports.create = (config) ->
 
     ###
     
     * `config.connect.uri` - websocket uri
     * `config.connect.interval` - retry interval for connect and reconnect
         * does not back off exponentially
-
-    TODO: node-bunyan logger
-
-        config.log.streams
-        config.log.serializers
+    * config.log.level (fatal,error,warn,info,debug,trace)
 
     ###
 
@@ -28,16 +25,7 @@ module.exports = (config) ->
 
         socket: undefined
 
-        log: 
-
-            #
-            # pending node-bunyan
-            #
-
-            info: -> 
-            fatal: ->
-
-
+        log: Logger.create config
 
         status:
             value: 'pending'
@@ -99,7 +87,7 @@ module.exports = (config) ->
                     clearInterval local.reconnecting
                     local.reconnecting = undefined
 
-                    local.log.info 'reconnected'
+                    local.log.debug 'reconnected'
 
 
                 else 
@@ -110,7 +98,7 @@ module.exports = (config) ->
                     local.status.value = 'connected'
                     local.status.at = new Date
 
-                    local.log.info 'connected'
+                    local.log.debug 'connected'
 
 
                 socket.send "#{VERSION}#{JSON.stringify
@@ -165,7 +153,7 @@ module.exports = (config) ->
 
             local[type] = setInterval (->
 
-                local.log.info type
+                local.log.debug type
                 local.socket.open()
 
             ), interval
@@ -174,3 +162,5 @@ module.exports = (config) ->
 
 
         close: ->
+
+

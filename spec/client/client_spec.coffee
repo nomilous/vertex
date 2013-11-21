@@ -3,7 +3,14 @@
 describe 'Client', ipso (should) -> 
 
 
-    before ipso (done, Client) -> 
+    before ipso (done, Client, bunyan) -> 
+
+        logger = mock('logger').with 
+
+            info: -> 
+            debug: -> 
+
+        bunyan.does createLogger: -> logger
 
         socket = mock('socket').with 
 
@@ -23,7 +30,7 @@ describe 'Client', ipso (should) ->
         
         tag
 
-            subject: Client config
+            subject: Client.create config
             EngineClient: require 'engine.io-client'
 
         .then done
@@ -56,7 +63,18 @@ describe 'Client', ipso (should) ->
             constructor: -> @[prop] = socket[prop] for prop of socket
             on: ->
 
-        
+    it 'creates a logger',
+
+        ipso (Client, config, Logger, logger) -> 
+
+            Logger.does create: (config) ->
+
+                config.log.level.should.equal 'fatal'
+                return logger
+
+
+            instance = Client.create config.with log: level: 'fatal'
+            logger.is instance.log
 
 
     it 'defines connect and close', 
@@ -91,7 +109,7 @@ describe 'Client', ipso (should) ->
 
         ipso (Client) -> 
 
-            instance = Client {}
+            instance = Client.create {}
             instance.uuid.should.match /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
             instance.title.should.equal 'Untitled'
 
