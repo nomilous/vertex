@@ -152,7 +152,7 @@ describe 'Recursor', ->
 
 
 
-        it 'it recurses no further if function callback with body or statusCode',
+        it 'recurses no further if function callback with body or statusCode',
 
             ipso (facto, subject, config, options) -> 
 
@@ -184,7 +184,17 @@ describe 'Recursor', ->
 
 
 
+        it 'calls back with the accompanying $api hash',
 
+            ipso (facto, subject) -> 
+
+                root = module: function: (opts, callback) -> callback null, statusCode: 404
+                root.module.function.$api = configKey: 'configValue'
+
+                subject.recurse {}, ['module', 'function'], root, (error, result, api) ->
+
+                    api.should.eql configKey: 'configValue'
+                    facto()
 
 
 
