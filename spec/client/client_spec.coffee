@@ -47,7 +47,6 @@ describe 'Client', ipso (should) ->
             value: 'pending'
             at: new Date
 
-        EngineClient = require 'engine.io-client'
         EngineClient.Socket = class
 
             #
