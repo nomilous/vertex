@@ -11,6 +11,8 @@ module.exports.create = (config = {}) ->
 
         serializers: 
 
+            err: Bunyan.stdSerializers.err 
+
             socket: (socket) -> 
 
                 id: socket.id

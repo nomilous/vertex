@@ -25,7 +25,9 @@ describe 'Hub', ipso (should) ->
             listen: port: 3001, hostname: 'test.local'
             secret: 'right'
 
-        logger = mock 'logger'
+        logger = mock('logger').with 
+
+            debug: -> # console.log arguments
 
 
         tag
@@ -132,8 +134,9 @@ describe 'Hub', ipso (should) ->
 
         context 'on connection', -> 
 
-            beforeEach ipso (Engine, ioServer, socket) -> 
+            beforeEach ipso (Engine, http, httpServer, ioServer, socket) -> 
 
+                http.does createServer: -> httpServer
                 ioServer.does on: (event, subscriber) -> 
 
                     if event is 'connection' 
@@ -170,8 +173,9 @@ describe 'Hub', ipso (should) ->
 
     context 'handshake()', -> 
 
-        before ipso (Engine, ioServer, socket) -> 
+        before ipso (Engine, http, httpServer, ioServer, socket) -> 
 
+            http.does createServer: -> httpServer
             Engine.does attach: -> return ioServer
 
             ioServer.does on: (event, subscriber) -> 

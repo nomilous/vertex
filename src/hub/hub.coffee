@@ -38,10 +38,9 @@ module.exports.create = (config, log) ->
             server.on 'connection', (socket) -> 
 
 
-                log.debug 
-
+                log.debug
                     socket: socket
-                    'connection'
+                    'hub connection'
 
 
                 local.clients[socket.id] = 
@@ -65,6 +64,15 @@ module.exports.create = (config, log) ->
 
                     callback error if typeof callback is 'function'
                     action.reject error
+                    return
+
+                #
+                # transport errors after connect?
+                #
+
+                log.error 
+                    err: error
+                    'transport error'
 
 
             transport.listen config.listen.port, config.listen.hostname, -> 
@@ -80,6 +88,12 @@ module.exports.create = (config, log) ->
             {secret, title, uuid, context} = data
 
             unless secret is config.secret
+
+                log.debug
+                    client: title: title, uuid: uuid
+                    socket: socket
+                    'hub deny'
+
                 socket.send VERSION + '{"event":"deny"}', -> socket.close()
                 return
 
@@ -91,7 +105,9 @@ module.exports.create = (config, log) ->
             try client = local.clients[socket.id]
             unless client?
 
-                local.log.error 'unknown socket id', socket: socket
+                log.error
+                    socket: socket
+                    'hub unknown socket id'
 
                 socket.send VERSION + '{"event":"deny"}', -> socket.close()
                 return 
@@ -120,6 +136,10 @@ module.exports.create = (config, log) ->
 
             local.index.uuid2socketid[uuid] = socket.id
 
+            log.debug
+                client: title: title, uuid: uuid
+                socket: socket
+                'hub accept'
 
             socket.send VERSION + '{"event":"accept"}'
 
