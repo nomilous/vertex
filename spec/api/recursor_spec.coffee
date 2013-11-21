@@ -152,6 +152,36 @@ describe 'Recursor', ->
 
 
 
+        it 'it recurses no further if function callback with body or statusCode',
+
+            ipso (facto, subject, config, options) -> 
+
+                config.with api: root: routes = 
+
+                    things: (opts, callback) -> 
+
+                        callback null, statusCode: 404
+
+                routes.things.$api = {}
+
+                #
+                # spy on recurse()
+                #
+
+                lastRecursedPath = undefined
+                subject.does _recurse: (opts, path) -> lastRecursedPath = path
+
+
+                subject.process( options.with
+
+                    path:    '/things/with/more/path/un/walked'
+
+                ).then (result) -> 
+
+                    result.should.eql statusCode: 404, body: ''
+                    lastRecursedPath.should.eql [ 'with', 'more', 'path', 'un', 'walked' ]
+                    facto()
+
 
 
 

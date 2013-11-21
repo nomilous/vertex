@@ -12,7 +12,7 @@ module.exports.create = (config, log) ->
 
             path = opts.path.split( '/' ).filter (p) -> p.length > 0
 
-            local.recurse opts, path, config.api.root, (error, result) -> 
+            local.recurse opts, path, config.api.root, (error, result, api) -> 
 
                 return action.reject error if error?
 
@@ -49,6 +49,20 @@ module.exports.create = (config, log) ->
                     opts.api  = object.$api
 
                     object opts, (error, result) -> 
+
+                        #
+                        # TODO: error
+                        # TODO: api function controls content type
+                        # 
+
+                        if result.body? or result.statusCode?
+
+                            return callback null,
+
+                                statusCode: result.statusCode || 200
+                                body: result.body || ''
+
+                                object.$api
 
                         object = result
                         run()
