@@ -34,11 +34,10 @@ module.exports = (config) ->
             # pending node-bunyan
             #
 
-            info: (message, objects) -> 
+            info: -> 
+            fatal: ->
 
-                console.log TODO: 'log.info': 
-                    message: message
-                    objects: objects
+
 
         status:
             value: 'pending'
@@ -159,6 +158,11 @@ module.exports = (config) ->
             return if local.connecting?
 
             interval = (try config.connect.interval) || 1000
+            if interval < 1000
+                
+                local.log.fatal 'connect interval too short'
+                return
+
             local[type] = setInterval (->
 
                 local.log.info type

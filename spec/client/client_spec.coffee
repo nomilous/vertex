@@ -19,7 +19,7 @@ describe 'Client', ipso (should) ->
             context: some: 'things'
             connect: 
                 uri: 'ws://localhost:3001'
-                interval: 10
+                interval: 1000
         
         tag
 

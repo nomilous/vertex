@@ -8,5 +8,6 @@ client = Client
     secret: 'π'
     connect: 
         uri: 'ws://localhost:3001'
+        interval: 100
 
 client.connect()
