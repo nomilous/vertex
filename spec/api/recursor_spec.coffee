@@ -198,3 +198,13 @@ describe 'Recursor', ->
 
 
 
+        "hmmm, all these it()s don't appear all that necessary to me": 
+
+            ipso (facto, subject) -> 
+
+                
+
+
+
+
+
