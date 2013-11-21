@@ -3,7 +3,7 @@
 describe 'Client', ipso (should) -> 
 
 
-    before ipso (done, Client, bunyan) -> 
+    before ipso (Client, bunyan) -> 
 
         logger = mock('logger').with 
 
@@ -32,8 +32,6 @@ describe 'Client', ipso (should) ->
 
             subject: Client.create config
             EngineClient: require 'engine.io-client'
-
-        .then done
 
 
     beforeEach ipso (subject, socket, EngineClient) ->

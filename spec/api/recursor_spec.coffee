@@ -2,7 +2,7 @@
 
 describe 'Recursor', -> 
 
-    before ipso (done, Recursor) -> 
+    before ipso (Recursor) -> 
 
         mock('options').with
 
@@ -13,8 +13,6 @@ describe 'Recursor', ->
             subject: Recursor.create mock('config').with 
 
                 api: root: path: to: thing: {}
-
-        .then done
 
 
     context 'process()', -> 
@@ -202,7 +200,7 @@ describe 'Recursor', ->
 
             ipso (facto, subject) -> 
 
-                
+
 
 
 
