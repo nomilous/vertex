@@ -12,7 +12,7 @@ describe 'Recursor', ->
 
             subject: Recursor.create mock('config').with 
 
-                api: root: path: to: thing: {}
+                www: root: path: to: thing: {}
 
 
     context 'process()', -> 
@@ -53,7 +53,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/not/present'
-                config.with  api: root: thing: in: tree: ''
+                config.with  www: root: thing: in: tree: ''
 
                 subject.process( options ).then ({statusCode}) -> 
 
@@ -66,7 +66,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing'
-                config.with  api: root: thing: is: 'present'
+                config.with  www: root: thing: is: 'present'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -80,7 +80,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with  api: root: thing: in: tree: is: 'fruit'
+                config.with  www: root: thing: in: tree: is: 'fruit'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -94,8 +94,8 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with api: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
-                config.api.root.thing.in.$api = {}
+                config.with www: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
+                config.www.root.thing.in.$api = {}
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -109,7 +109,7 @@ describe 'Recursor', ->
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
-                config.with api: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
+                config.with www: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -121,7 +121,7 @@ describe 'Recursor', ->
 
             ipso (facto, subject, config, options) -> 
 
-                config.with api: root: routes = 
+                config.with www: root: routes = 
 
                     things: (opts, callback) -> 
 
@@ -154,7 +154,7 @@ describe 'Recursor', ->
 
             ipso (facto, subject, config, options) -> 
 
-                config.with api: root: routes = 
+                config.with www: root: routes = 
 
                     things: (opts, callback) -> 
 
