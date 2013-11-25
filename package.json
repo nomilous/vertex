@@ -18,7 +18,7 @@
     "bunyan": "~0.22.0"
   },
   "devDependencies": {
-    "ipso": "0.0.14",
+    "ipso": "0.0.15",
     "should": "~2.0.2",
     "dinkum": "0.0.3",
     "mongoose": "~3.8.0"
