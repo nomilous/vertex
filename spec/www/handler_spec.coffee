@@ -122,7 +122,7 @@ describe 'Handler.create()', ipso (Handler) ->
 
             ipso (facto, handler, config, request, response) -> 
 
-                config.with api: allowRoot: true
+                config.with www: allowRoot: true
                 
                 stream = mock('stream').does
 
@@ -161,7 +161,7 @@ describe 'Handler.create()', ipso (Handler) ->
                 
 
 
-        xit 'configurable option to get the stream into a $api function instead'
+        xit 'configurable option to get the stream into a $www function instead'
 
 
 
@@ -170,8 +170,9 @@ describe 'Handler.create()', ipso (Handler) ->
         before ipso (done) -> 
 
             Handler.create 
-                allowRoot: true
-                root: modules: {}
+                www:
+                    allowRoot: true
+                    root: modules: {}
 
             tag( handler1: Handler._test() )
 

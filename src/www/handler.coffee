@@ -8,7 +8,7 @@ module.exports._test  = -> lastInstance
 module.exports.create = (config, log) ->
 
     config ||= {}
-    config.api ||= {}
+    config.www ||= {}
 
     lastInstance = local = 
 
@@ -37,11 +37,23 @@ module.exports.create = (config, log) ->
 
                 (result) -> 
 
-                    try body = JSON.stringify result.body # option
+                    #
+                    # TODO: incoherent here, 
+                    #       pending content encoder defaulting properly
+                    #       pending cache store activated from result.www[cache]{config}
+                    #       too much work assembling result.headers in www function callback
+                    #
+
                     result.headers ||= {}
+                    body = result.body
+                    unless result.headers['Content-Type']?
+                        body = JSON.stringify body # option
+                        #
+                        # TODO: error 
+                        #
 
                     if body? 
-                        result.headers['Content-Type'] = 'application/json'
+                        result.headers['Content-Type'] ||= 'application/json'
                         result.headers['Content-Length'] = body.length
 
                     res.writeHead result.statusCode || 200, result.headers
@@ -75,7 +87,7 @@ module.exports.create = (config, log) ->
             path  = req.url
             try [m, path, query] = req.url.match /^(.*?)\?(.*)/
 
-            if path is '/' and not config.api.allowRoot
+            if path is '/' and not config.www.allowRoot
                 res.writeHead 404
                 return res.end()
 

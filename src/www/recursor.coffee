@@ -12,7 +12,7 @@ module.exports.create = (config, log) ->
 
             path = opts.path.split( '/' ).filter (p) -> p.length > 0
 
-            local.recurse opts, path, config.www.root, (error, result, www) -> 
+            local.recurse opts, path, config.www.root, (error, result) -> 
 
                 return action.reject error if error?
 
@@ -66,6 +66,7 @@ module.exports.create = (config, log) ->
                             return callback null,
 
                                 statusCode: result.statusCode || 200
+                                headers: result.headers
                                 body: result.body || ''
                                 www: object.$www
 
