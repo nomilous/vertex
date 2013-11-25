@@ -12,7 +12,7 @@ module.exports.create = (config, log) ->
 
             path = opts.path.split( '/' ).filter (p) -> p.length > 0
 
-            local.recurse opts, path, config.www.root, (error, result, api) -> 
+            local.recurse opts, path, config.www.root, (error, result, www) -> 
 
                 return action.reject error if error?
 
@@ -38,21 +38,27 @@ module.exports.create = (config, log) ->
                         statusCode: 200
                         body: object
 
+                        #
+                        # TODO: recursor may have walked into fuction result subtree
+                        #       the $www "config" from that may be necessary in the
+                        #       handler receiving this callback
+                        #
+
 
                 if typeof object is 'function'
 
-                    unless object.$api
+                    unless object.$www
 
                         return callback null, statusCode: 404
 
                     opts.rest = path
-                    opts.api  = object.$api
+                    opts.www  = object.$www
 
                     object opts, (error, result) -> 
 
                         #
                         # TODO: error
-                        # TODO: api function controls content type
+                        # TODO: www function controls content type
                         # 
 
                         if result.body? or result.statusCode?
@@ -61,8 +67,7 @@ module.exports.create = (config, log) ->
 
                                 statusCode: result.statusCode || 200
                                 body: result.body || ''
-
-                                object.$api
+                                www: object.$www
 
                         object = result
                         run()

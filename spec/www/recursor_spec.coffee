@@ -89,13 +89,13 @@ describe 'Recursor', ->
                     facto()
 
 
-        it '"recurses" into $api functions in the tree',
+        it '"recurses" into $www functions in the tree',
 
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
                 config.with www: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
-                config.www.root.thing.in.$api = {}
+                config.www.root.thing.in.$www = {}
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -117,7 +117,7 @@ describe 'Recursor', ->
                     facto()
 
 
-        it 'passes opts to $api function', 
+        it 'passes opts to $www function', 
 
             ipso (facto, subject, config, options) -> 
 
@@ -130,7 +130,7 @@ describe 'Recursor', ->
                         opts.path.should.equal    '/things/1/nested/23'
                         opts.query.should.equal   'query'
                         opts.rest.should.eql      ['1', 'nested', '23']
-                        opts.api.should.eql       configure: eg: roles: ['admin']
+                        opts.www.should.eql       configure: eg: roles: ['admin']
                         facto()
 
                     deeper: 
@@ -138,8 +138,8 @@ describe 'Recursor', ->
                         stuff: (opts, allback) -> 
 
 
-                routes.things.$api       = configure: eg: roles: ['admin']
-                routes.deeper.stuff.$api = {}
+                routes.things.$www       = configure: eg: roles: ['admin']
+                routes.deeper.stuff.$www = {}
 
                 subject.process options.with
 
@@ -150,7 +150,7 @@ describe 'Recursor', ->
 
 
 
-        it 'recurses no further if function callback with body or statusCode',
+        it 'recurses no further if function callback with body, statusCode and www config',
 
             ipso (facto, subject, config, options) -> 
 
@@ -160,7 +160,7 @@ describe 'Recursor', ->
 
                         callback null, statusCode: 404
 
-                routes.things.$api = {}
+                routes.things.$www = configKey: 'configValue'
 
                 #
                 # spy on recurse()
@@ -176,22 +176,25 @@ describe 'Recursor', ->
 
                 ).then (result) -> 
 
-                    result.should.eql statusCode: 404, body: ''
+                    result.should.eql 
+                        statusCode: 404
+                        body: ''
+                        www: configKey: 'configValue'
                     lastRecursedPath.should.eql [ 'with', 'more', 'path', 'un', 'walked' ]
                     facto()
 
 
 
-        it 'calls back with the accompanying $api hash',
+        it 'calls back with the accompanying $www hash',
 
             ipso (facto, subject) -> 
 
                 root = module: function: (opts, callback) -> callback null, statusCode: 404
-                root.module.function.$api = configKey: 'configValue'
+                root.module.function.$www = configKey: 'configValue'
 
-                subject.recurse {}, ['module', 'function'], root, (error, result, api) ->
+                subject.recurse {}, ['module', 'function'], root, (error, result) ->
 
-                    api.should.eql configKey: 'configValue'
+                    result.www.should.eql configKey: 'configValue'
                     facto()
 
 
