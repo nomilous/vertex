@@ -104,12 +104,13 @@ describe 'Recursor', ->
                     facto()
 
 
-        it 'does not "recurse" into non $api fuctions',
+        it 'does not "recurse" into non $www fuctions',
 
             ipso (facto, subject, config, options) -> 
 
                 options.with path: '/thing/in/tree/is'
                 config.with www: root: thing: in: (opts, callback) -> callback null, tree: is: 'fruit'
+                # config.www.root.thing.in.$www = {}
 
                 subject.process( options ).then ({statusCode, body}) -> 
 
@@ -176,10 +177,14 @@ describe 'Recursor', ->
 
                 ).then (result) -> 
 
+                    # console.log result
+
                     result.should.eql 
                         statusCode: 404
+                        headers: undefined   # <-------------------------------------------------------------------------- eeek
                         body: ''
                         www: configKey: 'configValue'
+
                     lastRecursedPath.should.eql [ 'with', 'more', 'path', 'un', 'walked' ]
                     facto()
 
