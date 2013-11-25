@@ -1,6 +1,7 @@
 {parse} = require 'querystring'
 {pipeline, deferred} = require 'also'
 Recursor = require './recursor'
+Cache    = require './cache'
 
 lastInstance          = undefined
 module.exports._test  = -> lastInstance
@@ -14,6 +15,7 @@ module.exports.create = (config, log) ->
         root: config.root || {}
 
         recursor: Recursor.create config, log
+        cache: Cache.create config, log
 
         prepare: deferred (action, opts) -> 
 

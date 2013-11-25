@@ -61,6 +61,13 @@ describe 'Handler.create()', ipso (Handler) ->
             Handler.create config, logger
 
 
+    it 'creates a Cache with the config tree and logger', 
+
+        ipso (Cache, config, logger) -> 
+
+            Cache.does create: (conf, log) -> conf.is config; log.is logger
+            Handler.create config, logger
+
 
     context 'handle()', -> 
 
