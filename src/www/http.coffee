@@ -23,7 +23,7 @@ module.exports.create = (config, log) ->
             # TODO: similar to hub.listen - deduplicate
             #
 
-            return unless try listenArgs = config.api.listen
+            return unless try listenArgs = config.www.listen
 
             port      = parseInt listenArgs.port
             hostname  = listenArgs.hostname

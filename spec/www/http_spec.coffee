@@ -1,6 +1,6 @@
 {ipso, mock} = require 'ipso'
 
-describe 'Api', ipso (Api, should) -> 
+describe 'Http', ipso (Http, should) -> 
 
     @timeout 100
 
@@ -8,7 +8,7 @@ describe 'Api', ipso (Api, should) ->
 
         mock('config').with
 
-            api: listen: port: 2999, hostname: 'test.local'
+            www: listen: port: 2999, hostname: 'test.local'
 
         mock('server').with
 
@@ -25,11 +25,11 @@ describe 'Api', ipso (Api, should) ->
 
     context 'create()', ->
 
-        it 'creates an api server instance with handler and status', 
+        it 'creates an www server instance with handler and status', 
 
             ipso (config, Handler) -> 
 
-                instance = Api.create config
+                instance = Http.create config
                 instance.handler.should.equal Handler._test().handle
                 instance.status.value.should.equal 'pending'
                 instance.status.at.should.be.an.instanceof Date
@@ -45,13 +45,13 @@ describe 'Api', ipso (Api, should) ->
                     logger.is log
                     return handler
 
-                instance = Api.create config, logger
+                instance = Http.create config, logger
 
 
 
     context 'listen()', -> 
 
-        it 'starts http listening at config.api.listen.port and hostname', 
+        it 'starts http listening at config.www.listen.port and hostname', 
 
             ipso (facto, http, server, config, logger) -> 
 
@@ -63,10 +63,10 @@ describe 'Api', ipso (Api, should) ->
                                 hostname.should.equal 'test.local'
                                 facto()
 
-                Api.create( config, logger ).listen ->
+                Http.create( config, logger ).listen ->
         
 
-        it 'sets status to listening and callsback with local api instance',
+        it 'sets status to listening and callsback with local www instance',
 
             ipso (facto, http, server, config, logger) ->
 
@@ -76,12 +76,12 @@ describe 'Api', ipso (Api, should) ->
                             listen: (args...) -> args.pop()() # callback is last arg
                         
 
-                instance = Api.create config, logger
-                instance.listen (err, api) -> 
+                instance = Http.create config, logger
+                instance.listen (err, www) -> 
 
-                    api.should.equal instance
-                    api.status.value.should.equal 'listening'
-                    api.status.at.should.be.an.instanceof Date
+                    www.should.equal instance
+                    www.status.value.should.equal 'listening'
+                    www.status.at.should.be.an.instanceof Date
                     facto()
 
 
@@ -96,8 +96,8 @@ describe 'Api', ipso (Api, should) ->
                             on: (pub, sub) -> 
                                 if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
-                instance = Api.create config, logger
-                instance.listen (err, api) -> 
+                instance = Http.create config, logger
+                instance.listen (err, www) -> 
 
                     err.message.should.equal 'listen EADDRINUSE'
                     facto()
@@ -116,19 +116,19 @@ describe 'Api', ipso (Api, should) ->
             ipso (http, server, config, logger) -> 
 
                 http.does createServer: -> server
-                instance = Api.create config, logger
+                instance = Http.create config, logger
                 instance.listen().then.should.be.an.instanceof Function
 
 
-        it 'resolves the promise on listen callback with the api instance',
+        it 'resolves the promise on listen callback with the www instance',
 
             ipso (facto, http, server, config, logger) -> 
 
                 http.does createServer: -> server.does listen: (args...) -> args.pop()()
-                instance = Api.create config, logger
-                instance.listen().then (api) -> 
+                instance = Http.create config, logger
+                instance.listen().then (www) -> 
 
-                    api.should.equal Api._test()
+                    www.should.equal Http._test()
                     facto()
 
 
@@ -140,7 +140,7 @@ describe 'Api', ipso (Api, should) ->
                     
                     if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
-                instance = Api.create config, logger
+                instance = Http.create config, logger
                 instance.listen().then (->), (error) -> 
 
                     error.message.should.equal 'listen EADDRINUSE'
@@ -160,6 +160,6 @@ describe 'Api', ipso (Api, should) ->
                             listen: (args...) -> args.pop()()
                             close: -> facto()   
 
-                instance = Api.create config, logger
+                instance = Http.create config, logger
                 instance.listen -> instance.close()
 

@@ -1,6 +1,6 @@
 {v4}       = require 'node-uuid'
 {parallel} = require 'also'
-Api        = require './api/api'
+Http       = require './www/http'
 Hub        = require './hub/hub'
 Logger     = require './logger/logger'
 
@@ -15,18 +15,18 @@ module.exports = (config) ->
     parallel([
 
 
-        -> if config.api? then Api.create( config, log ).listen()
+        -> if config.www?    then Http.create( config, log ).listen()
         -> if config.listen? then Hub.create( config, log ).listen()
 
 
     ]).then(
 
-        ([api, hub]) -> 
+        ([www, hub]) -> 
 
-            if api? then log.info
+            if www? then log.info
             
-                listen: api.server.address()
-                'api listening'
+                listen: www.server.address()
+                'www listening'
 
 
             if hub? then log.info

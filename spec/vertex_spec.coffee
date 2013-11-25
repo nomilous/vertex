@@ -15,15 +15,15 @@ describe 'Vertex', ->
 
             title: 'Vertex Title'
             listen: port: 2998
-            api: listen: port: 2999
+            www: listen: port: 2999
             
 
 
     it 'creates an Api server with config and logger and starts listening', 
 
-        ipso (facto, Api, Vertex, config, logger) -> 
+        ipso (facto, Http, Vertex, config, logger) -> 
 
-            Api.does 
+            Http.does 
                 create: (conf, log) -> 
                     config.is conf
                     logger.is log
