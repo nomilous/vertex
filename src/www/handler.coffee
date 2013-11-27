@@ -1,5 +1,6 @@
 {parse} = require 'querystring'
 {pipeline, deferred} = require 'also'
+{readFile} = require 'fs'
 Recursor = require './recursor'
 Cache    = require './cache'
 
@@ -92,7 +93,22 @@ module.exports.create = (config, log) ->
                 return res.end()
 
             #
-            # todo: inbound encoding?, optional carry stream emitter into api functions
+            # quick hac to get engine.io.js to client
+            # =======================================
+            # 
+            # todo: not cool, make plan
+            # todo: component?: https://github.com/component/component
+            #
+
+            if path is '/engine.io.js'
+                res.writeHead 200, 'Content-Type': 'text/javascript'
+                eioClientScript = __dirname + '/../../node_modules/engine.io-client/engine.io.js'
+                return readFile eioClientScript, (err, buf) -> res.end buf.toString()
+
+
+
+            #
+            # todo: inbound encoding?, optional carry stream emitter into www functions
             #
 
             body = ''

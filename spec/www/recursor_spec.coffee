@@ -151,7 +151,7 @@ describe 'Recursor', ->
 
 
 
-        it 'recurses no further if function callback with body, statusCode and www config',
+        it 'recurses no further if function callback with body or statusCode',
 
             ipso (facto, subject, config, options) -> 
 

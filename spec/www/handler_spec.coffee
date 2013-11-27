@@ -83,6 +83,25 @@ describe 'Handler.create()', ipso (Handler) ->
                 end: -> 
 
 
+        it 'responds to /engine.io.js with the client side script', 
+
+            ipso (facto, handler, config, request, response) -> 
+
+                handler.handle( 
+
+                    request.with 
+
+                        url: '/engine.io.js'
+                        method: 'GET'
+
+                    response.does
+
+                        end: (body) -> 
+
+                            body.should.match /engine\.io/
+                            facto()
+
+                ) 
         
 
         it 'calls responder() with request details and response object', 
