@@ -330,12 +330,9 @@ describe 'Hub', ipso (should) ->
 
             ipso (subject, socket) -> 
 
+                delete subject.clients[id] for id of subject.clients
 
                 receivers = []
-
-                for id of subject.clients
-
-                    delete subject.clients[id]
 
                 subject.clients['SOCKET_ID'] = 
 
