@@ -182,19 +182,18 @@ describe 'Hub', ipso (should) ->
 
                 if event is 'connection' then subscriber socket
 
-            socket.does on: (event, subscriber) =>
+            socket.does on: (pub, sub) =>
 
-                if event is 'message' 
+                if pub is 'message' 
 
                     #
                     # mock inbound handshake
                     #
 
-                    subscriber "1#{
-                        JSON.stringify
-                            event: 'handshake'
-                            data: @data
-                    }"
+                    sub JSON.stringify
+                        event: 'handshake'
+                        data: @data
+                    
 
         beforeEach ipso (subject) -> 
 
@@ -223,7 +222,7 @@ describe 'Hub', ipso (should) ->
 
                 socket.does send: (message) -> 
 
-                    message.should.equal '1{"event":"deny"}'
+                    message.should.equal '{"event":"deny"}'
                     facto()
 
 
@@ -237,7 +236,7 @@ describe 'Hub', ipso (should) ->
 
                 socket.does send: (message) -> 
 
-                    message.should.equal '1{"event":"accept"}'
+                    message.should.equal '{"event":"accept"}'
                     facto()
 
                 @data = secret: 'right'

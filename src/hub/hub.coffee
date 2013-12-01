@@ -1,4 +1,10 @@
-VERSION    = 1 
+
+#
+# TODO: move version "agreement" into handshake
+#
+
+
+# VERSION    = 1 
 engine     = require 'engine.io'
 http       = require 'http'
 {deferred} = require 'also'
@@ -52,8 +58,8 @@ module.exports.create = (config, log) ->
 
                 socket.on 'message', (payload) -> 
 
-                    version =       payload[0]
-                    {event, data} = JSON.parse payload[1..]
+                    #version =       payload[0]
+                    {event, data} = JSON.parse payload # [1..]
                     local[event] socket, data
 
 
@@ -94,7 +100,7 @@ module.exports.create = (config, log) ->
                     socket: socket
                     'hub deny'
 
-                socket.send VERSION + '{"event":"deny"}', -> socket.close()
+                socket.send '{"event":"deny"}', -> socket.close()
                 return
 
                 #
@@ -109,7 +115,7 @@ module.exports.create = (config, log) ->
                     socket: socket
                     'hub unknown socket id'
 
-                socket.send VERSION + '{"event":"deny"}', -> socket.close()
+                socket.send '{"event":"deny"}', -> socket.close()
                 return 
 
                 #
@@ -141,7 +147,7 @@ module.exports.create = (config, log) ->
                 socket: socket
                 'hub accept'
 
-            socket.send VERSION + '{"event":"accept"}'
+            socket.send '{"event":"accept"}'
 
 
 

@@ -48,5 +48,3 @@ module.exports = (config) ->
 
     )
 
-
-module.exports.Client = require './client/client'
