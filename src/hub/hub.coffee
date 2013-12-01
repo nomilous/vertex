@@ -5,7 +5,6 @@
 # 
 
 
-# VERSION    = 1 
 engine     = require 'engine.io'
 http       = require 'http'
 {deferred} = require 'also'
@@ -59,8 +58,7 @@ module.exports.create = (config, log) ->
 
                 socket.on 'message', (payload) -> 
 
-                    #version =       payload[0]
-                    {event, data} = JSON.parse payload # [1..]
+                    {event, data} = JSON.parse payload
                     local[event] socket, data
 
 
@@ -138,7 +136,7 @@ module.exports.create = (config, log) ->
             client.uuid    = uuid
             client.context = context
 
-            client.status.value = 'authorized'
+            client.status.value = 'accepted'
             client.status.at    = local.timestamp()
 
             local.index.uuid2socketid[uuid] = socket.id
@@ -149,6 +147,27 @@ module.exports.create = (config, log) ->
                 'hub accept'
 
             socket.send '{"event":"accept"}'
+
+
+        #
+        # TODO: * distribute peer list for broadcast reference
+        #           * peer arrives / peer departs (on explicit depart / on timeout if connect lost)
+        #           * include context assocaited to uuid
+        #       * broadcast contains to origin uuid
+        #       
+        #
+
+        broadcast: (socket, data) ->
+
+            clients = local.clients
+            payload = JSON.stringify data
+
+            for id of clients
+
+                continue if id is socket.id
+                client = clients[id]
+                continue unless client.status.value is 'accepted'
+                client.socket.send payload
 
 
 

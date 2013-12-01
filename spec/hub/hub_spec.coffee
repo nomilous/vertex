@@ -260,7 +260,7 @@ describe 'Hub', ipso (should) ->
                 client.uuid.should.equal  'UUID'
                 client.context.should.eql  starting: context: 1
 
-        it 'updates status to authorized',
+        it 'updates status to accepted',
 
             ipso (subject, socket) -> 
 
@@ -275,7 +275,7 @@ describe 'Hub', ipso (should) ->
                 subject.listen()
 
                 status = subject.clients['SOCKET_ID'].status
-                status.value.should.equal 'authorized'
+                status.value.should.equal 'accepted'
                 status.at.should.equal 'TIMESTAMP'
 
 
@@ -314,6 +314,62 @@ describe 'Hub', ipso (should) ->
 
                 client = subject.clients['NEW_SOCKET_ID']
                 client.cache.should.eql key: 'value'
+
+
+    context 'disconnect()', -> 
+
+
+        it 'sets the client status'
+
+
+    context 'broadcast()', -> 
+
+
+        it 'broadcasts the inbound message to all other accepted sockets except self', 
+
+
+            ipso (subject, socket) -> 
+
+
+                receivers = []
+
+                for id of subject.clients
+
+                    delete subject.clients[id]
+
+                subject.clients['SOCKET_ID'] = 
+
+                    status: value: 'accepted'
+                    socket: socket.with 
+                        id: 'SOCKET_ID'
+                        send: -> receivers.push 'SOCKET_ID'
+
+                for id in ['SOCKET_2', 'SOCKET_4'] 
+
+                    do (id) -> 
+
+                        subject.clients[id] = 
+
+                            status: value: 'accepted' # SOCKET_2 & 4 are accepted
+                            socket: mock(id).does
+                                send: (data) -> 
+                                    data.should.equal '{"da":"ta"}' 
+                                    receivers.push id
+
+                subject.clients['SOCKET_3'] =
+                    status: value: 'connected'
+                    socket: 
+                        send: (data) -> 
+                            receivers.push 'SOCKET_3'
+
+
+                subject.broadcast socket, da: 'ta'
+                receivers.should.eql [ 'SOCKET_2', 'SOCKET_4' ]
+
+
+
+
+
 
 
     context 'on message', ->
