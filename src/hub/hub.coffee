@@ -1,7 +1,8 @@
 
 #
 # TODO: move version "agreement" into handshake
-#
+#       enable per uuid secret, probably via userdefined config.authenticate()
+# 
 
 
 # VERSION    = 1 
