@@ -17,5 +17,5 @@ module.exports.create = (config = {}) ->
 
                 id: socket.id
                 readyState: socket.transport.readyState
-                request: socket.request.url
+                request: try socket.request.url
 

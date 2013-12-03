@@ -318,8 +318,53 @@ describe 'Hub', ipso (should) ->
 
     context 'disconnect()', -> 
 
+        before ipso (Engine, http, httpServer, ioServer) -> 
 
-        it 'sets the client status'
+            #
+            # mock attaching socket
+            #
+
+            socket = mock('disconnects')
+
+            http.does createServer: -> httpServer
+            Engine.does attach: -> return ioServer
+            ioServer.does on: (event, subscriber) -> 
+                if event is 'connection' then subscriber socket
+
+
+        it 'is called on socket close', 
+
+            ipso (subject, disconnects) -> 
+
+                disconnects.does on: (pub, sub) -> if pub is 'close' then sub()
+
+                            # ipso (subject, socket) -> 
+                            #
+                            #
+                            # ipso bug: could not reuse mock socket here...
+                            #           "socket.on already stubbed"
+                            # 
+                            #
+
+                subject.does disconnect: (socket) -> disconnects.is socket
+                subject.listen().then
+
+
+
+        it 'sets the client status', 
+
+            ipso (subject, disconnects) -> 
+
+                disconnects.with id: 'DISCONNECTING_SOCKET_ID'
+                subject.clients['DISCONNECTING_SOCKET_ID'] = {}
+
+                disconnects.does on: (pub, sub) -> if pub is 'close' then sub()
+                subject.listen()
+
+                status = subject.clients['DISCONNECTING_SOCKET_ID'].status
+
+                status.value.should.equal 'disconnected'
+                status.at.should.be.an.instanceof Date
 
 
     context 'broadcast()', -> 

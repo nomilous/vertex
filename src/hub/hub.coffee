@@ -20,7 +20,6 @@ module.exports.create = (config, log) ->
         clients: {}
 
         index: 
-
             uuid2socketid: {}
 
 
@@ -56,11 +55,15 @@ module.exports.create = (config, log) ->
                         at: local.timestamp()
                     socket: socket
 
+
+
                 socket.on 'message', (payload) -> 
 
                     {event, data} = JSON.parse payload
                     local[event] socket, data
 
+
+                socket.on 'close', -> local.disconnect socket
 
 
             transport.on 'error', (error) -> 
@@ -86,7 +89,7 @@ module.exports.create = (config, log) ->
                 local.status.at = new Date
                 callback null, local if typeof callback is 'function'
                 action.resolve local
-                    
+
 
         handshake: (socket, data) -> 
 
@@ -147,6 +150,32 @@ module.exports.create = (config, log) ->
                 'hub accept'
 
             socket.send '{"event":"accept"}'
+
+
+        disconnect: (socket) -> 
+
+            client = local.clients[socket.id]
+
+            unless client?
+
+                log.debug
+                    socket: socket
+                    'unknown socket disconnected'
+
+            log.debug
+                client: 
+                    title: client.title
+                    uuid: client.uuid
+                socket: socket
+                'disconnected'
+
+            client.status.value = 'disconnected'
+            client.status.at    = local.timestamp()
+
+
+            #
+            # TODO: reap (after time)
+            #
 
 
         #
