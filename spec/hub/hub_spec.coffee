@@ -318,13 +318,13 @@ describe 'Hub', ipso (should) ->
 
     context 'disconnect()', -> 
 
-        before ipso (Engine, http, httpServer, ioServer) -> 
+        before ipso (Engine, http, httpServer, ioServer, socket) -> 
 
             #
             # mock attaching socket
             #
 
-            socket = mock('disconnects')
+            #socket = mock('disconnects')
 
             http.does createServer: -> httpServer
             Engine.does attach: -> return ioServer
@@ -334,11 +334,10 @@ describe 'Hub', ipso (should) ->
 
         it 'is called on socket close', 
 
-            ipso (subject, disconnects) -> 
+            ipso (subject, socket) -> 
 
-                disconnects.does on: (pub, sub) -> if pub is 'close' then sub()
+                socket.does on: (pub, sub) -> if pub is 'close' then sub()
 
-                            # ipso (subject, socket) -> 
                             #
                             #
                             # ipso bug: could not reuse mock socket here...
@@ -346,19 +345,19 @@ describe 'Hub', ipso (should) ->
                             # 
                             #
 
-                subject.does disconnect: (socket) -> disconnects.is socket
+                subject.does disconnect: (s) -> socket.is s
                 subject.listen().then
 
 
 
-        it 'sets the client status', 
+        it 'sets the client status to disconnected', 
 
-            ipso (subject, disconnects) -> 
+            ipso (subject, socket) -> 
 
-                disconnects.with id: 'DISCONNECTING_SOCKET_ID'
+                socket.with id: 'DISCONNECTING_SOCKET_ID'
                 subject.clients['DISCONNECTING_SOCKET_ID'] = {}
 
-                disconnects.does on: (pub, sub) -> if pub is 'close' then sub()
+                socket.does on: (pub, sub) -> if pub is 'close' then sub()
                 subject.listen()
 
                 status = subject.clients['DISCONNECTING_SOCKET_ID'].status

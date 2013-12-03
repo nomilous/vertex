@@ -152,6 +152,8 @@ module.exports.create = (config, log) ->
             socket.send '{"event":"accept"}'
 
 
+
+
         disconnect: (socket) -> 
 
             client = local.clients[socket.id]
@@ -161,6 +163,8 @@ module.exports.create = (config, log) ->
                 log.debug
                     socket: socket
                     'unknown socket disconnected'
+
+                return
 
             log.debug
                 client: 
