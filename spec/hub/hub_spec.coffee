@@ -320,12 +320,6 @@ describe 'Hub', ipso (should) ->
 
         before ipso (Engine, http, httpServer, ioServer, socket) -> 
 
-            #
-            # mock attaching socket
-            #
-
-            #socket = mock('disconnects')
-
             http.does createServer: -> httpServer
             Engine.does attach: -> return ioServer
             ioServer.does on: (event, subscriber) -> 
@@ -337,17 +331,8 @@ describe 'Hub', ipso (should) ->
             ipso (subject, socket) -> 
 
                 socket.does on: (pub, sub) -> if pub is 'close' then sub()
-
-                            #
-                            #
-                            # ipso bug: could not reuse mock socket here...
-                            #           "socket.on already stubbed"
-                            # 
-                            #
-
                 subject.does disconnect: (s) -> socket.is s
                 subject.listen().then
-
 
 
         it 'sets the client status to disconnected', 
