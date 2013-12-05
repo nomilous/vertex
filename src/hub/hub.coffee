@@ -110,6 +110,8 @@ module.exports.create = (config, log) ->
                 #
 
 
+            action = 'join'
+
             try client = local.clients[socket.id]
             unless client?
 
@@ -127,11 +129,17 @@ module.exports.create = (config, log) ->
 
             if previousID = local.index.uuid2socketid[uuid]
 
+                action = 'resume'
+
                 previousClient = local.clients[previousID]
                 client.cache = previousClient.cache
 
                 #
                 # TODO: delete previous client reference
+                #    
+                #    * pending decision: allow more than one connection per uuid
+                #    * currenly allowed, and this 'resume' will occur on all
+                #      subsequent / concurrent connections (not ideal)
                 #
 
 
@@ -151,7 +159,17 @@ module.exports.create = (config, log) ->
 
             socket.send '{"event":"accept"}'
 
+                    #
+                    # TODO: send current peer list to newly accepted client
+                    #
 
+            local.broadcast socket,
+
+                event: 'peer'
+                action: action
+                uuid: client.uuid
+                title: client.title
+                context: client.context
 
 
         disconnect: (socket) -> 
@@ -175,6 +193,10 @@ module.exports.create = (config, log) ->
 
             client.status.value = 'disconnected'
             client.status.at    = local.timestamp()
+
+            #
+            # TOOD: send depart to all accpeted clients  
+            #
 
 
             #

@@ -243,6 +243,41 @@ describe 'Hub', ipso (should) ->
                 subject.listen()
 
 
+        it 'broadcasts "peer" event with "join" action on accept handshake', 
+
+            ipso (facto, subject, socket) -> 
+
+                subject.does
+
+                    broadcast: (originSocket, message) -> 
+
+                        socket.is originSocket
+
+                        message.should.eql 
+
+                            event: 'peer'
+                            action: 'join'
+                            uuid: 'UUID'
+                            title: 'Title'
+                            context: 
+                                some: 'stuff'
+
+                        facto()
+
+
+
+                @data = 
+                    title:   'Title'
+                    uuid:    'UUID'
+                    secret: 'right'
+                    context: 
+                        some: 'stuff'
+                    
+
+                subject.listen()
+
+
+
         it 'stores title, uuid and context in clients collection',
 
             ipso (subject, socket) -> 
