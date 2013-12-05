@@ -198,6 +198,8 @@ describe 'Hub', ipso (should) ->
         beforeEach ipso (subject) -> 
 
             subject.clients = {}
+            uuid2socketid = subject.index.uuid2socketid
+            delete uuid2socketid[uuid] for uuid of uuid2socketid
 
             @data = 'HANDSHAKE_DATA'
 
@@ -243,7 +245,7 @@ describe 'Hub', ipso (should) ->
                 subject.listen()
 
 
-        it 'broadcasts "peer" event with "join" action on accept handshake', 
+        it 'broadcasts "peer" event with "join" action to inform existing client of new peer', 
 
             ipso (facto, subject, socket) -> 
 
@@ -273,6 +275,31 @@ describe 'Hub', ipso (should) ->
                     context: 
                         some: 'stuff'
                     
+
+                subject.listen()
+
+
+        it 'sends currently connected peer list to new client',
+
+            ipso (facto, subject, socket) -> 
+
+
+                socket.does send: (payload) -> 
+
+                    message = JSON.parse payload
+
+                    if message.event is 'peer'
+                        message.action.should.equal 'list'
+                        message.list.should.eql {}
+                        facto()
+
+                @data = 
+                    title:   'Title'
+                    uuid:    'UUID'
+                    secret: 'right'
+                    context: 
+                        some: 'stuff'
+
 
                 subject.listen()
 
@@ -358,7 +385,11 @@ describe 'Hub', ipso (should) ->
             http.does createServer: -> httpServer
             Engine.does attach: -> return ioServer
             ioServer.does on: (event, subscriber) -> 
-                if event is 'connection' then subscriber socket
+                if event is 'connection' then subscriber socket.with id: 'SOCKET_ID'
+
+        beforeEach ipso (subject) -> 
+
+            subject.clients = {}
 
 
         it 'is called on socket close', 
@@ -370,20 +401,45 @@ describe 'Hub', ipso (should) ->
                 subject.listen().then
 
 
+
         it 'sets the client status to disconnected', 
 
             ipso (subject, socket) -> 
 
-                socket.with id: 'DISCONNECTING_SOCKET_ID'
-                subject.clients['DISCONNECTING_SOCKET_ID'] = {}
+                socket.with id: 'SOCKET_ID'
+                subject.clients['SOCKET_ID'] = {}
 
                 socket.does on: (pub, sub) -> if pub is 'close' then sub()
                 subject.listen()
 
-                status = subject.clients['DISCONNECTING_SOCKET_ID'].status
+                status = subject.clients['SOCKET_ID'].status
 
                 status.value.should.equal 'disconnected'
                 status.at.should.be.an.instanceof Date
+
+
+        it 'broadcasts "peer" event with "depart" action', 
+
+            ipso (subject, socket) -> 
+
+                subject.clients['SOCKET_ID'] = 
+
+                    uuid: 'UUID'
+                    status: {}
+                
+                subject.does
+
+                    broadcast: (originSocket, message) -> 
+
+                        message.should.eql
+
+                            event: 'peer'
+                            action: 'depart'
+                            uuid: 'UUID'
+
+                subject.disconnect socket
+
+
 
 
     context 'broadcast()', -> 

@@ -137,6 +137,7 @@ module.exports.create = (config, log) ->
                 #
                 # TODO: delete previous client reference
                 #    
+                #    ##undecided1
                 #    * pending decision: allow more than one connection per uuid
                 #    * currenly allowed, and this 'resume' will occur on all
                 #      subsequent / concurrent connections (not ideal)
@@ -159,9 +160,29 @@ module.exports.create = (config, log) ->
 
             socket.send '{"event":"accept"}'
 
-                    #
-                    # TODO: send current peer list to newly accepted client
-                    #
+            peers = {}
+            for otherUUID of local.index.uuid2socketid
+
+                continue if otherUUID is uuid
+                socketID = local.index.uuid2socketid[otherUUID]
+                peer = local.clients[socketID]
+
+                peers[otherUUID] = 
+
+                    title: peer.title
+                    context: peer.context
+
+
+            socket.send JSON.stringify
+
+                #
+                # de-bloat protocol later
+                #
+
+                event: 'peer'
+                action: 'list'
+                list: peers
+
 
             local.broadcast socket,
 
@@ -173,6 +194,8 @@ module.exports.create = (config, log) ->
 
 
         disconnect: (socket) -> 
+
+
 
             client = local.clients[socket.id]
 
@@ -194,14 +217,26 @@ module.exports.create = (config, log) ->
             client.status.value = 'disconnected'
             client.status.at    = local.timestamp()
 
-            #
-            # TOOD: send depart to all accpeted clients  
-            #
-
 
             #
             # TODO: reap (after time)
             #
+
+            
+            local.broadcast socket, 
+
+                event: 'peer'
+                action: 'depart'
+                uuid: client.uuid
+
+                #
+                # BUG: for as long as multiple hub connection with same uuid
+                #      are allowed (##undecided1) -- this depart is a problem
+                #      because it informs all clients of the first departure
+                #      despite possible subsequent concurrent connections 
+                #      with the sme uuid still being present
+                # 
+                #
 
 
         #
