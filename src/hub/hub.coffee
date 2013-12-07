@@ -262,8 +262,8 @@ module.exports.create = (config, log) ->
             #      need a more structured approach
             #
 
-            data.origin = origin.uuid unless data.uuid?
-            payload     = JSON.stringify data
+            data.uuid = origin.uuid unless data.uuid?
+            payload   = JSON.stringify data
 
             for id of clients
 

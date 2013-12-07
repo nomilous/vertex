@@ -482,7 +482,7 @@ describe 'Hub', ipso (should) ->
                 receivers.should.eql [ 'SOCKET_2', 'SOCKET_4' ]
 
 
-        it 'includes the origin uuid in the broadcase message',
+        it 'includes the origin uuid in the broadcast message',
 
             ipso (subject, socket) -> 
 
@@ -496,7 +496,7 @@ describe 'Hub', ipso (should) ->
                     status: value: 'accepted'
                     socket: send: (data) -> 
 
-                        JSON.parse( data ).origin.should.equal 'ORIGIN_UUID'
+                        JSON.parse( data ).uuid.should.equal 'ORIGIN_UUID'
 
                 subject.broadcast socket, da: 'ta'
 
