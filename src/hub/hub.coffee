@@ -250,7 +250,20 @@ module.exports.create = (config, log) ->
         broadcast: (socket, data) ->
 
             clients = local.clients
-            payload = JSON.stringify data
+            origin  = clients[socket.id]
+
+            #
+            # TODO: - broadcast should contain origin uuid
+            #       - possibly too expensive (payload size), alternative?
+            #
+
+            #
+            # hac: stick the uuid in if missing 
+            #      need a more structured approach
+            #
+
+            data.origin = origin.uuid unless data.uuid?
+            payload     = JSON.stringify data
 
             for id of clients
 

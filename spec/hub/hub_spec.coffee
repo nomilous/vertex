@@ -469,9 +469,7 @@ describe 'Hub', ipso (should) ->
 
                             status: value: 'accepted' # SOCKET_2 & 4 are accepted
                             socket: mock(id).does
-                                send: (data) -> 
-                                    data.should.equal '{"da":"ta"}' 
-                                    receivers.push id
+                                send: (data) -> receivers.push id
 
                 subject.clients['SOCKET_3'] =
                     status: value: 'connected'
@@ -484,7 +482,23 @@ describe 'Hub', ipso (should) ->
                 receivers.should.eql [ 'SOCKET_2', 'SOCKET_4' ]
 
 
+        it 'includes the origin uuid in the broadcase message',
 
+            ipso (subject, socket) -> 
+
+                delete subject.clients[id] for id of subject.clients
+
+                subject.clients['SOCKET_ID'] = 
+                    uuid: 'ORIGIN_UUID'
+
+                subject.clients['OTHER_SOCKET_ID'] = 
+                    uuid: 'UUID'
+                    status: value: 'accepted'
+                    socket: send: (data) -> 
+
+                        JSON.parse( data ).origin.should.equal 'ORIGIN_UUID'
+
+                subject.broadcast socket, da: 'ta'
 
 
 
