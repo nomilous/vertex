@@ -1,4 +1,5 @@
-`npm install vertex`
+**experimental/unstable** api changes still occur (**without** deprecation warnings) <br />
+`npm install vertex` 0.0.1 [license](./license)
 
 vertex
 ======
@@ -43,6 +44,8 @@ require('vertex')
 
 
 ```
+
+[vertex-examples](../vertex-examples)
 
 
 ### dev / test
