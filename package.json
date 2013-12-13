@@ -1,6 +1,6 @@
 {
   "name": "vertex",
-  "description": "Pending description",
+  "description": "No description.",
   "version": "0.0.1",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
@@ -14,15 +14,11 @@
     "also": "0.0.13",
     "engine.io": "~0.7.12",
     "engine.io-client": "~0.7.12",
-    "node-uuid": "~1.4.1",
-    "bunyan": "~0.22.0",
-    "ipso": "0.0.18"
+    "node-uuid": "~1.4.1"
   },
   "devDependencies": {
-    "ipso": "0.0.17",
-    "should": "~2.0.2",
-    "dinkum": "0.0.3",
-    "mongoose": "~3.8.0"
+    "ipso": "0.0.18",
+    "should": "~2.0.2"
   },
   "repository": "git@github.com:nomilous/vertex.git"
 }
