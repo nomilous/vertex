@@ -6,7 +6,7 @@ Cache    = require './cache'
 
 lastInstance          = undefined
 module.exports._test  = -> lastInstance
-module.exports.create = (config, log) ->
+module.exports.create = (config) ->
 
     config ||= {}
     config.www ||= {}
@@ -15,8 +15,8 @@ module.exports.create = (config, log) ->
 
         root: config.root || {}
 
-        recursor: Recursor.create config, log
-        cache: Cache.create config, log
+        recursor: Recursor.create config
+        cache: Cache.create config
 
         prepare: deferred (action, opts) -> 
 

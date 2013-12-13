@@ -4,13 +4,6 @@ describe 'Vertex', ->
 
     before ipso (Logger) -> 
 
-        logger = mock('logger').with 
-
-            info: -> 
-        
-        Logger.does create: -> logger
-
-
         mock('config').with 
 
             title: 'Vertex Title'
@@ -19,27 +12,25 @@ describe 'Vertex', ->
             
 
 
-    it 'creates an Api server with config and logger and starts listening', 
+    it 'creates an Api server with config and starts listening', 
 
-        ipso (facto, Http, Vertex, config, logger) -> 
+        ipso (facto, Http, Vertex, config) -> 
 
             Http.does 
-                create: (conf, log) -> 
+                create: (conf) -> 
                     config.is conf
-                    logger.is log
                     listen: -> facto()
 
             Vertex config
 
 
-    it 'creates an Hub server with config and logger and starts listening', 
+    it 'creates an Hub server with config and starts listening', 
 
-        ipso (facto, Hub, Vertex, config, logger) -> 
+        ipso (facto, Hub, Vertex, config) -> 
 
             Hub.does 
-                create: (conf, log) -> 
+                create: (conf) -> 
                     config.is conf
-                    logger.is log
                     listen: -> facto()
 
             Vertex config

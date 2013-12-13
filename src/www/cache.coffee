@@ -1,1 +1,1 @@
-module.exports.create = (config, log) ->
+module.exports.create = (config) ->

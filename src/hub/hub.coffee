@@ -9,7 +9,7 @@ engine     = require 'engine.io'
 http       = require 'http'
 {deferred} = require 'also'
 
-module.exports.create = (config, log) ->
+module.exports.create = (config) ->
 
     local = 
 
@@ -21,7 +21,6 @@ module.exports.create = (config, log) ->
 
         index: 
             uuid2socketid: {}
-
 
         status:
             value: 'pending'
@@ -39,14 +38,11 @@ module.exports.create = (config, log) ->
             local.transport = transport = http.createServer()
             local.server    = server    = engine.attach transport
 
-
             server.on 'connection', (socket) -> 
 
-
-                log.debug
-                    socket: socket
-                    'hub connection'
-
+                # log.debug
+                #     socket: socket
+                #     'hub connection'
 
                 local.clients[socket.id] = 
 
@@ -78,9 +74,9 @@ module.exports.create = (config, log) ->
                 # transport errors after connect?
                 #
 
-                log.error 
-                    err: error
-                    'transport error'
+                # log.error 
+                #     err: error
+                #     'transport error'
 
 
             transport.listen config.listen.port, config.listen.hostname, -> 
@@ -97,10 +93,10 @@ module.exports.create = (config, log) ->
 
             unless secret is config.secret
 
-                log.debug
-                    client: title: title, uuid: uuid
-                    socket: socket
-                    'hub deny'
+                # log.debug
+                #     client: title: title, uuid: uuid
+                #     socket: socket
+                #     'hub deny'
 
                 socket.send '{"event":"deny"}', -> socket.close()
                 return
@@ -115,9 +111,9 @@ module.exports.create = (config, log) ->
             try client = local.clients[socket.id]
             unless client?
 
-                log.error
-                    socket: socket
-                    'hub unknown socket id'
+                # log.error
+                #     socket: socket
+                #     'hub unknown socket id'
 
                 socket.send '{"event":"deny"}', -> socket.close()
                 return 
@@ -153,10 +149,10 @@ module.exports.create = (config, log) ->
 
             local.index.uuid2socketid[uuid] = socket.id
 
-            log.debug
-                client: title: title, uuid: uuid
-                socket: socket
-                'hub accept'
+            # log.debug
+            #     client: title: title, uuid: uuid
+            #     socket: socket
+            #     'hub accept'
 
             socket.send '{"event":"accept"}'
 
@@ -201,18 +197,18 @@ module.exports.create = (config, log) ->
 
             unless client?
 
-                log.debug
-                    socket: socket
-                    'unknown socket disconnected'
+                # log.debug
+                #     socket: socket
+                #     'unknown socket disconnected'
 
                 return
 
-            log.debug
-                client: 
-                    title: client.title
-                    uuid: client.uuid
-                socket: socket
-                'disconnected'
+            # log.debug
+            #     client: 
+            #         title: client.title
+            #         uuid: client.uuid
+            #     socket: socket
+            #     'disconnected'
 
             client.status.value = 'disconnected'
             client.status.at    = local.timestamp()

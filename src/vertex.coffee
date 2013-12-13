@@ -2,48 +2,33 @@
 {parallel} = require 'also'
 Http       = require './www/http'
 Hub        = require './hub/hub'
-Logger     = require './logger/logger'
 
 
 module.exports = (config) ->
 
     title = config.title or 'Untitled Vertex'
     uuid = config.uuid or v4()
-    log = Logger.create config
-
 
     parallel([
 
-
-        -> if config.www?    then Http.create( config, log ).listen()
-        -> if config.listen? then Hub.create( config, log ).listen()
-
+        -> if config.www?    then Http.create( config ).listen()
+        -> if config.listen? then Hub.create( config ).listen()
 
     ]).then(
 
         ([www, hub]) -> 
 
-            if www? then log.info
-            
-                listen: www.server.address()
-                'www listening'
+            # if www? then log.info
+            #     listen: www.server.address()
+            #     'www listening'
 
-
-            if hub? then log.info
-
-                listen: hub.transport.address()
-                'hub listening'
-
-
-            #     local = 
-            #         title: title
-            #         uuid:  uuid
-            #         log:   log
-            #         api:   api
+            # if hub? then log.info
+            #     listen: hub.transport.address()
+            #     'hub listening'
 
         (error) -> 
 
-            log.fatal error
+            console.log error.stack
             process.exit 1
 
     )

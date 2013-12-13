@@ -25,14 +25,9 @@ describe 'Hub', ipso (should) ->
             listen: port: 3001, hostname: 'test.local'
             secret: 'right'
 
-        logger = mock('logger').with 
-
-            debug: -> # console.log arguments
-
-
         tag
 
-            subject: Hub.create config, logger
+            subject: Hub.create config
             Engine:  require 'engine.io'
 
 
@@ -40,9 +35,9 @@ describe 'Hub', ipso (should) ->
 
         it 'creates a hub instance with status and client list', 
 
-            ipso (Hub, config, logger) -> 
+            ipso (Hub, config) -> 
 
-                instance = Hub.create config, logger
+                instance = Hub.create config
                 instance.status.value.should.equal 'pending'
                 instance.status.at.should.be.an.instanceof Date
                 instance.clients.should.eql {}
@@ -62,7 +57,7 @@ describe 'Hub', ipso (should) ->
 
         it 'starts http listening at config.listen.port and hostname can callsback with listening instance', 
 
-            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, Engine) -> 
 
                 Engine.does attach: -> ioServer
 
@@ -73,7 +68,7 @@ describe 'Hub', ipso (should) ->
                     callback()
                     
 
-                instance = Hub.create config, logger
+                instance = Hub.create config
                 instance.listen (err, hub) -> 
 
                     hub.status.value.should.equal 'listening'
@@ -85,12 +80,12 @@ describe 'Hub', ipso (should) ->
 
         it 'resolves the promise on listening', 
 
-            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, Engine) -> 
 
                 Engine.does attach: -> ioServer
 
                 http.does createServer: -> httpServer.does listen: (args...) -> args.pop()()
-                instance = Hub.create config, logger
+                instance = Hub.create config
                 instance.listen().then (hub) -> 
 
                     hub.status.value.should.equal 'listening'
@@ -100,7 +95,7 @@ describe 'Hub', ipso (should) ->
 
         it 'rejects the promise on server errors that preceed the first listen callback', 
 
-            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, Engine) -> 
 
                 Engine.does attach: -> ioServer
 
@@ -108,7 +103,7 @@ describe 'Hub', ipso (should) ->
                     
                     if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
-                instance = Hub.create config, logger
+                instance = Hub.create config
                 instance.listen().then (->), (error) -> 
 
                     error.message.should.equal 'listen EADDRINUSE'
@@ -118,7 +113,7 @@ describe 'Hub', ipso (should) ->
 
         it 'attaches engine.io to the listening server', 
 
-            ipso (facto, Hub, http, httpServer, ioServer, config, logger, Engine) -> 
+            ipso (facto, Hub, http, httpServer, ioServer, config, Engine) -> 
 
                 http.does createServer: -> httpServer
                 Engine.does attach: (transport) -> 
@@ -127,7 +122,7 @@ describe 'Hub', ipso (should) ->
                     facto()
                     return ioServer
 
-                instance = Hub.create config, logger
+                instance = Hub.create config
                 instance.listen -> 
 
                 
@@ -358,11 +353,14 @@ describe 'Hub', ipso (should) ->
                 index['UUID'] = 'SOCKET_ID'
 
 
-        it 'preserves per client cache across reconnect', 
+        it.only 'preserves per client cache across reconnect', 
 
             ipso (subject, socket) -> 
 
-                subject.clients['PREVIOUS_SOCKET_ID'] = cache: key: 'value'
+                subject.clients['PREVIOUS_SOCKET_ID'] = 
+                    id: 'PREVIOUS_SOCKET_ID'
+                    status: 'accepted'
+                    cache: key: 'value'
                 subject.index.uuid2socketid['UUID'] = 'PREVIOUS_SOCKET_ID'
 
                 @data = 

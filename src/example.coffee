@@ -1,10 +1,3 @@
-`npm install vertex`
-
-vertex
-======
-
-```coffee
-
 
 #
 # define routes
@@ -41,16 +34,3 @@ require('./vertex')
             port: 3000
             #hostname: '0.0.0.0'
 
-
-```
-
-
-### dev / test
-
-```
-
-npm install -g ipso-cli
-ipso --mocha
-
-
-```

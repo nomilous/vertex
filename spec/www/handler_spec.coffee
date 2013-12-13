@@ -6,7 +6,6 @@ describe 'Handler.create()', ipso (Handler) ->
 
     before ipso -> 
 
-        mock 'logger'
         mock 'request'
         mock 'response'
 
@@ -53,20 +52,20 @@ describe 'Handler.create()', ipso (Handler) ->
         handler.handle.should.be.an.instanceof Function
         done()
 
-    it 'creates a Recursor with the config tree and logger', 
+    it 'creates a Recursor with the config tree', 
 
-        ipso (Recursor, config, logger) -> 
+        ipso (Recursor, config) -> 
 
-            Recursor.does create: (conf, log) -> conf.is config; log.is logger
-            Handler.create config, logger
+            Recursor.does create: (conf) -> conf.is config
+            Handler.create config
 
 
-    it 'creates a Cache with the config tree and logger', 
+    it 'creates a Cache with the config tree', 
 
-        ipso (Cache, config, logger) -> 
+        ipso (Cache, config) -> 
 
-            Cache.does create: (conf, log) -> conf.is config; log.is logger
-            Handler.create config, logger
+            Cache.does create: (conf) -> conf.is config
+            Handler.create config
 
 
     context 'handle()', -> 

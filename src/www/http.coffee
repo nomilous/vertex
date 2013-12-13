@@ -4,13 +4,13 @@ Handler = require './handler'
 
 lastInstance = undefined
 module.exports._test  = -> lastInstance
-module.exports.create = (config, log) ->
+module.exports.create = (config) ->
 
     lastInstance = local = 
 
         server: undefined
 
-        handler: Handler.create( config, log ).handle
+        handler: Handler.create( config ).handle
 
         status:
             value: 'pending'

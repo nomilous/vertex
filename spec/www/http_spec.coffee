@@ -16,8 +16,6 @@ describe 'Http', ipso (Http, should) ->
             close: ->
             on: ->
 
-        mock('logger')
-
         mock('handler').with
 
             handle:->
@@ -35,17 +33,16 @@ describe 'Http', ipso (Http, should) ->
                 instance.status.at.should.be.an.instanceof Date
 
 
-        it 'passes the config and logger to the handler factory', 
+        it 'passes the config to the handler factory', 
 
-            ipso (config, logger, Handler, handler) -> 
+            ipso (config, Handler, handler) -> 
 
-                Handler.does create: (conf, log) -> 
+                Handler.does create: (conf) -> 
 
                     config.is conf
-                    logger.is log
                     return handler
 
-                instance = Http.create config, logger
+                instance = Http.create config
 
 
 
@@ -53,7 +50,7 @@ describe 'Http', ipso (Http, should) ->
 
         it 'starts http listening at config.www.listen.port and hostname', 
 
-            ipso (facto, http, server, config, logger) -> 
+            ipso (facto, http, server, config) -> 
 
                 http.does 
                     createServer: -> 
@@ -63,12 +60,12 @@ describe 'Http', ipso (Http, should) ->
                                 hostname.should.equal 'test.local'
                                 facto()
 
-                Http.create( config, logger ).listen ->
+                Http.create( config ).listen ->
         
 
         it 'sets status to listening and callsback with local www instance',
 
-            ipso (facto, http, server, config, logger) ->
+            ipso (facto, http, server, config) ->
 
                 http.does 
                     createServer: -> 
@@ -76,7 +73,7 @@ describe 'Http', ipso (Http, should) ->
                             listen: (args...) -> args.pop()() # callback is last arg
                         
 
-                instance = Http.create config, logger
+                instance = Http.create config
                 instance.listen (err, www) -> 
 
                     www.should.equal instance
@@ -88,7 +85,7 @@ describe 'Http', ipso (Http, should) ->
 
         it 'callsback error if error before listening',
 
-            ipso (facto, http, server, config, logger) -> 
+            ipso (facto, http, server, config) -> 
 
                 http.does 
                     createServer: -> 
@@ -96,7 +93,7 @@ describe 'Http', ipso (Http, should) ->
                             on: (pub, sub) -> 
                                 if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
-                instance = Http.create config, logger
+                instance = Http.create config
                 instance.listen (err, www) -> 
 
                     err.message.should.equal 'listen EADDRINUSE'
@@ -113,19 +110,19 @@ describe 'Http', ipso (Http, should) ->
 
         it 'returns a promise', 
 
-            ipso (http, server, config, logger) -> 
+            ipso (http, server, config) -> 
 
                 http.does createServer: -> server
-                instance = Http.create config, logger
+                instance = Http.create config
                 instance.listen().then.should.be.an.instanceof Function
 
 
         it 'resolves the promise on listen callback with the www instance',
 
-            ipso (facto, http, server, config, logger) -> 
+            ipso (facto, http, server, config) -> 
 
                 http.does createServer: -> server.does listen: (args...) -> args.pop()()
-                instance = Http.create config, logger
+                instance = Http.create config
                 instance.listen().then (www) -> 
 
                     www.should.equal Http._test()
@@ -134,13 +131,13 @@ describe 'Http', ipso (Http, should) ->
 
         it 'rejects the promise on server errors that preceed the first listen callback', 
 
-            ipso (facto, http, server, config, logger) -> 
+            ipso (facto, http, server, config) -> 
 
                 http.does createServer: -> server.does on: (pub, sub) -> 
                     
                     if pub is 'error' then sub new Error 'listen EADDRINUSE'
 
-                instance = Http.create config, logger
+                instance = Http.create config
                 instance.listen().then (->), (error) -> 
 
                     error.message.should.equal 'listen EADDRINUSE'
@@ -152,7 +149,7 @@ describe 'Http', ipso (Http, should) ->
 
         it 'can stop http', 
 
-            ipso (facto, http, server, config, logger) -> 
+            ipso (facto, http, server, config) -> 
 
                 http.does 
                     createServer: -> 
@@ -160,6 +157,6 @@ describe 'Http', ipso (Http, should) ->
                             listen: (args...) -> args.pop()()
                             close: -> facto()   
 
-                instance = Http.create config, logger
+                instance = Http.create config
                 instance.listen -> instance.close()
 
