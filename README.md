@@ -32,7 +32,7 @@ routes.module.function.$www = {}
 # start server
 #
 
-require('./vertex')
+require('vertex')
 
     www: 
         #allowRoot: true
