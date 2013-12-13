@@ -45,7 +45,7 @@ require('vertex')
 
 ```
 
-[vertex-examples](../vertex-examples)
+[vertex-examples](https://github.com/nomilous/vertex-examples)
 
 
 ### dev / test
