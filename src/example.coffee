@@ -25,7 +25,7 @@ routes.module.function.$www = {}
 # start server
 #
 
-require('./vertex')
+require('./vertex').create
 
     www: 
         #allowRoot: true

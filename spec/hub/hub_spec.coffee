@@ -353,7 +353,7 @@ describe 'Hub', ipso (should) ->
                 index['UUID'] = 'SOCKET_ID'
 
 
-        it.only 'preserves per client cache across reconnect', 
+        it 'preserves per client cache across reconnect', 
 
             ipso (subject, socket) -> 
 

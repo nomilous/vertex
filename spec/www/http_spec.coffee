@@ -61,6 +61,21 @@ describe 'Http', ipso (Http, should) ->
                                 facto()
 
                 Http.create( config ).listen ->
+
+
+
+        it 'defaults hostname to localhost', 
+
+            ipso (facto, http, server, config) -> 
+
+                http.does createServer: -> server.does listen: (port, hostname, callback) -> 
+
+                    hostname.should.equal 'localhost'
+                    facto()
+
+                Http.create( www: listen: port: 1 ).listen ->
+
+
         
 
         it 'sets status to listening and callsback with local www instance',

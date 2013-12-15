@@ -1,5 +1,5 @@
 **experimental/unstable** api changes still occur (**without** deprecation warnings) <br />
-`npm install vertex` 0.0.2 [license](./license)
+`npm install vertex` 0.0.3 [license](./license)
 
 vertex
 ======
@@ -33,14 +33,14 @@ routes.module.function.$www = {}
 # start server
 #
 
-require('vertex')
+require('vertex').create
 
     www: 
         #allowRoot: true
         root: routes
         listen: 
             port: 3000
-            #hostname: '0.0.0.0'
+            #hostname: 'localhost'
 
 
 ```

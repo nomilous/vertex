@@ -2,7 +2,7 @@
 
 describe 'Vertex', ->
 
-    before ipso (Logger) -> 
+    before ipso -> 
 
         mock('config').with 
 
@@ -21,7 +21,7 @@ describe 'Vertex', ->
                     config.is conf
                     listen: -> facto()
 
-            Vertex config
+            Vertex.create config
 
 
     it 'creates an Hub server with config and starts listening', 
@@ -33,6 +33,6 @@ describe 'Vertex', ->
                     config.is conf
                     listen: -> facto()
 
-            Vertex config
+            Vertex.create config
 
 

@@ -26,7 +26,7 @@ module.exports.create = (config) ->
             return unless try listenArgs = config.www.listen
 
             port      = parseInt listenArgs.port
-            hostname  = listenArgs.hostname
+            hostname  = listenArgs.hostname || 'localhost'
 
 
 

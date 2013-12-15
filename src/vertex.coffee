@@ -4,7 +4,7 @@ Http       = require './www/http'
 Hub        = require './hub/hub'
 
 
-module.exports = (config) ->
+module.exports.create = (config) ->
 
     title = config.title or 'Untitled Vertex'
     uuid = config.uuid or v4()
