@@ -45,7 +45,26 @@ module.exports.create = (config, log) ->
                         #
 
 
-                if typeof object is 'function'
+                #if path[0]? and object[path[0]]?
+                if path[0]? and object[path[0]]? and path[0] isnt '$www'
+
+                                                                #
+                                                                # TODO: consider the usefulness of 
+                                                                #       exposting /path/to/function/$www
+                                                                #       (config container)
+                                                                # 
+                                                                #       for now it is not exposed
+                                                                #
+
+
+                    #
+                    # recurse if the next node in the path is a property of object
+                    #
+
+                    run()
+
+
+                else if typeof object is 'function'
 
                     unless object.$www
 

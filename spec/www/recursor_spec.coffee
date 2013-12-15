@@ -103,6 +103,26 @@ describe 'Recursor', ->
                     statusCode.should.equal 200
                     facto()
 
+        it 'does skips $www function if next node on path is nested property of function',
+
+            ipso (facto, subject, config, options) -> 
+
+                
+
+                outer = (opts, callback) -> 
+                outer.inner = (opts, callback) -> callback null, 'INNER'
+
+                outer.$www = {}
+                outer.inner.$www = {}
+
+                options.with path: '/outer/inner'
+                config.with www: root: outer: outer
+
+                subject.process( options ).then ({statusCode, body}) -> 
+
+                    body.should.equal 'INNER'
+                    facto()
+
 
         it 'does not "recurse" into non $www fuctions',
 
