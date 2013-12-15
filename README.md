@@ -1,5 +1,5 @@
 **experimental/unstable** api changes still occur (**without** deprecation warnings) <br />
-`npm install vertex` 0.0.1 [license](./license)
+`npm install vertex` 0.0.2 [license](./license)
 
 vertex
 ======
