@@ -17,7 +17,7 @@
     "node-uuid": "~1.4.1"
   },
   "devDependencies": {
-    "ipso": "0.0.18",
+    "ipso": "0.0.19",
     "should": "~2.0.2"
   },
   "repository": "git@github.com:nomilous/vertex.git"
