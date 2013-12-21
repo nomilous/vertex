@@ -11,6 +11,8 @@ http       = require 'http'
 
 module.exports.create = (config) ->
 
+    hostname = config.listen.hostname || 'localhost'
+
     local = 
 
         transport: undefined
@@ -79,7 +81,7 @@ module.exports.create = (config) ->
                 #     'transport error'
 
 
-            transport.listen config.listen.port, config.listen.hostname, -> 
+            transport.listen config.listen.port, hostname, -> 
 
                 local.status.value = 'listening'
                 local.status.at = new Date
