@@ -18,5 +18,8 @@
     "lib/www/recursor.js",
     "lib/www/cache.js",
     "lib/hub/hub.js"
-  ]
+  ],
+  "inject": {
+    "alias": "Vertex"
+  }
 }
