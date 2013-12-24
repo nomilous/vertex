@@ -1,4 +1,4 @@
-{v4} = require 'node-uuid'
+# {v4} = require 'node-uuid'
 Http = require './www/http'
 Hub  = require './hub/hub'
 {Q, deferred} = require 'decor'
@@ -7,7 +7,7 @@ Hub  = require './hub/hub'
 module.exports.create = (config) ->
 
     title = config.title or 'Untitled Vertex'
-    uuid = config.uuid or v4()
+    uuid = config.uuid or 'pending default uuid' # v4()
 
     Q.all([
 

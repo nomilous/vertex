@@ -1,0 +1,21 @@
+{
+  "name": "vertex",
+  "repo": "nomilous/vertex",
+  "description": "distributed process scaffold",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "nomilous/decor": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js",
+    "lib/vertex.js",
+    "lib/www/http.js",
+    "lib/www/handler.js",
+    "lib/www/recursor.js",
+    "lib/www/cache.js"
+  ]
+}
