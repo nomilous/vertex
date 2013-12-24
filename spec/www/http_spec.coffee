@@ -48,6 +48,20 @@ describe 'Http', ipso (Http, should) ->
 
     context 'listen()', -> 
 
+        it 'resolves null if no config.www.listen', 
+
+            ipso (facto) -> 
+
+                Http.create(
+
+                    www: {}
+
+                ).listen().then (www) -> 
+
+                    should.not.exist www
+                    facto() 
+
+
         it 'starts http listening at config.www.listen.port and hostname', 
 
             ipso (facto, http, server, config) -> 

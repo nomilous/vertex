@@ -5,13 +5,13 @@
 # 
 
 
-engine     = require 'engine.io'
+engine     = require 'engine.io' # requires npm install
 http       = require 'http'
-{deferred} = require 'also'
+{deferred} = require 'decor'
 
-module.exports.create = (config) ->
+module.exports.create = (config = {}) ->
 
-    hostname = config.listen.hostname || 'localhost'
+    try hostname = config.listen.hostname || 'localhost'
 
     local = 
 
@@ -32,6 +32,8 @@ module.exports.create = (config) ->
         timestamp: -> new Date
 
         listen: deferred (action, callback) -> 
+
+            return action.resolve() unless config.listen?
 
             #
             # TODO: similar to api.listen - deduplicate

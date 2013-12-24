@@ -1,4 +1,4 @@
-{deferred} = require 'also'
+{deferred} = require 'decor'
  
 module.exports.create = (config, log) ->
 

@@ -32,25 +32,29 @@ describe 'Handler.create()', ipso (Handler) ->
             end: ->
 
 
-    it 'uses config.root for route configuration', ipso (done) -> 
+    it 'uses config.root for route configuration', 
 
-        config = {}
-        Object.defineProperty config, 'root', get: -> done()    # ipso: consider 
-                                                                #    
-                                                                #   mock.has(list)  for thing.property      (assignment expectation)
-                                                                #   mock.gets(list) for thing.property = '' (access expectation)
-                                                                #          
-                                                                #         that fail if not setted or getted
-                                                                # (a lot more complex from a usecase perspective than function expections)
-                                                                # 
-        Handler.create config
+        ipso (done) -> 
+
+            config = {}
+            Object.defineProperty config, 'root', get: -> done()    # ipso: consider 
+                                                                    #    
+                                                                    #   mock.has(list)  for thing.property      (assignment expectation)
+                                                                    #   mock.gets(list) for thing.property = '' (access expectation)
+                                                                    #          
+                                                                    #         that fail if not setted or getted
+                                                                    # (a lot more complex from a usecase perspective than function expections)
+                                                                    # 
+            Handler.create config
 
 
-    it 'defines a handle function', ipso (done) -> 
+    it 'defines a handle function', 
 
-        handler = Handler.create {}
-        handler.handle.should.be.an.instanceof Function
-        done()
+        ipso (done) -> 
+
+            handler = Handler.create {}
+            handler.handle.should.be.an.instanceof Function
+            done()
 
     it 'creates a Recursor with the config tree', 
 
@@ -70,16 +74,18 @@ describe 'Handler.create()', ipso (Handler) ->
 
     context 'handle()', -> 
 
-        it 'responds 404 to / if config.api.allowRoot is unspecified', ipso (done) -> 
+        it 'responds 404 to / if config.api.allowRoot is unspecified', 
 
-            {handle} = Handler.create
-                root: tree: of: 'things'
+            ipso (done) -> 
 
-            handle req = url: '/', res = 
-                writeHead: (statusCode) -> 
-                    statusCode.should.equal 404
-                    done()
-                end: -> 
+                {handle} = Handler.create
+                    root: tree: of: 'things'
+
+                handle req = url: '/', res = 
+                    writeHead: (statusCode) -> 
+                        statusCode.should.equal 404
+                        done()
+                    end: -> 
 
 
         it 'responds to /engine.io.js with the client side script', 
@@ -197,39 +203,43 @@ describe 'Handler.create()', ipso (Handler) ->
             .then done
 
 
-        it 'calls prepare() and process() in sequence with opts', ipso (facto, handler) -> 
+        it 'calls prepare() and process() in sequence with opts', 
 
-            handler.does 
+            ipso (facto, handler) -> 
 
-                _prepare: (opts) -> opts.prepped = true
-                process: (opts) -> 
+                handler.does 
 
-                    opts.prepped.should.equal true
-                    opts.is insertedOpts
-                    facto()
+                    _prepare: (opts) -> opts.prepped = true
+                    process: (opts) -> 
 
-            handler.responder insertedOpts = mock 'opts'
+                        opts.prepped.should.equal true
+                        opts.is insertedOpts
+                        facto()
 
-
-        it 'responds with the processed results as json', ipso (facto, handler, response, also) -> 
-
-            handler.does 
-                process: also.deferred ({resolve}, opts) -> 
-                    resolve 
-                        body: 
-                            test: 'value'
+                handler.responder insertedOpts = mock 'opts'
 
 
-            handler.responder {}, response.does
+        it 'responds with the processed results as json', 
 
-                writeHead: (statusCode, headers) -> 
+            ipso (facto, handler, response, also) -> 
 
-                    statusCode.should.equal 200
-                    headers.should.eql
-                        'Content-Type': 'application/json'
-                        'Content-Length': 16
+                handler.does 
+                    process: also.deferred ({resolve}, opts) -> 
+                        resolve 
+                            body: 
+                                test: 'value'
 
-                write: (body) -> body.should.equal '{"test":"value"}'
-                end: -> facto()
+
+                handler.responder {}, response.does
+
+                    writeHead: (statusCode, headers) -> 
+
+                        statusCode.should.equal 200
+                        headers.should.eql
+                            'Content-Type': 'application/json'
+                            'Content-Length': 16
+
+                    write: (body) -> body.should.equal '{"test":"value"}'
+                    end: -> facto()
 
 

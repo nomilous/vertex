@@ -55,6 +55,17 @@ describe 'Hub', ipso (should) ->
 
     context 'listen()', -> 
 
+        it 'resolves null if no config.listen', 
+
+            ipso (facto, Hub) -> 
+
+                Hub.create().listen().then (hub) -> 
+
+                    should.not.exist hub
+                    facto() 
+
+
+
         it 'starts http listening at config.listen.port and hostname can callsback with listening instance', 
 
             ipso (facto, Hub, http, httpServer, ioServer, config, Engine) -> 

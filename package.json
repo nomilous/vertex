@@ -11,13 +11,13 @@
   ],
   "main": "lib/vertex.js",
   "dependencies": {
-    "also": "0.0.13",
     "engine.io": "~0.7.12",
-    "engine.io-client": "~0.7.12",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "engine.io-client": "~0.7.13",
+    "decor": "0.0.2"
   },
   "devDependencies": {
-    "ipso": "0.0.19",
+    "ipso": "0.0.20",
     "should": "~2.0.2"
   },
   "repository": "git@github.com:nomilous/vertex.git"

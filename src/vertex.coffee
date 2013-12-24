@@ -1,7 +1,7 @@
-{v4}       = require 'node-uuid'
-{parallel} = require 'also'
-Http       = require './www/http'
-Hub        = require './hub/hub'
+{v4} = require 'node-uuid'
+Http = require './www/http'
+Hub  = require './hub/hub'
+{Q, deferred} = require 'decor'
 
 
 module.exports.create = (config) ->
@@ -9,22 +9,17 @@ module.exports.create = (config) ->
     title = config.title or 'Untitled Vertex'
     uuid = config.uuid or v4()
 
-    parallel([
+    Q.all([
 
-        -> if config.www?    then Http.create( config ).listen()
-        -> if config.listen? then Hub.create( config ).listen()
+        Http.create( config ).listen()
+        Hub.create( config ).listen()
 
-    ]).then(
+    ]).spread(
 
-        ([www, hub]) -> 
+        (www, hub) -> 
 
-            # if www? then log.info
-            #     listen: www.server.address()
-            #     'www listening'
-
-            # if hub? then log.info
-            #     listen: hub.transport.address()
-            #     'hub listening'
+            if www? then console.log 'www listening', www.server.address()
+            if hub? then console.log 'hub listening', hub.transport.address()
 
         (error) -> 
 

@@ -1,5 +1,5 @@
 {parse} = require 'querystring'
-{pipeline, deferred} = require 'also'
+{deferred} = require 'decor'
 {readFile} = require 'fs'
 Recursor = require './recursor'
 Cache    = require './cache'

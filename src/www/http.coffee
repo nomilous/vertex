@@ -1,6 +1,6 @@
 http    = require 'http'
 Handler = require './handler'
-{deferred} = require 'also'
+{deferred} = require 'decor'
 
 lastInstance = undefined
 module.exports._test  = -> lastInstance
@@ -23,7 +23,7 @@ module.exports.create = (config) ->
             # TODO: similar to hub.listen - deduplicate
             #
 
-            return unless try listenArgs = config.www.listen
+            return action.resolve() unless try listenArgs = config.www.listen
 
             port      = parseInt listenArgs.port
             hostname  = listenArgs.hostname || 'localhost'
