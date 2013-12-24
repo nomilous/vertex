@@ -16,6 +16,7 @@
     "lib/www/http.js",
     "lib/www/handler.js",
     "lib/www/recursor.js",
-    "lib/www/cache.js"
+    "lib/www/cache.js",
+    "lib/hub/hub.js"
   ]
 }

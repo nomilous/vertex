@@ -4,12 +4,12 @@
 #       enable per uuid secret, probably via userdefined config.authenticate()
 # 
 
-
-engine     = require 'engine.io' # requires npm install
 http       = require 'http'
 {deferred} = require 'decor'
 
 module.exports.create = (config = {}) ->
+
+    engine = require 'engine.io' # requires npm install
 
     try hostname = config.listen.hostname || 'localhost'
 
