@@ -36,7 +36,8 @@ module.exports.create = (config) ->
     )
 
 
-module.exports.create.www = (config) -> 
+module.exports.create.www = (config = {}) -> 
 
+    config.listen ||= {}
+    config.listen.port ||= 3000
     module.exports.create www: config 
-
