@@ -11,8 +11,15 @@ module.exports.create = (config) ->
 
     Q.all([
 
-        Http.create( config ).listen()
-        Hub.create( config ).listen()
+        do -> 
+
+            return unless try config.www.listen?
+            Http.create( config ).listen()
+
+        do -> 
+
+            return unless config.listen?
+            Hub.create( config ).listen()
 
     ]).spread(
 
@@ -27,4 +34,9 @@ module.exports.create = (config) ->
             process.exit 1
 
     )
+
+
+module.exports.create.www = (config) -> 
+
+    module.exports.create www: config 
 
