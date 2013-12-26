@@ -37,7 +37,7 @@ describe 'Handler.create()', ipso (Handler) ->
         ipso (done) -> 
 
             config = {}
-            Object.defineProperty config, 'root', get: -> done()    # ipso: consider 
+            Object.defineProperty config, 'routes', get: -> done()    # ipso: consider 
                                                                     #    
                                                                     #   mock.has(list)  for thing.property      (assignment expectation)
                                                                     #   mock.gets(list) for thing.property = '' (access expectation)

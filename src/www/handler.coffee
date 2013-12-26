@@ -13,7 +13,7 @@ module.exports.create = (config) ->
 
     lastInstance = local = 
 
-        root: config.root || {}
+        root: config.routes || {}
 
         recursor: Recursor.create config
         cache: Cache.create config

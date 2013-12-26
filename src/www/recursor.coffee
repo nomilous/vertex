@@ -4,7 +4,7 @@ module.exports.create = (config, log) ->
 
     config ||= {}
     config.api ||= {}
-    config.api.root ||= {}
+    config.api.routes ||= {}
 
     return local = 
 
@@ -12,7 +12,7 @@ module.exports.create = (config, log) ->
 
             path = opts.path.split( '/' ).filter (p) -> p.length > 0
 
-            local.recurse opts, path, config.www.root, (error, result) -> 
+            local.recurse opts, path, config.www.routes, (error, result) -> 
 
                 return action.reject error if error?
 
