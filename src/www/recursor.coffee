@@ -3,8 +3,8 @@
 module.exports.create = (config, log) ->
 
     config ||= {}
-    config.api ||= {}
-    config.api.routes ||= {}
+    config.www ||= {}
+    config.www.routes ||= {}
 
     return local = 
 
@@ -44,6 +44,9 @@ module.exports.create = (config, log) ->
                         #       handler receiving this callback
                         #
 
+                #
+                # recurse if the next node in the path is a property of object
+                #
 
                 #if path[0]? and object[path[0]]?
                 if path[0]? and object[path[0]]? and path[0] isnt '$www'
@@ -57,10 +60,6 @@ module.exports.create = (config, log) ->
                                                                 #
 
 
-                    #
-                    # recurse if the next node in the path is a property of object
-                    #
-
                     run()
 
 
@@ -70,15 +69,21 @@ module.exports.create = (config, log) ->
 
                         return callback null, statusCode: 404
 
+                        #
+                        # end - the function is not exported
+                        #
+
+
                     opts.rest = path
                     opts.www  = object.$www
 
                     object opts, (error, result) -> 
 
                         #
-                        # TODO: error
                         # TODO: www function controls content type
                         # 
+
+                        return callback error if error?
 
                         if result.body? or result.statusCode?
 
