@@ -67,6 +67,10 @@ module.exports.create = (config) ->
 
                 (error) -> 
 
+                    #
+                    # TODO: error formatter on config tree
+                    #
+
                     res.writeHead error.statusCode or 500, error.headers or {}
                     res.end error.body or error.toString()
 
