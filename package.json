@@ -17,7 +17,7 @@
     "decor": "0.0.2"
   },
   "devDependencies": {
-    "ipso": "0.0.20",
+    "ipso": "0.0.21",
     "should": "~2.0.2"
   },
   "repository": "git@github.com:nomilous/vertex.git"
