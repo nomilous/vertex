@@ -2,7 +2,7 @@
   "name": "vertex",
   "repo": "nomilous/vertex",
   "description": "distributed process scaffold",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "keywords": [],
   "dependencies": {
     "nomilous/decor": "*"
