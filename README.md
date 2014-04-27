@@ -37,7 +37,7 @@ require('vertex').create
 
     www: 
         #allowRoot: true
-        root: routes
+        routes: routes
         listen: 
             port: 3000
             #hostname: 'localhost'
