@@ -5,6 +5,8 @@
 vertex
 ======
 
+A distributed process framework.
+
 `npm install vertex —save`
 
 ```javascript
