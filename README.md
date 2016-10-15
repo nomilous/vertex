@@ -1,59 +1,17 @@
-**experimental/unstable** api changes still occur (**without** deprecation warnings) <br />
-`npm install vertex` 0.0.5 [license](./license)
-
 vertex
 ======
 
-```coffee
+`npm install vertex —save`
 
+```javascript
+var Vertex = require('vertex');
 
-#
-# define routes
-#
-
-routes =
-    module: 
-        function: (opts, callback) -> 
-
-            #
-            # curl localhost:3000/module/function
-            #
-
-            console.log opts
-            callback null, {}
-
-#
-# enable routes
-#
-
-routes.module.function.$www = {}
-
-
-#
-# start server
-#
-
-require('vertex').create
-
-    www: 
-        #allowRoot: true
-        routes: routes
-        listen: 
-            port: 3000
-            #hostname: 'localhost'
-
-
+Vertex.create()
+  .then(function (vertex) {
+    // ...
+  })
+  .catch(function (error) {
+    // ...
+  });
 ```
 
-[vertex-examples](https://github.com/nomilous/vertex-examples)
-
-
-### dev / test
-
-```
-
-npm install -g ipso-cli
-ipso --mocha
-
-
-```

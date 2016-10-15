@@ -1,7 +1,7 @@
 {
   "name": "vertex",
   "description": "No description.",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
     {
@@ -9,16 +9,26 @@
       "email": "nomilous@gmail.com"
     }
   ],
-  "main": "lib/vertex.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test",
+    "unit": "mocha test/unit-*",
+    "cover": "istanbul cover _mocha -- test"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com:nomilous/vertex/issues"
+  },
+  "homepage": "https://github.com:nomilous/vertex#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nomilous/vertex.git"
+  },
   "dependencies": {
-    "engine.io": "~0.7.12",
-    "node-uuid": "~1.4.1",
-    "engine.io-client": "~0.7.13",
-    "decor": "0.0.2"
+    "bluebird": "^3.4.6"
   },
   "devDependencies": {
-    "ipso": "0.0.21",
-    "should": "~2.0.2"
-  },
-  "repository": "git@github.com:nomilous/vertex.git"
+    "mocha": "^3.1.2",
+    "should": "^11.1.1"
+  }
 }
