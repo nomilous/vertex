@@ -1,1 +1,1 @@
-module.exports = require('./lib/vertex');
+module.exports =  require('./lib/vertex');
