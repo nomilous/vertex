@@ -8,5 +8,5 @@ script:
   - npm run-script cover
 
 after_script: 
-  - ls -al
+  - ls -al node_modules
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
