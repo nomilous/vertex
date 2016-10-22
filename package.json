@@ -1,18 +1,14 @@
 {
   "name": "vertex",
-  "description": "No description",
-  "version": "1.0.0",
-  "author": "nomilous <nomilous@gmail.com>",
-  "contributors": [
-    {
-      "name": "nomilous",
-      "email": "nomilous@gmail.com"
-    }
-  ],
+  "version": "1.1.0",
+  "engines": {
+    "node": "^6.0.0"
+  },
+  "description": "A distributed process framework.",
+  "author": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha test",
-    "unit": "mocha test/unit-*",
     "cover": "istanbul cover _mocha -- test"
   },
   "license": "MIT",
@@ -25,12 +21,15 @@
     "url": "git+https://github.com/nomilous/vertex.git"
   },
   "dependencies": {
-    "bluebird": "^3.4.6"
+    "vertex-logger": "^1.1.0",
+    "vertex-names": "^1.1.1",
+    "vertex-transport": "^1.1.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.14",
+    "expect.js": "^0.3.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.1.2",
-    "should": "^11.1.1"
-  }
+    "mocha": "^3.1.2"
+  },
+  "optionalDependencies": {}
 }
