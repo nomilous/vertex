@@ -40,5 +40,5 @@ config = {
 
 ##### config.name
 
-Should be unique within cluster. If unspecified a random name will be [generted](https://github.com/nomilous/vertex-names).
+Should be unique within cluster. If unspecified a random name will be [generated](https://github.com/nomilous/vertex-names).
 
