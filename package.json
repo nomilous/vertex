@@ -21,9 +21,9 @@
     "url": "git+https://github.com/nomilous/vertex.git"
   },
   "dependencies": {
-    "vertex-logger": "^1.1.0",
+    "vertex-logger": "^2.1.0",
     "vertex-names": "^1.1.1",
-    "vertex-transport": "^1.1.0"
+    "vertex-transport": "^2.0.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.14",

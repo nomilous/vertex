@@ -1,7 +1,6 @@
 const {basename} = require('path');
 const filename = basename(__filename);
 const expect = require('expect.js');
-const {platform} = require('os');
 
 const {Network} = require('../');
 const VertexLogger = require('vertex-logger');
@@ -24,62 +23,39 @@ describe(filename, () => {
       let net = new Network(mockVertex);
       expect(net._config).to.eql({
         listen: {
-          system: {
-            host: '0.0.0.0',
-            port: 65535
-          },
-          user: {
-            host: '0.0.0.0',
-            port: 49152
-          }
+          host: '0.0.0.0',
+          port: 65535
         }
       });
       done();
 
     });
 
-    it('generates from only ports', done => {
+    it('generates from only port', done => {
 
-      mockVertex._config.listen = {
-        system: 9999,
-        user: 8888
-      };
+      mockVertex._config.listen = 9999;
 
       let net = new Network(mockVertex);
       expect(net._config).to.eql({
         listen: {
-          system: {
-            host: '0.0.0.0',
-            port: 9999
-          },
-          user: {
-            host: '0.0.0.0',
-            port: 8888
-          }
+          host: '0.0.0.0',
+          port: 9999
+
         }
       });
       done();
 
     });
 
-    it('generates from only hosts', done => {
+    it('generates from only host', done => {
 
-      mockVertex._config.listen = {
-        system: '0.0.0.1',
-        user: '0.0.0.1'
-      };
+      mockVertex._config.listen = '0.0.0.1';
 
       let net = new Network(mockVertex);
       expect(net._config).to.eql({
         listen: {
-          system: {
-            host: '0.0.0.1',
-            port: 65535
-          },
-          user: {
-            host: '0.0.0.1',
-            port: 49152
-          }
+          host: '0.0.0.1',
+          port: 65535
         }
       });
       done();
@@ -88,47 +64,29 @@ describe(filename, () => {
 
     it('generates from only host:port', done => {
 
-      mockVertex._config.listen = {
-        system: '0.0.0.1:9999',
-        user: '0.0.0.2'
-      };
+      mockVertex._config.listen = '0.0.0.1:9999';
 
       let net = new Network(mockVertex);
       expect(net._config).to.eql({
         listen: {
-          system: {
-            host: '0.0.0.1',
-            port: 9999
-          },
-          user: {
-            host: '0.0.0.2',
-            port: 49152
-          }
+          host: '0.0.0.1',
+          port: 9999
         }
       });
       done();
 
     });
 
-    it('generates from only host:port or device port', done => {
+    it('generates from device port', done => {
 
-      mockVertex._config.listen = {
-        system: '0.0.0.0:9999',
-        user: 'eth0:8888'
-      };
+      mockVertex._config.listen = 'eth0:8888';
 
       let net = new Network(mockVertex);
       expect(net._config).to.eql({
         listen: {
-          system: {
-            host: '0.0.0.0',
-            port: 9999
-          },
-          user: {
-            host: 'eth0',
-            port: 8888
-          }
-        }
+          host: 'eth0',
+          port: 8888
+        },
       });
       done();
 
@@ -137,27 +95,15 @@ describe(filename, () => {
     it('uses as supplied', done => {
 
       mockVertex._config.listen = {
-        system: {
-          host: '0.0.0.0',
-          port: 9999
-        },
-        user: {
-          host: 'eth0',
-          port: 8888
-        }
+        host: '0.0.0.0',
+        port: 9999
       };
 
       let net = new Network(mockVertex);
       expect(net._config).to.eql({
         listen: {
-          system: {
-            host: '0.0.0.0',
-            port: 9999
-          },
-          user: {
-            host: 'eth0',
-            port: 8888
-          }
+          host: '0.0.0.0',
+          port: 9999
         }
       });
       done();
@@ -166,6 +112,26 @@ describe(filename, () => {
 
   });
 
+  context('services', () => {
+
+    context('registering', () => {
+
+      it('prevents duplicate routeKeys')
+
+    });
+
+    context('routing', () => {
+
+      it('does not allow access to system services from user socket');
+
+      it('does not allow access to user services from system socket');
+
+      it('routes inbound socket payloads by routeKey');
+
+    });
+
+
+  });
 
 
 });

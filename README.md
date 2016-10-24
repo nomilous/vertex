@@ -31,10 +31,7 @@ Vertex.create( config )
 ```javascript
 config = {
   name: 'uniquename',
-  listen: {
-    system: '0.0.0.0:65535',
-    user: '0.0.0.0:49152'
-  }
+  listen: '0.0.0.0:65535'
 }
 ```
 
