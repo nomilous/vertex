@@ -12,7 +12,7 @@ describe(filename, () => {
 
   afterEach('stop vertex', (done) => {
     if (!vertex) return done();
-    vertex.stop().then(done).catch(done);
+    vertex.$stop().then(done).catch(done);
   });
 
   it('starts a vertex with defaults', done => {
@@ -36,6 +36,7 @@ describe(filename, () => {
 
       .then(_vertex => {
         vertex = _vertex;
+        console.log(vertex);
       })
 
       .then(done).catch(done);
@@ -78,7 +79,7 @@ describe(filename, () => {
 
     context('config', () => {
 
-      it('does not start cluster if no config.join', done => {
+      xit('does not start cluster if no config.join', done => {
 
         Vertex.create()
 
@@ -118,10 +119,12 @@ describe(filename, () => {
       it('fails to join if not seed', done => {
 
         Vertex.create({
-          join: {
-            0: '127.0.0.1:9999', // nothing here
-            1: '127.0.0.1:8888', // nothing here
-            2: '127.0.0.1:7777'  // nothing here
+          cluster: {
+            join: {
+              0: '127.0.0.1:9999', // nothing here
+              1: '127.0.0.1:8888', // nothing here
+              2: '127.0.0.1:7777'  // nothing here
+            }
           }
         })
           .then(_vertex => {
@@ -138,9 +141,13 @@ describe(filename, () => {
       it('cannot join self', done => {
 
         Vertex.create({
-          listen: '127.0.0.1:9999',
-          join: {
-            0: '127.0.0.1:9999',
+          server: {
+            listen: '127.0.0.1:9999',
+          },
+          cluster: {
+            join: {
+              0: '127.0.0.1:9999',
+            }
           }
         })
           .then(_vertex => {
@@ -155,22 +162,29 @@ describe(filename, () => {
 
       });
 
-      it('starts new cluster if seed', done => {
+      it.only('starts new cluster if seed', done => {
 
         Vertex.create({
-          listen: '127.0.0.1:9999',
-          join: {
-            name: 'cluster1',
+          logLevel: 'debug',
+          server: {
+            listen: '127.0.0.1:9999'
+          },
+          cluster: {
+            // name: 'cluster1',
             seed: true,
-            0: '127.0.0.1:9999',
-            1: '127.0.0.1:8888',
-            3: '127.0.0.1:7777'
+            join: {
+              0: '127.0.0.1:9999',
+              1: '127.0.0.1:8888',
+              3: '127.0.0.1:7777'
+            }
           }
         })
           .then(_vertex => {
             vertex = _vertex;
-            expect(vertex._cluster.name).to.equal('cluster1');
-            expect(vertex._cluster._master).to.equal(true);
+            console.log(vertex);
+            console.log('\n\nRESUME\n\n');
+            // expect(vertex._cluster.name).to.equal('cluster1');
+            // expect(vertex._cluster._master).to.equal(true);
             done();
           })
           .catch(done);
@@ -180,12 +194,16 @@ describe(filename, () => {
       it('assigns cluster name if unassigned', done => {
 
         Vertex.create({
-          listen: '127.0.0.1:9999',
-          join: {
+          server: {
+            listen: '127.0.0.1:9999',
+          },
+          cluster: {
             seed: true,
-            0: '127.0.0.1:9999',
-            1: '127.0.0.1:8888',
-            3: '127.0.0.1:7777'
+            join: {
+              0: '127.0.0.1:9999',
+              1: '127.0.0.1:8888',
+              3: '127.0.0.1:7777'
+            }
           }
         })
           .then(_vertex => {
@@ -207,12 +225,16 @@ describe(filename, () => {
       beforeEach('start remote vertex', (done) => {
         Vertex.create({
           logLevel: 'debug',
-          listen: 9999,
-          join: {
+          server: {
+            listen: 9999
+          },
+          cluster: {
             name: 'cluster-name',
             seed: true,
-            0: 'localhost:9999',
-            1: 'localhost:7777'
+            join: {
+              0: 'localhost:9999',
+              1: 'localhost:7777'
+            }
           }
         })
           .then(vertex => {
@@ -224,16 +246,18 @@ describe(filename, () => {
 
       afterEach('stop remote vertex', (done) => {
         if (!remote) return done();
-        remote.stop().then(done).catch(done);
+        remote.$stop().then(done).catch(done);
       });
 
       it('cannot join cluster with wrong name', done => {
 
         Vertex.create({
           logLevel: 'debug',
-          join: {
+          cluster: {
             name: 'wrong-name',
-            0: 'localhost:9999'
+            join: {
+              0: 'localhost:9999'
+            }
           }
         })
 
@@ -249,12 +273,14 @@ describe(filename, () => {
 
       });
 
-      it('receives membership log from master and creates member instances', done => {
+      xit('receives membership log from master and creates member instances', done => {
 
         Vertex.create({
           logLevel: 'debug',
-          join: {
-            0: 'localhost:9999'
+          cluster: {
+            join: {
+              0: 'localhost:9999'
+            }
           }
         })
 

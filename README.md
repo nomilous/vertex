@@ -4,9 +4,7 @@
 [![Build Status](https://travis-ci.org/nomilous/vertex.svg?branch=master)](https://travis-ci.org/nomilous/vertex)
 [![Coverage Status](https://coveralls.io/repos/nomilous/vertex/badge.svg?branch=master&service=github)](https://coveralls.io/github/nomilous/vertex?branch=master)
 
-
-vertex
-======
+# vertex
 
 A distributed process framework.
 
@@ -30,12 +28,27 @@ Vertex.create( config )
 
 ```javascript
 config = {
-  name: 'uniquename',
-  listen: '0.0.0.0:65535'
+  name: 'phasnaedior',
+  logLevel: 'info',
+  server: {
+    listen: '0.0.0.0:65535'
+  }
 }
 ```
 
-##### config.name
+#### config.name
 
 Should be unique within cluster. If unspecified a random name will be [generated](https://github.com/nomilous/vertex-names).
+
+#### config.logLevel
+
+Configure the [logger](https://github.com/nomilous/vertex-logger).
+
+#### config.server
+
+Configure the server.
+
+##### config.server.listen
+
+Host and port to listen.
 

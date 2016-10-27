@@ -2,7 +2,7 @@ const {basename} = require('path');
 const filename = basename(__filename);
 const expect = require('expect.js');
 
-const {Network} = require('../');
+const {Server} = require('../');
 const VertexLogger = require('vertex-logger');
 
 describe(filename, () => {
@@ -11,7 +11,6 @@ describe(filename, () => {
 
   beforeEach(() => {
     mockVertex = {
-      _config: {},
       log: new VertexLogger()
     }
   });
@@ -20,8 +19,8 @@ describe(filename, () => {
 
     it('generates from scratch', done => {
 
-      let net = new Network(mockVertex);
-      expect(net._config).to.eql({
+      let server = new Server(mockVertex, 'server');
+      expect(server.config).to.eql({
         listen: {
           host: '0.0.0.0',
           port: 65535
@@ -33,10 +32,8 @@ describe(filename, () => {
 
     it('generates from only port', done => {
 
-      mockVertex._config.listen = 9999;
-
-      let net = new Network(mockVertex);
-      expect(net._config).to.eql({
+      let server = new Server(mockVertex, 'server', {listen: 9999});
+      expect(server.config).to.eql({
         listen: {
           host: '0.0.0.0',
           port: 9999
@@ -49,10 +46,8 @@ describe(filename, () => {
 
     it('generates from only host', done => {
 
-      mockVertex._config.listen = '0.0.0.1';
-
-      let net = new Network(mockVertex);
-      expect(net._config).to.eql({
+      let server = new Server(mockVertex, 'server', {listen: '0.0.0.1'});
+      expect(server.config).to.eql({
         listen: {
           host: '0.0.0.1',
           port: 65535
@@ -64,10 +59,8 @@ describe(filename, () => {
 
     it('generates from only host:port', done => {
 
-      mockVertex._config.listen = '0.0.0.1:9999';
-
-      let net = new Network(mockVertex);
-      expect(net._config).to.eql({
+      let server = new Server(mockVertex, 'server', {listen: '0.0.0.1:9999'});
+      expect(server.config).to.eql({
         listen: {
           host: '0.0.0.1',
           port: 9999
@@ -79,10 +72,8 @@ describe(filename, () => {
 
     it('generates from device port', done => {
 
-      mockVertex._config.listen = 'eth0:8888';
-
-      let net = new Network(mockVertex);
-      expect(net._config).to.eql({
+      let server = new Server(mockVertex, 'server', {listen: 'eth0:8888'});
+      expect(server.config).to.eql({
         listen: {
           host: 'eth0',
           port: 8888
@@ -94,13 +85,15 @@ describe(filename, () => {
 
     it('uses as supplied', done => {
 
-      mockVertex._config.listen = {
-        host: '0.0.0.0',
-        port: 9999
+      let config = {
+        listen: {
+          host: '0.0.0.0',
+          port: 9999
+        }
       };
 
-      let net = new Network(mockVertex);
-      expect(net._config).to.eql({
+      let server = new Server(mockVertex, 'server', config);
+      expect(server.config).to.eql({
         listen: {
           host: '0.0.0.0',
           port: 9999
