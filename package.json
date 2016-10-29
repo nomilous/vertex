@@ -24,7 +24,7 @@
     "deepcopy": "^0.6.3",
     "vertex-logger": "^2.1.0",
     "vertex-names": "^1.1.1",
-    "vertex-transport": "^3.0.0"
+    "vertex-transport": "^3.1.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.14",
