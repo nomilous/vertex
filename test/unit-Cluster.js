@@ -12,8 +12,7 @@ describe(filename, () => {
 
   beforeEach(() => {
     mockVertex = {
-      _config: {},
-      _net: {
+      server: {
         registerService: () => {}
       },
       log: new VertexLogger()
@@ -24,14 +23,15 @@ describe(filename, () => {
 
     it('throws if no join list', done => {
 
-      mockVertex._config.join = {
-        'xxx': 'nothing'
-      };
+      let config = {
+        join: {
+          xxx: 'nothing'
+        }
+      }
 
       try {
-        let cluster = new Cluster(mockVertex);
+        let cluster = new Cluster(mockVertex, 'cluster', config);
       } catch (e) {
-        console.log(e);
         expect(e instanceof VertexJoinError).to.equal(true);
         expect(e.message).to.equal('Missing join list');
         done();
@@ -41,17 +41,19 @@ describe(filename, () => {
 
     it('fleshes out join list', done => {
 
-      mockVertex._config.join = {
-        0: '10.0.0.1',
-        1: '10.0.0.2:12345',
-        2: '9876',
-        3: {
-          host: '10.0.0.3'
+      let config = {
+        join: {
+          0: '10.0.0.1',
+          1: '10.0.0.2:12345',
+          2: '9876',
+          3: {
+            host: '10.0.0.3'
+          }
         }
       };
 
-      let cluster = new Cluster(mockVertex);
-      expect(cluster._config.join).to.eql({
+      let cluster = new Cluster(mockVertex, 'cluster', config);
+      expect(cluster.config.join).to.eql({
         0: {
           host: '10.0.0.1',
           port: 65535
@@ -67,7 +69,8 @@ describe(filename, () => {
         3: {
           host: '10.0.0.3',
           port: 65535
-        }
+        },
+        timeout: 1000
       });
       done();
 
@@ -77,13 +80,15 @@ describe(filename, () => {
 
     it('assigns name is specified', done => {
 
-      mockVertex._config.join = {
-        'xxx': 'nothing',
-        1: '10.0.0.1:3',
-        name: 'cluster1'
+      let config = {
+        name: 'cluster1',
+        join: {
+          'xxx': 'nothing',
+          1: '10.0.0.1:3',
+        }
       };
 
-      let cluster = new Cluster(mockVertex);
+      let cluster = new Cluster(mockVertex, 'cluster', config);
       expect(cluster.name).to.equal('cluster1');
       done();
 

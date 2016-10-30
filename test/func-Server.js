@@ -7,6 +7,6 @@ const VertexLogger = require('vertex-logger');
 
 describe(filename, () => {
 
-  it('is');
+  it('deletes sessions on socket close');
 
 });

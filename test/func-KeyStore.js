@@ -6,18 +6,18 @@ const hooks = require('./lib/hooks');
 
 describe(filename, function () {
 
-  let cluster = {
-    size: 10,
-    namebase: 'node-',
-    wait: true,
-    logLevel: 'off',
-    each: true
-  };
-
-  hooks.startCluster(cluster);
-  hooks.stopCluster(cluster);
-
   context('set', () => {
+
+    let cluster = {
+      size: 10,
+      namebase: 'node-',
+      wait: true,
+      logLevel: 'off',
+      each: true
+    };
+
+    hooks.startCluster(cluster);
+    hooks.stopCluster(cluster);
 
     it('replicates a new store (only on first set?)', done => {
 
