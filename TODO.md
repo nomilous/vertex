@@ -7,3 +7,7 @@
 * handle master fails immediately after join2
 * handle master fails midway through stores sync (perhaps distribute sync)
 * sync error should stop member
+
+* incremental test kv distribution
+* storage api onto vertex
+* func + example (client-server, cluster)
