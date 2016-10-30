@@ -56,6 +56,15 @@ Should be unique within cluster. If unspecified a random name will be [generated
 
 Configure the [logger](https://github.com/nomilous/vertex-logger).
 
+Notably:
+
+```javascript
+logLevel: (nfo) => {
+  if (nfo.??) return 'trace';
+  return 'warn';
+}
+```
+
 #### config.server
 
 Configure the server.
