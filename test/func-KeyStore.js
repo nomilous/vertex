@@ -4,22 +4,14 @@ const expect = require('expect.js');
 
 const hooks = require('./lib/hooks');
 
-describe.only(filename, function() {
-
-  this.timeout(100000);
+describe(filename, function () {
 
   let cluster = {
-    size: 50, // Error: connect ENFILE...
+    size: 10,
     namebase: 'node-',
     wait: true,
-    logLevel: (info) => {
-      if (info.ancestors[0] == 'node-5') {
-        return 'info';
-        // if (info.name == 'keystore') return 'trace';
-        // if (info.name == 'cluster') return 'debug';
-      }
-      return 'warn';
-    }
+    logLevel: 'off',
+    each: true
   };
 
   hooks.startCluster(cluster);
@@ -27,24 +19,190 @@ describe.only(filename, function() {
 
   context('set', () => {
 
-    it('can set value with key as string', done => {
+    it('replicates a new store (only on first set?)', done => {
 
-      done();
+      let {servers} = cluster;
+      let store = servers[9].cluster._stores.createStore('test1');
+
+      store.set('key1', 'value1')
+
+        .then(result => {
+          expect(result).to.be(true);
+          return servers.map(server => {
+            return server.cluster._stores._stores.test1.data.key1
+          })
+        })
+
+        .then(results => {
+          expect(results).to.eql([
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' },
+            { seq: 10, val: 'value1' }
+          ])
+        })
+
+        .then(done).catch(done);
 
     });
 
-    it('can set value with key as number');
+    it('can set value as undefined', done => {
 
-    it('can set value with key as boolean');
+      let {servers} = cluster;
+      let store = servers[9].cluster._stores.createStore('test2');
 
-    it('can set value as undefine');
+      store.set('key1')
 
-    it('can set value as null');
+        .then(result => {
+          expect(result).to.be(true);
+          return servers.map(server => {
+            return server.cluster._stores._stores.test2.data.key1
+          })
+        })
+
+        .then(results => {
+          expect(results).to.eql([
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 },
+            { seq: 10 }
+          ])
+        })
+
+        .then(done).catch(done);
+
+    });
+
+    it('can set value as null', done => {
+
+      let {servers} = cluster;
+      let store = servers[9].cluster._stores.createStore('test3');
+
+      store.set('key1', null)
+
+        .then(result => {
+          expect(result).to.be(true);
+          return servers.map(server => {
+            return server.cluster._stores._stores.test3.data.key1
+          })
+        })
+
+        .then(results => {
+          expect(results).to.eql([
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null },
+            { seq: 10, val: null }
+          ])
+        })
+
+        .then(done).catch(done);
+
+    });
+
+    it('can set value as boolean', done => {
+
+      let {servers} = cluster;
+      let store = servers[9].cluster._stores.createStore('test4');
+
+      store.set('key1', true)
+
+        .then(result => {
+          expect(result).to.be(true);
+          return servers.map(server => {
+            return server.cluster._stores._stores.test4.data.key1
+          })
+        })
+
+        .then(results => {
+          expect(results).to.eql([
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true },
+            { seq: 10, val: true }
+          ])
+        })
+
+        .then(done).catch(done);
+
+    });
+
+
+    it('can replace key', done => {
+
+      let {servers} = cluster;
+      let store = servers[9].cluster._stores.createStore('test4');
+
+      store.set('key1', true)
+
+        .then()
+
+        .then(result => {
+          expect(result).to.be(true);
+          return store.set('key1', false);
+        })
+
+        .then(() => {
+          return servers.map(server => {
+            return server.cluster._stores._stores.test4.data.key1
+          });
+        })
+
+        .then(results => {
+          expect(results).to.eql([
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false },
+            { seq: 11, val: false }
+          ])
+        })
+
+        .then(done).catch(done);
+
+    });
+
+
 
   });
 
-  it('can replace with second set');
+  context('get', () => {
 
-  it('can delete');
+
+  });
+
+  context('delete', () => {
+
+
+  });
 
 });
