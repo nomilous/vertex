@@ -32,6 +32,18 @@ config = {
   logLevel: 'info',
   server: {
     listen: '0.0.0.0:65535'
+  },
+  cluster: {
+    seed: false,
+    sync: {
+      timeout: 2000,
+      limit: 42
+    },
+    join: {
+      0: '1.2.3.4:65535',
+      1: '1.2.3.5:65535',
+      2: '1.2.3.6:65535'
+    }
   }
 }
 ```
@@ -52,3 +64,6 @@ Configure the server.
 
 Host and port to listen.
 
+#### config.cluster
+
+...

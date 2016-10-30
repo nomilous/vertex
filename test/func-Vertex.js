@@ -162,7 +162,7 @@ describe(filename, () => {
 
       });
 
-      it.only('starts new cluster if seed', done => {
+      it('starts new cluster if seed', done => {
 
         Vertex.create({
           logLevel: 'debug',
