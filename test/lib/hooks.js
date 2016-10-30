@@ -72,6 +72,7 @@ module.exports = class Hooks {
         listen: 65000 + i
       },
       cluster: {
+        name: cluster.clusterName,
         seed: i == 0,
         sync: {
           // timeout: 200,
@@ -79,7 +80,8 @@ module.exports = class Hooks {
         },
         join: {
           0: '127.0.0.1:65000',
-          1: '127.0.0.1:65001'
+          1: '127.0.0.1:65001',
+          timeout: 1000,
         }
       }
     };

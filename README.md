@@ -34,15 +34,17 @@ config = {
     listen: '0.0.0.0:65535'
   },
   cluster: {
+    name: 'nanfest',
     seed: false,
     sync: {
       timeout: 2000,
       limit: 42
     },
     join: {
-      0: '1.2.3.4:65535',
-      1: '1.2.3.5:65535',
-      2: '1.2.3.6:65535'
+      0: '10.0.0.40:65535',
+      1: '10.0.0.41:65535',
+      2: '10.0.0.42:65535',
+      timeout: 1000
     }
   }
 }
@@ -60,6 +62,7 @@ Notably:
 
 ```javascript
 logLevel: (nfo) => {
+  // called to assign level as each new logger in the tree initialises
   if (nfo.??) return 'trace';
   return 'warn';
 }
