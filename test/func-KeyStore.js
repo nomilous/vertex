@@ -35,16 +35,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' },
-            { seq: 10, val: 'value' }
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'},
+            {seq: 10, val: 'value'}
           ])
         })
 
@@ -68,16 +68,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 },
-            { seq: 10 }
+            {seq: 10},
+            {seq: 10},
+            {seq: 10},
+            {seq: 10},
+            {seq: 10},
+            {seq: 10},
+            {seq: 10},
+            {seq: 10},
+            {seq: 10},
+            {seq: 10}
           ])
         })
 
@@ -101,16 +101,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null },
-            { seq: 10, val: null }
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null},
+            {seq: 10, val: null}
           ])
         })
 
@@ -134,16 +134,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true },
-            { seq: 10, val: true }
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true},
+            {seq: 10, val: true}
           ])
         })
 
@@ -167,16 +167,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] },
-            { seq: 10, val: [1, 2, 3] }
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]},
+            {seq: 10, val: [1, 2, 3]}
           ])
         })
 
@@ -200,16 +200,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} },
-            { seq: 10, val: {1: 23} }
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}},
+            {seq: 10, val: {1: 23}}
           ])
         })
 
@@ -239,16 +239,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 },
-            { seq: 11, val: 2 }
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2},
+            {seq: 11, val: 2}
           ])
         })
 
@@ -336,7 +336,6 @@ describe(filename, function () {
   });
 
 
-
   context('del', () => {
 
     let cluster = {
@@ -349,7 +348,6 @@ describe(filename, function () {
 
     hooks.startCluster(cluster);
     hooks.stopCluster(cluster);
-
 
     it('can delete key', done => {
 
@@ -369,16 +367,16 @@ describe(filename, function () {
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 },
-            { seq: 10, val: 1 }
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1},
+            {seq: 10, val: 1}
           ])
         })
 
@@ -412,8 +410,279 @@ describe(filename, function () {
 
     });
 
+  });
 
+
+  context('confirmation', () => {
+
+    let cluster = {
+      size: 10,
+      namebase: 'node-',
+      wait: true,
+      logLevel: (nfo) => {
+        // if (nfo.name == 'keystore' && nfo.ancestors[0] == 'node-0') {
+        //   return 'trace';
+        // }
+        return 'off';
+      },
+      each: true
+    };
+
+    hooks.startCluster(cluster);
+    hooks.stopCluster(cluster);
+
+    context('set', () => {
+
+      it('is not applied and returns false if unconfirmed', done => {
+
+        let {servers} = cluster;
+        let store9 = servers[9].cluster._stores.createStore('test');
+
+        store9.set('key', 1, {consensus: .4, expire: 100})
+
+          .then(result => {
+            expect(result).to.be(false);
+          })
+
+          .then(done).catch(done);
+
+      });
+
+      it('is not applied and returns false if unconfirmed to multiple', done => {
+
+        let {servers} = cluster;
+        let store9 = servers[9].cluster._stores.createStore('test');
+        let store8 = servers[8].cluster._stores.createStore('test');
+        let store7 = servers[7].cluster._stores.createStore('test');
+
+        Promise.all([
+          store9.set('key', 1, {consensus: .4, expire: 100}),
+          store8.set('key', 1, {consensus: .4, expire: 100}),
+          store7.set('key', 1, {consensus: .4, expire: 100})
+        ])
+          .then(results => {
+            expect(results).to.eql([
+              false, false, false
+            ]);
+          })
+
+          .then(done).catch(done);
+
+      });
+
+      it('is applied and returns true if confirmed', done => {
+
+        let {servers} = cluster;
+        let store9 = servers[9].cluster._stores.createStore('test');
+        let store8 = servers[8].cluster._stores.createStore('test');
+        let store7 = servers[7].cluster._stores.createStore('test');
+        let store6 = servers[6].cluster._stores.createStore('test');
+        let store5 = servers[5].cluster._stores.createStore('test');
+
+        Promise.all([
+          store9.set('key', 1, {consensus: .4, expire: 100}),
+          store8.set('key', 1, {consensus: .4, expire: 100}),
+          store7.set('key', 1, {consensus: .4, expire: 100}),
+          store6.set('key', 1, {consensus: .4, expire: 100})
+        ])
+          .then(results => {
+            expect(results).to.eql([
+              true, true, true, true
+            ]);
+
+            expect(store9.get('key')).to.be(1);
+            expect(store8.get('key')).to.be(1);
+            expect(store7.get('key')).to.be(1);
+            expect(store6.get('key')).to.be(1);
+
+            // an the set went out to others
+            expect(store5.get('key')).to.be(1);
+          })
+
+          .then(done).catch(done);
+
+      });
+
+      it('returns false on differing value', done => {
+
+        let {servers} = cluster;
+        let store9 = servers[9].cluster._stores.createStore('test');
+        let store8 = servers[8].cluster._stores.createStore('test');
+        let store7 = servers[7].cluster._stores.createStore('test');
+        let store6 = servers[6].cluster._stores.createStore('test');
+        let store5 = servers[5].cluster._stores.createStore('test');
+
+        Promise.all([
+          store9.set('key', 1, {consensus: .4, expire: 100}),
+          store8.set('key', 1, {consensus: .4, expire: 100}),
+          store7.set('key', 1, {consensus: .4, expire: 100}),
+          store6.set('key', 2, {consensus: .4, expire: 100})
+        ])
+          .then(results => {
+            expect(results).to.eql([
+              false, false, false, false
+            ]);
+
+            expect(store9.get('key')).to.be(undefined);
+            expect(store8.get('key')).to.be(undefined);
+            expect(store7.get('key')).to.be(undefined);
+            expect(store6.get('key')).to.be(undefined);
+            expect(store5.get('key')).to.be(undefined);
+          })
+
+          .then(done).catch(done);
+
+      });
+
+      it('returns false on differing object', done => {
+
+        let {servers} = cluster;
+        let store9 = servers[9].cluster._stores.createStore('test');
+        let store8 = servers[8].cluster._stores.createStore('test');
+        let store7 = servers[7].cluster._stores.createStore('test');
+        let store6 = servers[6].cluster._stores.createStore('test');
+        let store5 = servers[5].cluster._stores.createStore('test');
+
+        Promise.all([
+          store9.set('key', {x: 1}, {consensus: .4, expire: 100}),
+          store8.set('key', {x: 1}, {consensus: .4, expire: 100}),
+          store7.set('key', {x: 1}, {consensus: .4, expire: 100}),
+          store6.set('key', {x: 2}, {consensus: .4, expire: 100})
+        ])
+          .then(results => {
+            expect(results).to.eql([
+              false, false, false, false
+            ]);
+
+            expect(store9.get('key')).to.be(undefined);
+            expect(store8.get('key')).to.be(undefined);
+            expect(store7.get('key')).to.be(undefined);
+            expect(store6.get('key')).to.be(undefined);
+            expect(store5.get('key')).to.be(undefined);
+          })
+
+          .then(done).catch(done);
+
+
+      });
+
+      it('disconnecting a member re-evaluates waiting consensuses', done => {
+
+        let {servers} = cluster;
+        let store1 = servers[1].cluster._stores.createStore('test');
+        let store2 = servers[2].cluster._stores.createStore('test');
+        let store3 = servers[3].cluster._stores.createStore('test');
+        let store4 = servers[4].cluster._stores.createStore('test');
+        let store5 = servers[5].cluster._stores.createStore('test');
+
+        Promise.all([
+          store1.set('key', 1, {consensus: .4, expire: 300}),
+          store2.set('key', 1, {consensus: .4, expire: 300}),
+          store4.set('key', 1, {consensus: .4, expire: 300})
+          // insufficient to reach 4/10 consensus
+        ])
+          .then(results => {
+            expect(results).to.eql([
+              true, true, true
+            ]);
+
+            expect(store1.get('key')).to.be(1);
+            expect(store2.get('key')).to.be(1);
+            expect(store3.get('key')).to.be(1);
+            expect(store4.get('key')).to.be(1);
+            expect(store5.get('key')).to.be(1);
+          })
+
+          .then(() => {
+            // it was cleaned up
+            expect(servers[0].cluster._stores._consensus).to.eql({});
+          })
+
+          .then(done).catch(done);
+
+        // stop 3 servers,
+        // 3/7 > 4/10 (consensus reached)
+        setTimeout(() => {
+          Promise.all([
+            servers.pop().$stop(),
+            servers.pop().$stop(),
+            servers.pop().$stop()
+          ]).catch(done);
+        }, 200);
+
+      });
+
+    });
+
+    context('del', () => {
+
+      it('is not applied and returns false if unconfirmed', done => {
+
+        let {servers} = cluster;
+        let store9 = servers[9].cluster._stores.createStore('test');
+        let store8 = servers[8].cluster._stores.createStore('test');
+
+        store9.set('key', 1)
+
+          .then(result => {
+            expect(result).to.be(true);
+            expect(store8.get('key')).to.be(1);
+            return store9.del('key', {consensus: .4, expire: 100});
+          })
+
+          .then(result => {
+            expect(result).to.be(false);
+            expect(store9.get('key')).to.be(1);
+            expect(store8.get('key')).to.be(1);
+          })
+
+          .then(done).catch(done);
+
+      });
+
+      it('is applied and returns true if confirmed', done => {
+
+        let {servers} = cluster;
+        let store9 = servers[9].cluster._stores.createStore('test');
+        let store8 = servers[8].cluster._stores.createStore('test');
+        let store7 = servers[7].cluster._stores.createStore('test');
+        let store6 = servers[6].cluster._stores.createStore('test');
+
+        store9.set('key', 1)
+
+          .then(result => {
+            expect(result).to.be(true);
+            expect(store8.get('key')).to.be(1);
+            return Promise.all([
+              store9.del('key', {consensus: .4, expire: 100}),
+              store8.del('key', {consensus: .4, expire: 100}),
+              store7.del('key', {consensus: .4, expire: 100}),
+              store6.del('key', {consensus: .4, expire: 100})
+            ]);
+          })
+
+          .then(results => {
+            expect(results).to.eql([true, true, true, true]);
+            expect(store9.get('key')).to.be(undefined);
+            expect(store8.get('key')).to.be(undefined);
+            expect(store7.get('key')).to.be(undefined);
+            expect(store6.get('key')).to.be(undefined);
+          })
+
+          .then(done).catch(done);
+
+      });
+
+    });
 
   });
+
+
+  context('load', () => {
+
+    // TODO: try with/without deepcopy
+
+  });
+
 
 });

@@ -11,3 +11,4 @@
 * incremental test kv distribution
 * storage api onto vertex
 * func + example (client-server, cluster)
+* member/delete after consensus

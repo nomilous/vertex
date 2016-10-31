@@ -30,8 +30,7 @@ module.exports = class Hooks {
               let interval = setInterval(() => {
                 let all = true;
                 for (let i = 0; i < size; i++) {
-                  let members = Object.keys(servers[i].cluster.members).length;
-                  if (members != size) all = false;
+                  if (servers[i].cluster.getMemberCount() != size) all = false;
                 }
                 if (all) {
                   clearInterval(interval);
