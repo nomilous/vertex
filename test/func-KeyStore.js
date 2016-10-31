@@ -677,12 +677,55 @@ describe(filename, function () {
 
   });
 
-
-  context('load', () => {
+  context('load', function () {
 
     // TODO: try with/without deepcopy
 
-  });
+    this.timeout(10 * 1000);
 
+    let setCount = 200;
+
+    let setMany = function* (store) {
+      for (let i = 0; i < setCount; i++) {
+        yield store.set('key-' + i, {some: 'data'});
+      }
+    };
+
+    [2, 4, 6, 8, 10, 12, 14, 16, 18, 20].forEach(clusterSize => {
+
+      context('in cluster of ' + clusterSize, () => {
+
+        let cluster = {
+          size: clusterSize,
+          namebase: 'node-',
+          logLevel: 'off',
+          wait: true,
+          each: true
+        };
+
+        hooks.startCluster(cluster);
+        hooks.stopCluster(cluster);
+
+        it('sets ' + setCount + ' keys', done => {
+
+          let {servers} = cluster;
+          let store = servers[clusterSize - 1].cluster._stores.createStore('test');
+
+          Promise.all(setMany(store))
+
+            .then(results => {
+              expect(results.length).to.be(setCount);
+              expect(results.filter(r => !r.ok).length).to.be(0);
+            })
+
+            .then(done).catch(done);
+
+        });
+
+      });
+
+    });
+
+  });
 
 });
