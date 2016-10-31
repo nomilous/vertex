@@ -27,7 +27,7 @@ describe(filename, function () {
       store.set('key', 'value')
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           })
@@ -60,7 +60,7 @@ describe(filename, function () {
       store.set('key')
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           })
@@ -93,7 +93,7 @@ describe(filename, function () {
       store.set('key', null)
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           })
@@ -126,7 +126,7 @@ describe(filename, function () {
       store.set('key', true)
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           })
@@ -159,7 +159,7 @@ describe(filename, function () {
       store.set('key', [1, 2, 3])
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           })
@@ -192,7 +192,7 @@ describe(filename, function () {
       store.set('key', {1: 23})
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           })
@@ -227,7 +227,7 @@ describe(filename, function () {
         .then()
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return store.set('key', 2);
         })
 
@@ -281,7 +281,7 @@ describe(filename, function () {
       store9.set('key', 1)
 
         .then(result => {
-          expect(result).to.equal(true);
+          expect(result.ok).to.be(true);
 
           expect(store3.get('key')).to.equal(1);
           expect(store5.get('key')).to.equal(1);
@@ -318,7 +318,7 @@ describe(filename, function () {
       store9.set('key', 1)
 
         .then(result => {
-          expect(result).to.equal(true);
+          expect(result.ok).to.be(true);
 
           expect(store3.has('key')).to.equal(true);
           expect(store5.has('key')).to.equal(true);
@@ -359,7 +359,7 @@ describe(filename, function () {
         .then()
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           });
@@ -385,7 +385,7 @@ describe(filename, function () {
         })
 
         .then(result => {
-          expect(result).to.be(true);
+          expect(result.ok).to.be(true);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           });
@@ -413,7 +413,7 @@ describe(filename, function () {
   });
 
 
-  context('confirmation', () => {
+  context('consensus option', () => {
 
     let cluster = {
       size: 10,
@@ -441,7 +441,7 @@ describe(filename, function () {
         store9.set('key', 1, {consensus: .4, expire: 100})
 
           .then(result => {
-            expect(result).to.be(false);
+            expect(result.ok).to.be(false);
           })
 
           .then(done).catch(done);
@@ -461,7 +461,7 @@ describe(filename, function () {
           store7.set('key', 1, {consensus: .4, expire: 100})
         ])
           .then(results => {
-            expect(results).to.eql([
+            expect(results.map(r => r.ok)).to.eql([
               false, false, false
             ]);
           })
@@ -486,7 +486,7 @@ describe(filename, function () {
           store6.set('key', 1, {consensus: .4, expire: 100})
         ])
           .then(results => {
-            expect(results).to.eql([
+            expect(results.map(r => r.ok)).to.eql([
               true, true, true, true
             ]);
 
@@ -519,7 +519,7 @@ describe(filename, function () {
           store6.set('key', 2, {consensus: .4, expire: 100})
         ])
           .then(results => {
-            expect(results).to.eql([
+            expect(results.map(r => r.ok)).to.eql([
               false, false, false, false
             ]);
 
@@ -550,7 +550,7 @@ describe(filename, function () {
           store6.set('key', {x: 2}, {consensus: .4, expire: 100})
         ])
           .then(results => {
-            expect(results).to.eql([
+            expect(results.map(r => r.ok)).to.eql([
               false, false, false, false
             ]);
 
@@ -582,7 +582,7 @@ describe(filename, function () {
           // insufficient to reach 4/10 consensus
         ])
           .then(results => {
-            expect(results).to.eql([
+            expect(results.map(r => r.ok)).to.eql([
               true, true, true
             ]);
 
@@ -625,13 +625,13 @@ describe(filename, function () {
         store9.set('key', 1)
 
           .then(result => {
-            expect(result).to.be(true);
+            expect(result.ok).to.be(true);
             expect(store8.get('key')).to.be(1);
             return store9.del('key', {consensus: .4, expire: 100});
           })
 
           .then(result => {
-            expect(result).to.be(false);
+            expect(result.ok).to.be(false);
             expect(store9.get('key')).to.be(1);
             expect(store8.get('key')).to.be(1);
           })
@@ -651,7 +651,7 @@ describe(filename, function () {
         store9.set('key', 1)
 
           .then(result => {
-            expect(result).to.be(true);
+            expect(result.ok).to.be(true);
             expect(store8.get('key')).to.be(1);
             return Promise.all([
               store9.del('key', {consensus: .4, expire: 100}),
@@ -662,7 +662,7 @@ describe(filename, function () {
           })
 
           .then(results => {
-            expect(results).to.eql([true, true, true, true]);
+            expect(results.map(r => r.ok)).to.eql([true, true, true, true]);
             expect(store9.get('key')).to.be(undefined);
             expect(store8.get('key')).to.be(undefined);
             expect(store7.get('key')).to.be(undefined);
