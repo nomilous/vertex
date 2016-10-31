@@ -22,29 +22,29 @@ describe(filename, function () {
     it('replicates a new store (only on first set?)', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test1');
+      let store = servers[9].cluster._stores.createStore('test');
 
-      store.set('key1', 'value1')
+      store.set('key', 'value')
 
         .then(result => {
           expect(result).to.be(true);
           return servers.map(server => {
-            return server.cluster._stores._stores.test1.data.key1
+            return server.cluster._stores._stores.test.data.key
           })
         })
 
         .then(results => {
           expect(results).to.eql([
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' },
-            { seq: 10, val: 'value1' }
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' },
+            { seq: 10, val: 'value' }
           ])
         })
 
@@ -55,14 +55,14 @@ describe(filename, function () {
     it('can set value as undefined', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test2');
+      let store = servers[9].cluster._stores.createStore('test');
 
-      store.set('key1')
+      store.set('key')
 
         .then(result => {
           expect(result).to.be(true);
           return servers.map(server => {
-            return server.cluster._stores._stores.test2.data.key1
+            return server.cluster._stores._stores.test.data.key
           })
         })
 
@@ -88,14 +88,14 @@ describe(filename, function () {
     it('can set value as null', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test3');
+      let store = servers[9].cluster._stores.createStore('test');
 
-      store.set('key1', null)
+      store.set('key', null)
 
         .then(result => {
           expect(result).to.be(true);
           return servers.map(server => {
-            return server.cluster._stores._stores.test3.data.key1
+            return server.cluster._stores._stores.test.data.key
           })
         })
 
@@ -121,14 +121,14 @@ describe(filename, function () {
     it('can set value as boolean', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test4');
+      let store = servers[9].cluster._stores.createStore('test');
 
-      store.set('key1', true)
+      store.set('key', true)
 
         .then(result => {
           expect(result).to.be(true);
           return servers.map(server => {
-            return server.cluster._stores._stores.test4.data.key1
+            return server.cluster._stores._stores.test.data.key
           })
         })
 
@@ -154,14 +154,14 @@ describe(filename, function () {
     it('can set value as array', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test4');
+      let store = servers[9].cluster._stores.createStore('test');
 
-      store.set('key1', [1, 2, 3])
+      store.set('key', [1, 2, 3])
 
         .then(result => {
           expect(result).to.be(true);
           return servers.map(server => {
-            return server.cluster._stores._stores.test4.data.key1
+            return server.cluster._stores._stores.test.data.key
           })
         })
 
@@ -187,14 +187,14 @@ describe(filename, function () {
     it('can set value as object', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test4');
+      let store = servers[9].cluster._stores.createStore('test');
 
-      store.set('key1', {1: 23})
+      store.set('key', {1: 23})
 
         .then(result => {
           expect(result).to.be(true);
           return servers.map(server => {
-            return server.cluster._stores._stores.test4.data.key1
+            return server.cluster._stores._stores.test.data.key
           })
         })
 
@@ -220,20 +220,20 @@ describe(filename, function () {
     it('can replace key', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test4');
+      let store = servers[9].cluster._stores.createStore('test');
 
-      store.set('key1', 1)
+      store.set('key', 1)
 
         .then()
 
         .then(result => {
           expect(result).to.be(true);
-          return store.set('key1', 2);
+          return store.set('key', 2);
         })
 
         .then(() => {
           return servers.map(server => {
-            return server.cluster._stores._stores.test4.data.key1
+            return server.cluster._stores._stores.test.data.key
           });
         })
 
@@ -274,18 +274,18 @@ describe(filename, function () {
     it('can get value', done => {
 
       let {servers} = cluster;
-      let store3 = servers[3].cluster._stores.createStore('test1');
-      let store5 = servers[5].cluster._stores.createStore('test1');
-      let store9 = servers[9].cluster._stores.createStore('test1');
+      let store3 = servers[3].cluster._stores.createStore('test');
+      let store5 = servers[5].cluster._stores.createStore('test');
+      let store9 = servers[9].cluster._stores.createStore('test');
 
-      store9.set('key1', 1)
+      store9.set('key', 1)
 
         .then(result => {
           expect(result).to.equal(true);
 
-          expect(store3.get('key1')).to.equal(1);
-          expect(store5.get('key1')).to.equal(1);
-          expect(store9.get('key1')).to.equal(1);
+          expect(store3.get('key')).to.equal(1);
+          expect(store5.get('key')).to.equal(1);
+          expect(store9.get('key')).to.equal(1);
         })
 
         .then(done).catch(done);
@@ -311,22 +311,22 @@ describe(filename, function () {
     it('can has value', done => {
 
       let {servers} = cluster;
-      let store3 = servers[3].cluster._stores.createStore('test1');
-      let store5 = servers[5].cluster._stores.createStore('test1');
-      let store9 = servers[9].cluster._stores.createStore('test1');
+      let store3 = servers[3].cluster._stores.createStore('test');
+      let store5 = servers[5].cluster._stores.createStore('test');
+      let store9 = servers[9].cluster._stores.createStore('test');
 
-      store9.set('key1', 1)
+      store9.set('key', 1)
 
         .then(result => {
           expect(result).to.equal(true);
 
-          expect(store3.has('key1')).to.equal(true);
-          expect(store5.has('key1')).to.equal(true);
-          expect(store9.has('key1')).to.equal(true);
+          expect(store3.has('key')).to.equal(true);
+          expect(store5.has('key')).to.equal(true);
+          expect(store9.has('key')).to.equal(true);
 
-          expect(store3.has('key2')).to.equal(false);
-          expect(store5.has('key2')).to.equal(false);
-          expect(store9.has('key2')).to.equal(false);
+          expect(store3.has('nokey')).to.equal(false);
+          expect(store5.has('nokey')).to.equal(false);
+          expect(store9.has('nokey')).to.equal(false);
         })
 
         .then(done).catch(done);
@@ -338,6 +338,80 @@ describe(filename, function () {
 
 
   context('del', () => {
+
+    let cluster = {
+      size: 10,
+      namebase: 'node-',
+      wait: true,
+      logLevel: 'off',
+      each: true
+    };
+
+    hooks.startCluster(cluster);
+    hooks.stopCluster(cluster);
+
+
+    it('can delete key', done => {
+
+      let {servers} = cluster;
+      let store = servers[9].cluster._stores.createStore('test');
+
+      store.set('key', 1)
+
+        .then()
+
+        .then(result => {
+          expect(result).to.be(true);
+          return servers.map(server => {
+            return server.cluster._stores._stores.test.data.key
+          });
+        })
+
+        .then(results => {
+          expect(results).to.eql([
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 },
+            { seq: 10, val: 1 }
+          ])
+        })
+
+        .then(() => {
+          return store.del('key');
+        })
+
+        .then(result => {
+          expect(result).to.be(true);
+          return servers.map(server => {
+            return server.cluster._stores._stores.test.data.key
+          });
+        })
+
+        .then(results => {
+          expect(results).to.eql([
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined
+          ])
+        })
+
+        .then(done).catch(done);
+
+    });
+
 
 
   });

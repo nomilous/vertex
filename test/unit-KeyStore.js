@@ -6,7 +6,7 @@ const VertexLogger = require('vertex-logger');
 const Vertex = require('../');
 const {KeyStore, Member} = Vertex;
 
-describe.only(filename, () => {
+describe(filename, () => {
 
   let mockVertex, mockCluster, addMemberHandler;
 
