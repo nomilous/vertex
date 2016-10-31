@@ -308,7 +308,7 @@ describe(filename, function () {
     hooks.startCluster(cluster);
     hooks.stopCluster(cluster);
 
-    it('can get value', done => {
+    it('can has value', done => {
 
       let {servers} = cluster;
       let store3 = servers[3].cluster._stores.createStore('test1');
