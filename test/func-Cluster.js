@@ -282,11 +282,161 @@ describe(filename, () => {
   });
 
 
-  context('departing cluster', () => {
+  context('departing cluster member', () => {
 
-    it('can be done');
+    let cluster = {
+      size: 10,
+      namebase: 'node-',
+      wait: true,
+      logLevel: (nfo) => {
+        if (nfo.ancestors[0] == 'node-9') return 'off';
+        return 'off';
+      },
+      each: true,
+      depart: {
+        expire: 100
+      }
+    };
 
-  })
+    hooks.startCluster(cluster);
+    hooks.stopCluster(cluster);
+
+    it('stops the vertex on lost socket to self', done => {
+
+      let {servers} = cluster;
+      let server = servers.pop();
+      let member = server.cluster.members[server.name];
+
+      let error;
+      server.on('error', _error => error = _error);
+
+      server.on('stopped', () => {
+        expect(error.name).to.be('VertexError');
+        expect(error.message).to.be('Lost socket to self');
+        done();
+      });
+
+      member.socket.close();
+
+    });
+
+    it('stops the vertex on lost socket where cluster disagrees', done => {
+
+      let {servers} = cluster;
+      let server = servers.pop();
+
+      server.on('stopped', () => {
+        setTimeout(() => {
+          expect(
+            Object.keys(servers[0].cluster._members)
+          ).to.eql([
+            'node-0',
+            'node-1',
+            'node-2',
+            'node-3',
+            'node-4',
+            // node-5 also shut down on stray socket close
+            'node-6',
+            'node-7',
+            'node-8'
+          ]);
+          done();
+        }, 200);
+      });
+
+      let member = server.cluster.members['node-5'];
+      member.socket.close();
+      // other members of the cluster are still connected to 5,
+      // so this member gets shut down
+
+    });
+
+
+    it('deletes the member on cluster consensus on lost socket', done => {
+
+      let {servers} = cluster;
+      let server = servers.pop();
+
+      // close socket to all members on this vertex
+      Object.keys(server.cluster.members).reverse().forEach(name => {
+        let member = server.cluster.members[name];
+        if (member.name == 'node-0') return;
+        if (member.self) return;
+
+
+        // intervening on socket directly generates lots of errors
+        member.socket.close();
+
+      });
+      server.cluster.members['node-0'].socket.close();
+
+      setTimeout(() => {
+        expect(
+          servers.map(server => server.cluster._members['node-9'])
+        ).to.eql([
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined
+        ]);
+
+        server.$stop().then(done).catch(done);
+
+      }, 200);
+
+    });
+
+
+    it('removes a stopped vertex from the cluster', done => {
+
+      let {servers} = cluster;
+      let server = servers.pop();
+
+      server.$stop()
+
+        .then(() => {
+
+          setTimeout(() => {
+            expect(
+              servers.map(server => server.cluster._members['node-9'])
+            ).to.eql([
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ]);
+
+            done();
+
+          }, 200);
+
+        })
+
+        .catch(done);
+
+    });
+
+    it('departed member can only rejoin after its departure is replicated (bug?)');
+    // TODO: this could be a "bug", if a member crashes ideally it should immediately rejoin
+
+  });
+
+
+  context('departing cluster master', () => {
+
+    it('can');
+
+  });
 
 
 });

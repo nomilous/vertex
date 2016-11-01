@@ -12,3 +12,5 @@
 * storage api onto vertex
 * func + example (client-server, cluster)
 * member/delete after consensus
+
+* why so many Server._session(s) on new cluster member

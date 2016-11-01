@@ -15,6 +15,7 @@ describe(filename, () => {
       log: new VertexLogger({name: 'cluster', root: 'test-node', level: 'off'}),
       config: {},
       members: {},
+      getMaster: () => {},
       _noConnect: true,
       on: (event, handler) => {
         if (event == 'member/add') addMemberHandler = handler;

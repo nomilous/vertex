@@ -78,7 +78,7 @@ describe(filename, () => {
 
     it('supports IPv6 (does vertex-transport?)');
 
-    it('assigns name is specified', done => {
+    it('assigns name if specified', done => {
 
       let config = {
         name: 'cluster1',
