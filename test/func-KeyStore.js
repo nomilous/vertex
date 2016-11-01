@@ -566,7 +566,7 @@ describe(filename, function () {
 
       });
 
-      it.only('disconnecting a member re-evaluates waiting consensuses', done => {
+      it('disconnecting a member re-evaluates waiting consensuses', done => {
 
         let {servers} = cluster;
         let store1 = servers[1].cluster._stores.createStore('test');
