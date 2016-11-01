@@ -320,7 +320,7 @@ describe(filename, () => {
 
     });
 
-    it('stops the vertex on lost socket where cluster disagrees', done => {
+    it.only('stops the vertex on lost socket where cluster disagrees', done => {
 
       let {servers} = cluster;
       let server = servers.pop();
