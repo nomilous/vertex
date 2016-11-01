@@ -5,6 +5,10 @@ const expect = require('expect.js');
 const Vertex = require('../');
 const hooks = require('./lib/hooks');
 
+// process.on('unhandledRejection', (reason, promise) => {
+//   console.log('REASON', reason);
+// });
+
 describe(filename, () => {
 
   let logLevel = (nfo) => {
@@ -320,7 +324,7 @@ describe(filename, () => {
 
     });
 
-    it.only('stops the vertex on lost socket where cluster disagrees', done => {
+    it('stops the vertex on lost socket where cluster disagrees', done => {
 
       let {servers} = cluster;
       let server = servers.pop();
@@ -328,7 +332,7 @@ describe(filename, () => {
       server.on('stopped', () => {
         setTimeout(() => {
           expect(
-            Object.keys(servers[0].cluster._members)
+            Object.keys(servers[0].cluster._members).sort()
           ).to.eql([
             'node-0',
             'node-1',
