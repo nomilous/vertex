@@ -297,7 +297,7 @@ describe(filename, () => {
         return 'off';
       },
       each: true,
-      depart: {
+      leave: {
         expire: 100
       }
     };
@@ -395,7 +395,6 @@ describe(filename, () => {
 
     });
 
-
     it('removes a stopped vertex from the cluster', done => {
 
       let {servers} = cluster;
@@ -431,7 +430,6 @@ describe(filename, () => {
     });
 
     it('departed member can only rejoin after its departure is replicated (bug?)');
-    // TODO: this could be a "bug", if a member crashes ideally it should immediately rejoin
 
   });
 

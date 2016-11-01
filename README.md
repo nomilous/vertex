@@ -46,7 +46,7 @@ config = {
       2: '10.0.0.42:65535',
       timeout: 1000
     },
-    depart: {
+    leave: {
       consensus: 1.0,
       expire: 5000
     }

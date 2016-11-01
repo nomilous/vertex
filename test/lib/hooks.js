@@ -82,7 +82,7 @@ module.exports = class Hooks {
           1: '127.0.0.1:65001',
           timeout: 1000,
         },
-        depart: cluster.depart
+        leave: cluster.leave
       }
     };
     if (cluster.namebase) {
