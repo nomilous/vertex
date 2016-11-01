@@ -566,7 +566,7 @@ describe(filename, function () {
 
       });
 
-      it('disconnecting a member re-evaluates waiting consensuses', done => {
+      it.only('disconnecting a member re-evaluates waiting consensuses', done => {
 
         let {servers} = cluster;
         let store1 = servers[1].cluster._stores.createStore('test');
@@ -598,7 +598,10 @@ describe(filename, function () {
             expect(servers[0].cluster._stores._consensus).to.eql({});
           })
 
-          .then(done).catch(done);
+          .then(() => new Promise(resolve => {
+            setTimeout(resolve, 100);
+          }))
+          .catch(done);
 
         // stop 3 servers,
         // 3/7 > 4/10 (consensus reached)
