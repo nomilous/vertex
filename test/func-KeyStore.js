@@ -601,6 +601,7 @@ describe(filename, function () {
           .then(() => new Promise(resolve => {
             setTimeout(resolve, 100);
           }))
+          .then(done)
           .catch(done);
 
         // stop 3 servers,
