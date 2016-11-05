@@ -16,3 +16,4 @@
 * why so many Server._session(s) on new cluster member
 
 * proper count of members
+* subscribe to error until something else does
