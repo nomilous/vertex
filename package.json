@@ -23,7 +23,7 @@
   "dependencies": {
     "deep-equal": "^1.0.1",
     "deepcopy": "^0.6.3",
-    "vertex-logger": "^2.2.1",
+    "vertex-logger": "^2.3.1",
     "vertex-names": "^1.1.4",
     "vertex-transport": "^3.1.3"
   },

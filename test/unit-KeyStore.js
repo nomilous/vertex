@@ -8,7 +8,7 @@ const {KeyStore, Member} = Vertex;
 
 describe(filename, () => {
 
-  let mockVertex, mockCluster, addMemberHandler;
+  let mockVertex, mockCluster, addMemberHandler, emitted;
 
   beforeEach(() => {
     mockCluster = {
@@ -25,16 +25,26 @@ describe(filename, () => {
         }
       },
       _noConnect: true,
-      on: (event, handler) => {
-        if (event == 'member/add') addMemberHandler = handler;
-      },
       _memberUpdated: () => {
       }
     };
+    Object.defineProperty(mockCluster, '_vertex', {
+      get: () => mockVertex
+    });
   });
 
   beforeEach(() => {
     mockVertex = {
+      on: (event, handler) => {
+        if (event == 'members/add') addMemberHandler = handler;
+      },
+      emit: (event, object) => {
+        emitted = {
+          event: event,
+          object: object
+        }
+      },
+      stores: {},
       cluster: mockCluster,
       server: {
         _onConnection: () => {
@@ -106,6 +116,13 @@ describe(filename, () => {
           data: {}
         }
       });
+      expect(emitted).to.eql({
+        event: 'stores/add',
+        object: test
+      });
+      expect(mockVertex.stores).to.eql({
+        test: test
+      });
       done();
 
     });
@@ -113,6 +130,9 @@ describe(filename, () => {
     it('can set a value', done => {
 
       let test = store.createStore('test');
+      let emitted;
+
+      test.on('set', (...args) => emitted = args);
 
       test.set('x', 1);
 
@@ -136,7 +156,7 @@ describe(filename, () => {
 
       expect(test.get('x')).to.be(1);
       expect(test.has('x')).to.be(true);
-
+      expect(emitted).to.eql(['x', 1, {seq: 0}]);
       done();
 
     });

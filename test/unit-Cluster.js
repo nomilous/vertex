@@ -12,6 +12,8 @@ describe(filename, () => {
 
   beforeEach(() => {
     mockVertex = {
+      on: () => {},
+      emit: () => {},
       server: {
         registerService: () => {}
       },

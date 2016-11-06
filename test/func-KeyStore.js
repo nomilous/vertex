@@ -217,6 +217,27 @@ describe(filename, function () {
 
     });
 
+    it('emits set value with meta', done => {
+
+      let {servers} = cluster;
+      let store1 = servers[9].cluster._stores.createStore('test');
+      let store2 = servers[3].cluster._stores.createStore('test');
+
+      let emitted1, emitted2;
+      store1.on('set', (...args) => emitted1 = args);
+      store2.on('set', (...args) => emitted2 = args);
+
+      store1.set('key', 'value')
+
+        .then(() => {
+          expect(emitted1).to.eql(emitted2);
+          expect(emitted1).to.eql(['key', 'value', {seq: 10}]);
+        })
+
+        .then(done).catch(done);
+
+    });
+
     it('can replace key', done => {
 
       let {servers} = cluster;
@@ -352,9 +373,14 @@ describe(filename, function () {
     it('can delete key', done => {
 
       let {servers} = cluster;
-      let store = servers[9].cluster._stores.createStore('test');
+      let store1 = servers[9].cluster._stores.createStore('test');
+      let store2 = servers[6].cluster._stores.createStore('test');
 
-      store.set('key', 1)
+      let emitted1, emitted2;
+      store1.on('del', (...args) => emitted1 = args);
+      store2.on('del', (...args) => emitted2 = args);
+
+      store1.set('key', 1)
 
         .then()
 
@@ -381,11 +407,13 @@ describe(filename, function () {
         })
 
         .then(() => {
-          return store.del('key');
+          return store1.del('key');
         })
 
         .then(result => {
           expect(result.ok).to.be(true);
+          expect(emitted1).to.eql(emitted2);
+          expect(emitted1).to.eql(['key', 1, {seq: 10}]);
           return servers.map(server => {
             return server.cluster._stores._stores.test.data.key
           });
@@ -681,7 +709,7 @@ describe(filename, function () {
 
   });
 
-  context('load', function () {
+  xcontext('load', function () {
 
     // TODO: try with/without deepcopy
 
