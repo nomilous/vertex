@@ -52,6 +52,9 @@ config = {
     leave: {
       consensus: 1.0,
       expire: 5000
+    },
+    nominate: {
+      expire: 2000
     }
   }
 }

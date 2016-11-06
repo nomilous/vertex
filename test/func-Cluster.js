@@ -436,7 +436,96 @@ describe(filename, () => {
 
   context('departing cluster master', () => {
 
-    it('can');
+    let cluster = {
+      size: 10,
+      namebase: 'node-',
+      wait: true,
+      logLevel: (nfo) => {
+        if (nfo.ancestors[0] == 'node-0' && nfo.name == 'cluster') return 'off';
+        return 'off';
+      },
+      each: true,
+      leave: {
+        expire: 500
+      },
+      nominate: {
+        expire: 500
+      }
+    };
+
+    hooks.startCluster(cluster);
+    hooks.stopCluster(cluster);
+
+    it('a new master is elected from next in sequence', done => {
+
+      let {servers} = cluster;
+      let master = servers.shift();
+
+      let stop9 = servers.pop();
+      let stop8 = servers.pop();
+      let stop7 = servers.pop();
+
+      process.nextTick(() => {
+        stop9.$stop(); // test other members leave while master handover is in progress
+        stop8.$stop();
+        stop7.$stop();
+      });
+
+      master.$stop()
+
+        .then(() => new Promise(resolve => setTimeout(resolve, 300)))
+
+        .then(() => {
+          expect(servers.map(server => server.cluster._masterName)).to.eql([
+            'node-1',
+            'node-1',
+            'node-1',
+            'node-1',
+            'node-1',
+            'node-1'
+          ]);
+        })
+
+        .then(done).catch(done);
+
+    });
+
+    it('a new master is elected from next-next-next in sequence', done => {
+
+      let {servers} = cluster;
+      let master = servers.shift();
+
+      let stop1 = servers.shift();
+      let stop2 = servers.shift();
+      let stop3 = servers.shift();
+
+      process.nextTick(() => {
+        stop2.$stop();
+        setTimeout(() => {
+          stop1.$stop();
+          stop3.$stop();
+        }, 20);
+      });
+
+      master.$stop()
+
+        .then(() => new Promise(resolve => setTimeout(resolve, 300)))
+
+        .then(() => {
+          expect(servers.map(server => server.cluster._masterName)).to.eql([
+            'node-4',
+            'node-4',
+            'node-4',
+            'node-4',
+            'node-4',
+            'node-4'
+          ]);
+        })
+
+        .then(done).catch(done);
+
+    });
+
 
   });
 

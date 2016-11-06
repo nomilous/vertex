@@ -1,3 +1,4 @@
+* update delete member (to not retry) after keystore retry (on lost master) implemented 
 * seamless master failover will mid store set/del action
 * optional ping pong into vertex transport
 * resolve dns names before connect/listen? (or can member address be hostname?)
