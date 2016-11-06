@@ -77,11 +77,11 @@ logLevel: (nfo) => {
 
 #### config.repl
 
-If vertex stdout is a TTY then a repl is started. Only the first vertex in the process starts a repl. The `vertex` variable in the repl is the first started vertex in the process.
+If config.repl is specified and vertex stdout is a TTY then a repl is started. Only the first vertex in the process starts a repl. The `vertex` variable in the repl is the first started vertex in the process.
 
 ##### config.repl.history
 
-File to and from which repl history is loaded.
+File to and from which repl history is loaded. Set history to `null` for no history file.
 
 #### config.server
 
