@@ -30,6 +30,9 @@ Vertex.create( config )
 config = {
   name: 'phasnaedior',
   logLevel: 'info',
+  repl: {
+    history: os.homedir() + path.sep + '.vertex_repl_history'
+  },
   server: {
     listen: '0.0.0.0:65535'
   },
@@ -71,6 +74,14 @@ logLevel: (nfo) => {
   return 'warn';
 }
 ```
+
+#### config.repl
+
+If vertex stdout is a TTY then a repl is started. Only the first vertex in the process starts a repl. The `vertex` variable in the repl is the first started vertex in the process.
+
+##### config.repl.history
+
+File to and from which repl history is loaded.
 
 #### config.server
 
