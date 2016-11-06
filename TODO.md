@@ -1,4 +1,6 @@
-* resolve dns names before connect/listen? (as member address propagation)
+* seamless master failover will mid store set/del action
+* optional ping pong into vertex transport
+* resolve dns names before connect/listen? (or can member address be hostname?)
 * stored values while sync arrive at sync target
 * serialize store to prevent del and set racing
 * store updates _next on all
@@ -13,7 +15,6 @@
 * func + example (client-server, cluster)
 * member/delete after consensus
 
-* why so many Server._session(s) on new cluster member
-
 * proper count of members
 * subscribe to error until something else does
+* attempt reconnect lost cluster sockets (with timeout)
