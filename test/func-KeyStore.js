@@ -709,7 +709,7 @@ describe(filename, function () {
 
   });
 
-  xcontext('load', function () {
+  context('load', function () {
 
     // TODO: try with/without deepcopy
 
@@ -723,7 +723,7 @@ describe(filename, function () {
       }
     };
 
-    [2, 4, 6, 8, 10, 12, 14, 16, 18, 20].forEach(clusterSize => {
+    [2, 4, 6, 8, 10, 12, 14, 16 /*, 18, 20 */].forEach(clusterSize => {
 
       context('in cluster of ' + clusterSize, () => {
 

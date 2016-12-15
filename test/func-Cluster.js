@@ -81,6 +81,8 @@ describe(filename, () => {
         .catch(done);
     });
 
+    it('fails to join if incompatible version');
+
     it('cannot join self', done => {
 
       Vertex.create({
