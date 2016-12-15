@@ -30,8 +30,7 @@ module.exports = class Hooks {
               let interval = setInterval(() => {
                 let all = true;
                 for (let i = 0; i < size; i++) {
-                  let members = Object.keys(servers[i].cluster.members).length;
-                  if (members != size) all = false;
+                  if (servers[i].cluster.getMemberCount() != size) all = false;
                 }
                 if (all) {
                   clearInterval(interval);
@@ -82,7 +81,9 @@ module.exports = class Hooks {
           0: '127.0.0.1:65000',
           1: '127.0.0.1:65001',
           timeout: 1000,
-        }
+        },
+        leave: cluster.leave,
+        nominate: cluster.nominate
       }
     };
     if (cluster.namebase) {

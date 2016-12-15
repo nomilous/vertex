@@ -105,26 +105,4 @@ describe(filename, () => {
 
   });
 
-  context('services', () => {
-
-    context('registering', () => {
-
-      it('prevents duplicate routeKeys')
-
-    });
-
-    context('routing', () => {
-
-      it('does not allow access to system services from user socket');
-
-      it('does not allow access to user services from system socket');
-
-      it('routes inbound socket payloads by routeKey');
-
-    });
-
-
-  });
-
-
 });
